@@ -176,11 +176,19 @@
 
 ### 阶段 0：项目基础设施与目录搭建
 
-- [ ] 按 `docs/DIRECTORY_STRUCTURE.md` 建立完整目录和空白文件：`index.html`、基础 CSS 文件（`variables.css`, `reset.css`, `base.css`, `layout.css`, `style.css`）以及 JS 入口和模块文件（`main.js`, `config.js`, `state.js` 等），确保路径与文档一致。
-- [ ] 新建 `data/` 目录，将当前根目录下的 `locations.json`、`population_products.json` 移入 `data/`，并为后续的 `china_geo.json` 预留位置（空文件或占位说明）。
-- [ ] 新建 `.eslintrc.json`、`.prettierrc`、`.editorconfig`、`.gitignore` 等配置文件，配置内容遵循 `docs/STYLE_GUIDE_JS.md` 和 `docs/STYLE_GUIDE_CSS.md` 中的风格要求。
-- [ ] 初始化 npm 环境（`npm install`），验证 `npm run start` 能启动静态服务器，`npm run lint`、`npm run format:check` 能在空白项目状态下正常通过。
-- [ ] 按 `docs/GIT_WORKFLOW.md` 规范整理 Git：确认有 `main`/`develop` 分支，后续开发从 `develop` 创建 `feature/*` 分支并使用 Conventional Commits 规范提交。
+- [x] 按 `docs/DIRECTORY_STRUCTURE.md` 建立完整目录和空白文件：`index.html`、基础 CSS 文件（`variables.css`, `reset.css`, `base.css`, `layout.css`, `style.css`）以及 JS 入口和模块文件（`main.js`, `config.js`, `state.js` 等），确保路径与文档一致。
+- [x] 新建 `data/` 目录，将当前根目录下的 `locations.json`、`population_products.json` 移入 `data/`，并为后续的 `china_geo.json` 预留位置（已创建占位文件）。
+- [x] 新建 `.eslintrc.json`、`.prettierrc`、`.editorconfig`、`.gitignore` 等配置文件，配置内容遵循 `docs/STYLE_GUIDE_JS.md` 和 `docs/STYLE_GUIDE_CSS.md` 中的风格要求。
+- [x] 初始化 npm 环境（`npm install`），验证 `npm run start` 能启动静态服务器，`npm run lint`、`npm run format:check` 在当前骨架项目状态下均能正常通过（仅保留少量占位代码的 lint warning）。
+- [x] 按 `docs/GIT_WORKFLOW.md` 规范整理 Git：使用 `main`/`develop` 分支，已完成首次初始化提交（`chore(config): bootstrap project structure (phase 0)`），后续开发从 `develop` 创建 `feature/*` 分支并使用 Conventional Commits 规范提交。
+
+> 阶段 0 实施记录（同步当前进度与实现细节）
+>
+> - 入口与布局：建立 `index.html`，使用仪表盘布局预留地图、直方图、散点图、网络图以及左右侧边栏和页脚区域，并通过 CDN 引入 D3 v7 与 `js/main.js`（参见 `index.html`）。
+> - 样式骨架：在 `css/` 下创建 `variables.css`（设计令牌）、`reset.css`、`base.css`、`layout.css`、`style.css`，以及 `css/components/*.css` 和 `css/charts/*.css` 的占位实现，采用 CSS Grid + Flex 构建主布局。
+> - JS 模块结构：在 `js/` 下创建入口与模块文件，包括 `main.js`、`config.js`、`state.js`、`data/`（`dataLoader.js`, `dataProcessor.js`, `dataQuery.js`）、`charts/`（`BaseChart.js`, `MapView.js`, `Histogram.js`, `ScatterPlot.js`, `NetworkGraph.js`）、`components/`（`tooltip.js`, `legend.js`, `filter.js`, `sidebar.js`）、`utils/`（`scales.js`, `colors.js`, `format.js`, `dom.js`, `eventBus.js`），当前为可运行的占位实现，后续阶段在此基础上补充具体逻辑。
+> - 工具链：配置 ESLint（`.eslintrc.json`）、Prettier（`.prettierrc`）与 `.editorconfig`，并通过 `package.json` 中的 `npm run lint`、`npm run format:check`、`npm run start` 进行验证，确保基础开发环境可用。
+> - 版本控制：在项目根目录初始化 Git 仓库，创建 `main` 和 `develop` 分支，并完成一次包含阶段 0 结构与配置的初始提交，为后续按文档规范进行分支管理与版本发布打好基础。
 
 ### 阶段 1：数据层实现（DataLoader / DataProcessor / DataQuery）
 
