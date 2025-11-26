@@ -192,11 +192,11 @@
 
 ### 阶段 1：数据层实现（DataLoader / DataProcessor / DataQuery）
 
-- [ ] 在 `js/data/dataLoader.js` 实现 `DataLoader`：按 `docs/DATA_SPECIFICATION.md` 中的接口定义，编写 `loadAll()` 和 `fetchJSON()`，从 `/data` 并行加载 `locations.json`、`population_products.json`、`china_geo.json`，并对 HTTP 错误和解析错误进行统一报错处理。
-- [ ] 在 `js/data/dataProcessor.js` 实现数据合并：将 `locations.locations` 与 `population_products.population_products` 按 `Location_ID` 关联为 `ProcessedLocation[]`，计算 `householdSize`、`productRichness`、`dominantProductType`、`daoName` 等派生字段，并妥善处理 `Households`/`Population` 为 `null` 或 0 的情况。
-- [ ] 在 `js/data/dataProcessor.js` 中实现统计与索引构建：生成 `Statistics`（各种 Extent 和分布统计）以及 `DataIndices`（`locationById`、`locationsByLevel`、`locationsByDao`、`productIndex`、`productCooccurrence` 等），接口形式按文档约定。
-- [ ] 在 `js/data/dataQuery.js` 提供高层封装查询函数，例如：按道/行政级别筛选地点、按户均人口或人口范围过滤、按物产名称或类别查找地点、按 ID 获取完整 `ProcessedLocation`。
-- [ ] 在早期的 `js/main.js` 中加入简单的调试逻辑：调用 DataLoader + DataProcessor 后在控制台打印数据量、人口总数、物产种类数等，以验证数据管线是否与 `plan.md` 和 `docs/DATA_SPECIFICATION.md` 描述一致。
+- [x] 在 `js/data/dataLoader.js` 实现 `DataLoader`：按 `docs/DATA_SPECIFICATION.md` 中的接口定义，编写 `loadAll()` 和 `fetchJSON()`，从 `/data` 并行加载 `locations.json`、`population_products.json`、`china_geo.json`，并对 HTTP 错误和解析错误进行统一报错处理。
+- [x] 在 `js/data/dataProcessor.js` 实现数据合并：将 `locations.locations` 与 `population_products.population_products` 按 `Location_ID` 关联为 `ProcessedLocation[]`，计算 `householdSize`、`productRichness`、`dominantProductType`、`daoName` 等派生字段，并妥善处理 `Households`/`Population` 为 `null` 或 0 的情况。
+- [x] 在 `js/data/dataProcessor.js` 中实现统计与索引构建：生成 `Statistics`（各种 Extent 和分布统计）以及 `DataIndices`（`locationById`、`locationsByLevel`、`locationsByDao`、`productIndex`、`productCooccurrence` 等），接口形式按文档约定。
+- [x] 在 `js/data/dataQuery.js` 提供高层封装查询函数，例如：按道/行政级别筛选地点、按户均人口或人口范围过滤、按物产名称或类别查找地点、按 ID 获取完整 `ProcessedLocation`。
+- [x] 在早期的 `js/main.js` 中加入简单的调试逻辑：调用 DataLoader + DataProcessor 后在控制台打印数据量、人口总数、物产种类数等，以验证数据管线是否与 `plan.md` 和 `docs/DATA_SPECIFICATION.md` 描述一致。
 
 ### 阶段 2：工具层与可视化基类（Utils + BaseChart）
 
@@ -229,4 +229,3 @@
 - [ ] 提炼并嵌入叙事与任务引导：在侧边栏或顶部添加简短引导文案，将本文件中列出的 6 个探索性问题转化为“操作提示”（例如“在直方图中框选户均>8人区域，观察地图上的空间分布”），同时在 `README.md` 更新使用说明与关键截图。
 - [ ] 根据 `docs/STYLE_GUIDE_JS.md` 和 `.eslintrc.json` 运行并修正 `npm run lint` 和 `npm run format` 的所有问题，确保 JS/CSS/HTML 符合统一编码规范；必要时微调 ESLint/Prettier 配置以适配项目实际需求。
 - [ ] 按 `docs/GIT_WORKFLOW.md` 准备首个可用版本：在若干 `feature/*` 分支完成上述阶段后合并到 `develop`，从 `develop` 创建 `release/v1.0.0` 进行最终测试，通过后合并到 `main` 并配置静态托管（GitHub Pages 或实验室服务器），形成可访问的在线版本。
-
