@@ -1,0 +1,12 @@
+/* Tooltip 组件占位样式，后续阶段根据设计规范完善 */
+
+.tooltip {
+  position: absolute;
+  pointer-events: none;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  font-size: var(--font-size-sm);
+  border-radius: 4px;
+  opacity: 0;
+}

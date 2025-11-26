@@ -1,0 +1,3271 @@
+{
+  "locations": [
+    {
+      "Location_ID": "dao_001",
+      "Location_Name": "關內道",
+      "Parent_ID": null,
+      "Administrative_Level": "道",
+      "Latitude": null,
+      "Longitude": null,
+      "Present_Location": null
+    },
+    {
+      "Location_ID": "capital_001",
+      "Location_Name": "上都",
+      "Parent_ID": "dao_001",
+      "Administrative_Level": "都",
+      "Latitude": null,
+      "Longitude": null,
+      "Present_Location": null
+    },
+    {
+      "Location_ID": "fu_00001",
+      "Location_Name": "京兆府",
+      "Parent_ID": "dao_001",
+      "Administrative_Level": "府",
+      "Latitude": 34.24642,
+      "Longitude": 108.90698,
+      "Present_Location": "陕西省西安市莲湖区"
+    },
+    {
+      "Location_ID": "zhou_00001",
+      "Location_Name": "華州",
+      "Parent_ID": "dao_001",
+      "Administrative_Level": "州",
+      "Latitude": 34.51963,
+      "Longitude": 109.75989,
+      "Present_Location": "陕西省渭南市华州区"
+    },
+    {
+      "Location_ID": "zhou_00002",
+      "Location_Name": "同州",
+      "Parent_ID": "dao_001",
+      "Administrative_Level": "州",
+      "Latitude": 34.79724,
+      "Longitude": 109.93905,
+      "Present_Location": "陕西省渭南市大荔县"
+    },
+    {
+      "Location_ID": "zhou_00003",
+      "Location_Name": "商州",
+      "Parent_ID": "dao_001",
+      "Administrative_Level": "州",
+      "Latitude": 33.86989,
+      "Longitude": 109.93246,
+      "Present_Location": "陕西省商洛市商州区"
+    },
+    {
+      "Location_ID": "fu_00002",
+      "Location_Name": "鳳翔府",
+      "Parent_ID": "dao_001",
+      "Administrative_Level": "府",
+      "Latitude": 34.52252,
+      "Longitude": 107.38592,
+      "Present_Location": "陕西省宝鸡市凤翔区"
+    },
+    {
+      "Location_ID": "zhou_00004",
+      "Location_Name": "邠州",
+      "Parent_ID": "dao_001",
+      "Administrative_Level": "州",
+      "Latitude": 35.03966,
+      "Longitude": 108.07799,
+      "Present_Location": "陕西省咸阳市彬州市"
+    },
+    {
+      "Location_ID": "zhou_00005",
+      "Location_Name": "隴州",
+      "Parent_ID": "dao_001",
+      "Administrative_Level": "州",
+      "Latitude": 34.89141,
+      "Longitude": 106.85296,
+      "Present_Location": "陕西省宝鸡市陇县"
+    },
+    {
+      "Location_ID": "zhou_00006",
+      "Location_Name": "涇州",
+      "Parent_ID": "dao_001",
+      "Administrative_Level": "州",
+      "Latitude": 35.25615,
+      "Longitude": 107.18606,
+      "Present_Location": "甘肃省平凉市崇信县"
+    },
+    {
+      "Location_ID": "zhou_00007",
+      "Location_Name": "原州",
+      "Parent_ID": "dao_001",
+      "Administrative_Level": "州",
+      "Latitude": 36.0141,
+      "Longitude": 106.2781,
+      "Present_Location": "宁夏回族自治区固原市原州区"
+    },
+    {
+      "Location_ID": "zhou_00008",
+      "Location_Name": "渭州",
+      "Parent_ID": "dao_001",
+      "Administrative_Level": "州",
+      "Latitude": 34.9836,
+      "Longitude": 104.65988,
+      "Present_Location": "甘肃省定西市陇西县"
+    },
+    {
+      "Location_ID": "zhou_00009",
+      "Location_Name": "武州",
+      "Parent_ID": "dao_001",
+      "Administrative_Level": "州",
+      "Latitude": 27.31766,
+      "Longitude": 110.14076,
+      "Present_Location": "湖南省怀化市洪江市"
+    },
+    {
+      "Location_ID": "zhou_00010",
+      "Location_Name": "寧州",
+      "Parent_ID": "dao_001",
+      "Administrative_Level": "州",
+      "Latitude": 35.50143,
+      "Longitude": 107.93047,
+      "Present_Location": "甘肃省庆阳市宁县"
+    },
+    {
+      "Location_ID": "zhou_00011",
+      "Location_Name": "慶州",
+      "Parent_ID": "dao_001",
+      "Administrative_Level": "州",
+      "Latitude": 36.00516,
+      "Longitude": 107.87602,
+      "Present_Location": "甘肃省庆阳市庆城县"
+    },
+    {
+      "Location_ID": "zhou_00012",
+      "Location_Name": "鄜州",
+      "Parent_ID": "dao_001",
+      "Administrative_Level": "州",
+      "Latitude": 35.99563,
+      "Longitude": 109.36716,
+      "Present_Location": "陕西省延安市富县"
+    },
+    {
+      "Location_ID": "zhou_00013",
+      "Location_Name": "坊州",
+      "Parent_ID": "dao_001",
+      "Administrative_Level": "州",
+      "Latitude": 35.57102,
+      "Longitude": 109.61326,
+      "Present_Location": "陕西省延安市洛川县"
+    },
+    {
+      "Location_ID": "zhou_00014",
+      "Location_Name": "丹州",
+      "Parent_ID": "dao_001",
+      "Administrative_Level": "州",
+      "Latitude": 36.04517,
+      "Longitude": 110.16488,
+      "Present_Location": "陕西省延安市宜川县"
+    },
+    {
+      "Location_ID": "zhou_00015",
+      "Location_Name": "延州",
+      "Parent_ID": "dao_001",
+      "Administrative_Level": "州",
+      "Latitude": 36.59181,
+      "Longitude": 109.46991,
+      "Present_Location": "陕西省延安市宝塔区"
+    },
+    {
+      "Location_ID": "zhou_00016",
+      "Location_Name": "靈州",
+      "Parent_ID": "dao_001",
+      "Administrative_Level": "州",
+      "Latitude": 37.98617,
+      "Longitude": 106.19549,
+      "Present_Location": "宁夏回族自治区吴忠市利通区"
+    },
+    {
+      "Location_ID": "zhou_00017",
+      "Location_Name": "威州",
+      "Parent_ID": "dao_001",
+      "Administrative_Level": "州",
+      "Latitude": 39.76624,
+      "Longitude": 110.79623,
+      "Present_Location": "内蒙古自治区鄂尔多斯市准格尔旗"
+    },
+    {
+      "Location_ID": "zhou_00018",
+      "Location_Name": "雄州",
+      "Parent_ID": "dao_001",
+      "Administrative_Level": "州",
+      "Latitude": 38.24665,
+      "Longitude": 101.96912,
+      "Present_Location": "甘肃省金昌市永昌县"
+    },
+    {
+      "Location_ID": "zhou_00019",
+      "Location_Name": "警州",
+      "Parent_ID": "dao_001",
+      "Administrative_Level": "州",
+      "Latitude": null,
+      "Longitude": null,
+      "Present_Location": null
+    },
+    {
+      "Location_ID": "zhou_00020",
+      "Location_Name": "會州",
+      "Parent_ID": "dao_001",
+      "Administrative_Level": "州",
+      "Latitude": 36.56527,
+      "Longitude": 104.68429,
+      "Present_Location": "甘肃省白银市靖远县"
+    },
+    {
+      "Location_ID": "zhou_00021",
+      "Location_Name": "鹽州",
+      "Parent_ID": "dao_001",
+      "Administrative_Level": "州",
+      "Latitude": null,
+      "Longitude": null,
+      "Present_Location": null
+    },
+    {
+      "Location_ID": "zhou_00022",
+      "Location_Name": "夏州",
+      "Parent_ID": "dao_001",
+      "Administrative_Level": "州",
+      "Latitude": 37.59872,
+      "Longitude": 108.91805,
+      "Present_Location": "陕西省榆林市靖边县"
+    },
+    {
+      "Location_ID": "zhou_00023",
+      "Location_Name": "綏州",
+      "Parent_ID": "dao_001",
+      "Administrative_Level": "州",
+      "Latitude": 35.99563,
+      "Longitude": 109.36716,
+      "Present_Location": "陕西省延安市富县"
+    },
+    {
+      "Location_ID": "zhou_00024",
+      "Location_Name": "銀州",
+      "Parent_ID": "dao_001",
+      "Administrative_Level": "州",
+      "Latitude": 37.95929,
+      "Longitude": 109.2916,
+      "Present_Location": "陕西省榆林市横山区"
+    },
+    {
+      "Location_ID": "zhou_00025",
+      "Location_Name": "宥州",
+      "Parent_ID": "dao_001",
+      "Administrative_Level": "州",
+      "Latitude": 38.22477,
+      "Longitude": 107.43605,
+      "Present_Location": "内蒙古自治区鄂尔多斯市鄂托克前旗"
+    },
+    {
+      "Location_ID": "zhou_00026",
+      "Location_Name": "麟州",
+      "Parent_ID": "dao_001",
+      "Administrative_Level": "州",
+      "Latitude": 38.95184,
+      "Longitude": 110.47215,
+      "Present_Location": "陕西省榆林市神木市"
+    },
+    {
+      "Location_ID": "zhou_00027",
+      "Location_Name": "勝州",
+      "Parent_ID": "dao_001",
+      "Administrative_Level": "州",
+      "Latitude": 39.76624,
+      "Longitude": 110.79623,
+      "Present_Location": "内蒙古自治区鄂尔多斯市准格尔旗"
+    },
+    {
+      "Location_ID": "zhou_00028",
+      "Location_Name": "豐州",
+      "Parent_ID": "dao_001",
+      "Administrative_Level": "州",
+      "Latitude": 40.93678,
+      "Longitude": 107.96244,
+      "Present_Location": "内蒙古自治区巴彦淖尔市五原县"
+    },
+    {
+      "Location_ID": "fu_00003",
+      "Location_Name": "單于大都護府",
+      "Parent_ID": "dao_001",
+      "Administrative_Level": "府",
+      "Latitude": null,
+      "Longitude": null,
+      "Present_Location": null
+    },
+    {
+      "Location_ID": "fu_00004",
+      "Location_Name": "安北大都護府",
+      "Parent_ID": "dao_001",
+      "Administrative_Level": "府",
+      "Latitude": null,
+      "Longitude": null,
+      "Present_Location": null
+    },
+    {
+      "Location_ID": "fu_00005",
+      "Location_Name": "鎮北大都護府",
+      "Parent_ID": "dao_001",
+      "Administrative_Level": "府",
+      "Latitude": null,
+      "Longitude": null,
+      "Present_Location": null
+    },
+    {
+      "Location_ID": "dao_002",
+      "Location_Name": "河南道",
+      "Parent_ID": null,
+      "Administrative_Level": "道",
+      "Latitude": null,
+      "Longitude": null,
+      "Present_Location": null
+    },
+    {
+      "Location_ID": "capital_002",
+      "Location_Name": "東都",
+      "Parent_ID": "dao_002",
+      "Administrative_Level": "都",
+      "Latitude": null,
+      "Longitude": null,
+      "Present_Location": null
+    },
+    {
+      "Location_ID": "fu_00006",
+      "Location_Name": "河南府",
+      "Parent_ID": "dao_002",
+      "Administrative_Level": "府",
+      "Latitude": 34.72786,
+      "Longitude": 112.58592,
+      "Present_Location": "河南省洛阳市孟津区"
+    },
+    {
+      "Location_ID": "zhou_00029",
+      "Location_Name": "汝州",
+      "Parent_ID": "dao_002",
+      "Administrative_Level": "州",
+      "Latitude": 34.16176,
+      "Longitude": 112.83702,
+      "Present_Location": "河南省平顶山市汝州市"
+    },
+    {
+      "Location_ID": "zhou_00030",
+      "Location_Name": "陝州",
+      "Parent_ID": "dao_002",
+      "Administrative_Level": "州",
+      "Latitude": 34.65606,
+      "Longitude": 111.36268,
+      "Present_Location": "河南省三门峡市陕州区"
+    },
+    {
+      "Location_ID": "zhou_00031",
+      "Location_Name": "虢州",
+      "Parent_ID": "dao_002",
+      "Administrative_Level": "州",
+      "Latitude": 34.52751,
+      "Longitude": 110.86538,
+      "Present_Location": "河南省三门峡市灵宝市"
+    },
+    {
+      "Location_ID": "zhou_00032",
+      "Location_Name": "滑州",
+      "Parent_ID": "dao_002",
+      "Administrative_Level": "州",
+      "Latitude": 35.62207,
+      "Longitude": 114.62544,
+      "Present_Location": "河南省安阳市滑县"
+    },
+    {
+      "Location_ID": "zhou_00033",
+      "Location_Name": "鄭州",
+      "Parent_ID": "dao_002",
+      "Administrative_Level": "州",
+      "Latitude": 34.78311,
+      "Longitude": 113.3474,
+      "Present_Location": "河南省郑州市荥阳市"
+    },
+    {
+      "Location_ID": "zhou_00034",
+      "Location_Name": "潁州",
+      "Parent_ID": "dao_002",
+      "Administrative_Level": "州",
+      "Latitude": 32.90306,
+      "Longitude": 115.80901,
+      "Present_Location": "安徽省阜阳市颍州区"
+    },
+    {
+      "Location_ID": "zhou_00035",
+      "Location_Name": "許州",
+      "Parent_ID": "dao_002",
+      "Administrative_Level": "州",
+      "Latitude": 34.03139,
+      "Longitude": 113.81975,
+      "Present_Location": "河南省许昌市魏都区"
+    },
+    {
+      "Location_ID": "zhou_00036",
+      "Location_Name": "陳州",
+      "Parent_ID": "dao_002",
+      "Administrative_Level": "州",
+      "Latitude": 33.73398,
+      "Longitude": 114.88245,
+      "Present_Location": "河南省周口市淮阳区"
+    },
+    {
+      "Location_ID": "zhou_00037",
+      "Location_Name": "蔡州",
+      "Parent_ID": "dao_002",
+      "Administrative_Level": "州",
+      "Latitude": 33.00754,
+      "Longitude": 114.346,
+      "Present_Location": "河南省驻马店市汝南县"
+    },
+    {
+      "Location_ID": "zhou_00038",
+      "Location_Name": "汴州",
+      "Parent_ID": "dao_002",
+      "Administrative_Level": "州",
+      "Latitude": 34.78548,
+      "Longitude": 114.34333,
+      "Present_Location": "河南省开封市鼓楼区"
+    },
+    {
+      "Location_ID": "zhou_00039",
+      "Location_Name": "宋州",
+      "Parent_ID": "dao_002",
+      "Administrative_Level": "州",
+      "Latitude": 34.44766,
+      "Longitude": 115.64607,
+      "Present_Location": "河南省商丘市梁园区"
+    },
+    {
+      "Location_ID": "zhou_00040",
+      "Location_Name": "亳州",
+      "Parent_ID": "dao_002",
+      "Administrative_Level": "州",
+      "Latitude": 33.87929,
+      "Longitude": 115.7709,
+      "Present_Location": "安徽省亳州市谯城区"
+    },
+    {
+      "Location_ID": "zhou_00041",
+      "Location_Name": "徐州",
+      "Parent_ID": "dao_002",
+      "Administrative_Level": "州",
+      "Latitude": 34.26963,
+      "Longitude": 117.18768,
+      "Present_Location": "江苏省徐州市鼓楼区"
+    },
+    {
+      "Location_ID": "zhou_00042",
+      "Location_Name": "泗州",
+      "Parent_ID": "dao_002",
+      "Administrative_Level": "州",
+      "Latitude": 33.0234,
+      "Longitude": 118.46812,
+      "Present_Location": "江苏省淮安市盱眙县"
+    },
+    {
+      "Location_ID": "zhou_00043",
+      "Location_Name": "濠州",
+      "Parent_ID": "dao_002",
+      "Administrative_Level": "州",
+      "Latitude": 32.90163,
+      "Longitude": 117.64022,
+      "Present_Location": "安徽省滁州市凤阳县"
+    },
+    {
+      "Location_ID": "zhou_00044",
+      "Location_Name": "宿州",
+      "Parent_ID": "dao_002",
+      "Administrative_Level": "州",
+      "Latitude": 33.76696,
+      "Longitude": 116.96673,
+      "Present_Location": "安徽省宿州市埇桥区"
+    },
+    {
+      "Location_ID": "zhou_00045",
+      "Location_Name": "鄆州",
+      "Parent_ID": "dao_002",
+      "Administrative_Level": "州",
+      "Latitude": 35.92291,
+      "Longitude": 116.42073,
+      "Present_Location": "山东省泰安市东平县"
+    },
+    {
+      "Location_ID": "zhou_00046",
+      "Location_Name": "齊州",
+      "Parent_ID": "dao_002",
+      "Administrative_Level": "州",
+      "Latitude": 24.07401,
+      "Longitude": 111.94534,
+      "Present_Location": "广东省肇庆市怀集县"
+    },
+    {
+      "Location_ID": "zhou_00047",
+      "Location_Name": "曹州",
+      "Parent_ID": "dao_002",
+      "Administrative_Level": "州",
+      "Latitude": 35.07399,
+      "Longitude": 115.56662,
+      "Present_Location": "山东省菏泽市定陶区"
+    },
+    {
+      "Location_ID": "zhou_00048",
+      "Location_Name": "濮州",
+      "Parent_ID": "dao_002",
+      "Administrative_Level": "州",
+      "Latitude": 33.59627,
+      "Longitude": 113.9904,
+      "Present_Location": "河南省漯河市郾城区"
+    },
+    {
+      "Location_ID": "zhou_00049",
+      "Location_Name": "青州",
+      "Parent_ID": "dao_002",
+      "Administrative_Level": "州",
+      "Latitude": 36.68287,
+      "Longitude": 118.47236,
+      "Present_Location": "山东省潍坊市青州市"
+    },
+    {
+      "Location_ID": "zhou_00050",
+      "Location_Name": "淄州",
+      "Parent_ID": "dao_002",
+      "Administrative_Level": "州",
+      "Latitude": 36.69828,
+      "Longitude": 118.0111,
+      "Present_Location": "山东省淄博市淄川区"
+    },
+    {
+      "Location_ID": "zhou_00051",
+      "Location_Name": "登州",
+      "Parent_ID": "dao_002",
+      "Administrative_Level": "州",
+      "Latitude": 37.80452,
+      "Longitude": 120.7405,
+      "Present_Location": "山东省烟台市蓬莱区"
+    },
+    {
+      "Location_ID": "zhou_00052",
+      "Location_Name": "萊州",
+      "Parent_ID": "dao_002",
+      "Administrative_Level": "州",
+      "Latitude": 37.17543,
+      "Longitude": 119.938,
+      "Present_Location": "山东省烟台市莱州市"
+    },
+    {
+      "Location_ID": "zhou_00053",
+      "Location_Name": "棣州",
+      "Parent_ID": "dao_002",
+      "Administrative_Level": "州",
+      "Latitude": 37.29529,
+      "Longitude": 117.64689,
+      "Present_Location": "山东省滨州市惠民县"
+    },
+    {
+      "Location_ID": "zhou_00054",
+      "Location_Name": "兗州",
+      "Parent_ID": "dao_002",
+      "Administrative_Level": "州",
+      "Latitude": 35.5567,
+      "Longitude": 116.8237,
+      "Present_Location": "山东省济宁市兖州区"
+    },
+    {
+      "Location_ID": "zhou_00055",
+      "Location_Name": "海州",
+      "Parent_ID": "dao_002",
+      "Administrative_Level": "州",
+      "Latitude": 34.58221,
+      "Longitude": 119.12601,
+      "Present_Location": "江苏省连云港市海州区"
+    },
+    {
+      "Location_ID": "zhou_00056",
+      "Location_Name": "沂州",
+      "Parent_ID": "dao_002",
+      "Administrative_Level": "州",
+      "Latitude": 35.07156,
+      "Longitude": 118.34095,
+      "Present_Location": "山东省临沂市兰山区"
+    },
+    {
+      "Location_ID": "zhou_00057",
+      "Location_Name": "密州",
+      "Parent_ID": "dao_002",
+      "Administrative_Level": "州",
+      "Latitude": 35.99336,
+      "Longitude": 119.40398,
+      "Present_Location": "山东省潍坊市诸城市"
+    },
+    {
+      "Location_ID": "dao_003",
+      "Location_Name": "河東道",
+      "Parent_ID": null,
+      "Administrative_Level": "道",
+      "Latitude": null,
+      "Longitude": null,
+      "Present_Location": null
+    },
+    {
+      "Location_ID": "fu_00007",
+      "Location_Name": "河中府",
+      "Parent_ID": "dao_003",
+      "Administrative_Level": "府",
+      "Latitude": 34.83513,
+      "Longitude": 110.33231,
+      "Present_Location": "山西省运城市永济市"
+    },
+    {
+      "Location_ID": "zhou_00058",
+      "Location_Name": "晉州",
+      "Parent_ID": "dao_003",
+      "Administrative_Level": "州",
+      "Latitude": 36.05806,
+      "Longitude": 111.41473,
+      "Present_Location": "山西省临汾市尧都区"
+    },
+    {
+      "Location_ID": "zhou_00059",
+      "Location_Name": "絳州",
+      "Parent_ID": "dao_003",
+      "Administrative_Level": "州",
+      "Latitude": 35.61641,
+      "Longitude": 111.21615,
+      "Present_Location": "山西省运城市新绛县"
+    },
+    {
+      "Location_ID": "zhou_00060",
+      "Location_Name": "慈州",
+      "Parent_ID": "dao_003",
+      "Administrative_Level": "州",
+      "Latitude": 36.09563,
+      "Longitude": 110.67517,
+      "Present_Location": "山西省临汾市吉县"
+    },
+    {
+      "Location_ID": "zhou_00061",
+      "Location_Name": "隰州",
+      "Parent_ID": "dao_003",
+      "Administrative_Level": "州",
+      "Latitude": 36.68763,
+      "Longitude": 110.93065,
+      "Present_Location": "山西省临汾市隰县"
+    },
+    {
+      "Location_ID": "capital_003",
+      "Location_Name": "北都",
+      "Parent_ID": "dao_003",
+      "Administrative_Level": "都",
+      "Latitude": null,
+      "Longitude": null,
+      "Present_Location": null
+    },
+    {
+      "Location_ID": "fu_00008",
+      "Location_Name": "太原府",
+      "Parent_ID": "dao_003",
+      "Administrative_Level": "府",
+      "Latitude": 37.72863,
+      "Longitude": 112.38794,
+      "Present_Location": "山西省太原市晋源区"
+    },
+    {
+      "Location_ID": "zhou_00062",
+      "Location_Name": "汾州",
+      "Parent_ID": "dao_003",
+      "Administrative_Level": "州",
+      "Latitude": 37.2634,
+      "Longitude": 111.77903,
+      "Present_Location": "山西省吕梁市汾阳市"
+    },
+    {
+      "Location_ID": "zhou_00063",
+      "Location_Name": "沁州",
+      "Parent_ID": "dao_003",
+      "Administrative_Level": "州",
+      "Latitude": 36.49712,
+      "Longitude": 112.32956,
+      "Present_Location": "山西省长治市沁源县"
+    },
+    {
+      "Location_ID": "zhou_00064",
+      "Location_Name": "遼州",
+      "Parent_ID": "dao_003",
+      "Administrative_Level": "州",
+      "Latitude": 37.07428,
+      "Longitude": 113.36811,
+      "Present_Location": "山西省晋中市左权县"
+    },
+    {
+      "Location_ID": "zhou_00065",
+      "Location_Name": "嵐州",
+      "Parent_ID": "dao_003",
+      "Administrative_Level": "州",
+      "Latitude": 38.39095,
+      "Longitude": 111.69323,
+      "Present_Location": "山西省吕梁市岚县"
+    },
+    {
+      "Location_ID": "zhou_00066",
+      "Location_Name": "憲州",
+      "Parent_ID": "dao_003",
+      "Administrative_Level": "州",
+      "Latitude": 38.09666,
+      "Longitude": 111.84446,
+      "Present_Location": "山西省太原市娄烦县"
+    },
+    {
+      "Location_ID": "zhou_00067",
+      "Location_Name": "石州",
+      "Parent_ID": "dao_003",
+      "Administrative_Level": "州",
+      "Latitude": 37.51011,
+      "Longitude": 111.13518,
+      "Present_Location": "山西省吕梁市离石区"
+    },
+    {
+      "Location_ID": "zhou_00068",
+      "Location_Name": "忻州",
+      "Parent_ID": "dao_003",
+      "Administrative_Level": "州",
+      "Latitude": 38.39856,
+      "Longitude": 112.7312,
+      "Present_Location": "山西省忻州市忻府区"
+    },
+    {
+      "Location_ID": "zhou_00069",
+      "Location_Name": "代州",
+      "Parent_ID": "dao_003",
+      "Administrative_Level": "州",
+      "Latitude": 39.06039,
+      "Longitude": 112.94904,
+      "Present_Location": "山西省忻州市代县"
+    },
+    {
+      "Location_ID": "zhou_00070",
+      "Location_Name": "雲州",
+      "Parent_ID": "dao_003",
+      "Administrative_Level": "州",
+      "Latitude": 31.9958,
+      "Longitude": 119.56986,
+      "Present_Location": "江苏省镇江市丹阳市"
+    },
+    {
+      "Location_ID": "zhou_00071",
+      "Location_Name": "朔州",
+      "Parent_ID": "dao_003",
+      "Administrative_Level": "州",
+      "Latitude": 39.30807,
+      "Longitude": 112.42152,
+      "Present_Location": "山西省朔州市朔城区"
+    },
+    {
+      "Location_ID": "zhou_00072",
+      "Location_Name": "蔚州",
+      "Parent_ID": "dao_003",
+      "Administrative_Level": "州",
+      "Latitude": 39.84054,
+      "Longitude": 114.56905,
+      "Present_Location": "河北省张家口市蔚县"
+    },
+    {
+      "Location_ID": "zhou_00073",
+      "Location_Name": "武州",
+      "Parent_ID": "dao_003",
+      "Administrative_Level": "州",
+      "Latitude": 33.39484,
+      "Longitude": 104.92928,
+      "Present_Location": "甘肃省陇南市武都区"
+    },
+    {
+      "Location_ID": "zhou_00074",
+      "Location_Name": "新州",
+      "Parent_ID": "dao_003",
+      "Administrative_Level": "州",
+      "Latitude": 22.70292,
+      "Longitude": 112.22508,
+      "Present_Location": "广东省云浮市新兴县"
+    },
+    {
+      "Location_ID": "zhou_00075",
+      "Location_Name": "潞州",
+      "Parent_ID": "dao_003",
+      "Administrative_Level": "州",
+      "Latitude": 36.18354,
+      "Longitude": 113.10349,
+      "Present_Location": "山西省长治市潞州区"
+    },
+    {
+      "Location_ID": "zhou_00076",
+      "Location_Name": "澤州",
+      "Parent_ID": "dao_003",
+      "Administrative_Level": "州",
+      "Latitude": 35.50432,
+      "Longitude": 112.83916,
+      "Present_Location": "山西省晋城市城区"
+    },
+    {
+      "Location_ID": "dao_004",
+      "Location_Name": "河北道",
+      "Parent_ID": null,
+      "Administrative_Level": "道",
+      "Latitude": null,
+      "Longitude": null,
+      "Present_Location": null
+    },
+    {
+      "Location_ID": "zhou_00077",
+      "Location_Name": "孟州",
+      "Parent_ID": "dao_004",
+      "Administrative_Level": "州",
+      "Latitude": 34.90318,
+      "Longitude": 112.7828,
+      "Present_Location": "河南省焦作市孟州市"
+    },
+    {
+      "Location_ID": "zhou_00078",
+      "Location_Name": "懷州",
+      "Parent_ID": "dao_004",
+      "Administrative_Level": "州",
+      "Latitude": 35.0893,
+      "Longitude": 112.93699,
+      "Present_Location": "河南省焦作市沁阳市"
+    },
+    {
+      "Location_ID": "zhou_00079",
+      "Location_Name": "魏州",
+      "Parent_ID": "dao_004",
+      "Administrative_Level": "州",
+      "Latitude": 36.4184,
+      "Longitude": 115.11642,
+      "Present_Location": "河北省邯郸市大名县"
+    },
+    {
+      "Location_ID": "zhou_00080",
+      "Location_Name": "博州",
+      "Parent_ID": "dao_004",
+      "Administrative_Level": "州",
+      "Latitude": 36.52836,
+      "Longitude": 116.04175,
+      "Present_Location": "山东省聊城市东昌府区"
+    },
+    {
+      "Location_ID": "zhou_00081",
+      "Location_Name": "相州",
+      "Parent_ID": "dao_004",
+      "Administrative_Level": "州",
+      "Latitude": 36.09834,
+      "Longitude": 114.3455,
+      "Present_Location": "河南省安阳市北关区"
+    },
+    {
+      "Location_ID": "zhou_00082",
+      "Location_Name": "衛州",
+      "Parent_ID": "dao_004",
+      "Administrative_Level": "州",
+      "Latitude": 35.41039,
+      "Longitude": 114.07027,
+      "Present_Location": "河南省新乡市卫辉市"
+    },
+    {
+      "Location_ID": "zhou_00083",
+      "Location_Name": "貝州",
+      "Parent_ID": "dao_004",
+      "Administrative_Level": "州",
+      "Latitude": 37.08367,
+      "Longitude": 115.58614,
+      "Present_Location": "河北省邢台市清河县"
+    },
+    {
+      "Location_ID": "zhou_00084",
+      "Location_Name": "澶州",
+      "Parent_ID": "dao_004",
+      "Administrative_Level": "州",
+      "Latitude": 35.89282,
+      "Longitude": 115.09803,
+      "Present_Location": "河南省濮阳市清丰县"
+    },
+    {
+      "Location_ID": "zhou_00085",
+      "Location_Name": "邢州",
+      "Parent_ID": "dao_004",
+      "Administrative_Level": "州",
+      "Latitude": 37.06636,
+      "Longitude": 114.49426,
+      "Present_Location": "河北省邢台市襄都区"
+    },
+    {
+      "Location_ID": "zhou_00086",
+      "Location_Name": "洺州",
+      "Parent_ID": "dao_004",
+      "Administrative_Level": "州",
+      "Latitude": 36.70103,
+      "Longitude": 114.72307,
+      "Present_Location": "河北省邯郸市永年区"
+    },
+    {
+      "Location_ID": "zhou_00087",
+      "Location_Name": "惠州",
+      "Parent_ID": "dao_004",
+      "Administrative_Level": "州",
+      "Latitude": null,
+      "Longitude": null,
+      "Present_Location": null
+    },
+    {
+      "Location_ID": "zhou_00088",
+      "Location_Name": "鎮州",
+      "Parent_ID": "dao_004",
+      "Administrative_Level": "州",
+      "Latitude": 37.92814,
+      "Longitude": 114.33982,
+      "Present_Location": "河北省石家庄市鹿泉区"
+    },
+    {
+      "Location_ID": "zhou_00089",
+      "Location_Name": "冀州",
+      "Parent_ID": "dao_004",
+      "Administrative_Level": "州",
+      "Latitude": 37.56598,
+      "Longitude": 115.56381,
+      "Present_Location": "河北省衡水市冀州区"
+    },
+    {
+      "Location_ID": "zhou_00090",
+      "Location_Name": "深州",
+      "Parent_ID": "dao_004",
+      "Administrative_Level": "州",
+      "Latitude": 38.24599,
+      "Longitude": 115.73602,
+      "Present_Location": "河北省衡水市饶阳县"
+    },
+    {
+      "Location_ID": "zhou_00091",
+      "Location_Name": "趙州",
+      "Parent_ID": "dao_004",
+      "Administrative_Level": "州",
+      "Latitude": 37.75293,
+      "Longitude": 114.77218,
+      "Present_Location": "河北省石家庄市赵县"
+    },
+    {
+      "Location_ID": "zhou_00092",
+      "Location_Name": "滄州",
+      "Parent_ID": "dao_004",
+      "Administrative_Level": "州",
+      "Latitude": 38.26528,
+      "Longitude": 116.93561,
+      "Present_Location": "河北省沧州市沧县"
+    },
+    {
+      "Location_ID": "zhou_00093",
+      "Location_Name": "景州",
+      "Parent_ID": "dao_004",
+      "Administrative_Level": "州",
+      "Latitude": 37.88456,
+      "Longitude": 116.53282,
+      "Present_Location": "河北省沧州市东光县"
+    },
+    {
+      "Location_ID": "zhou_00094",
+      "Location_Name": "德州",
+      "Parent_ID": "dao_004",
+      "Administrative_Level": "州",
+      "Latitude": 37.02058,
+      "Longitude": 116.43802,
+      "Present_Location": "山东省德州市平原县"
+    },
+    {
+      "Location_ID": "zhou_00095",
+      "Location_Name": "定州",
+      "Parent_ID": "dao_004",
+      "Administrative_Level": "州",
+      "Latitude": 38.52006,
+      "Longitude": 114.97504,
+      "Present_Location": "河北省保定市定州市"
+    },
+    {
+      "Location_ID": "zhou_00096",
+      "Location_Name": "易州",
+      "Parent_ID": "dao_004",
+      "Administrative_Level": "州",
+      "Latitude": 39.34904,
+      "Longitude": 115.49348,
+      "Present_Location": "河北省保定市易县"
+    },
+    {
+      "Location_ID": "zhou_00097",
+      "Location_Name": "幽州",
+      "Parent_ID": "dao_004",
+      "Administrative_Level": "州",
+      "Latitude": 39.74125,
+      "Longitude": 116.13558,
+      "Present_Location": "北京市房山区"
+    },
+    {
+      "Location_ID": "zhou_00098",
+      "Location_Name": "涿州",
+      "Parent_ID": "dao_004",
+      "Administrative_Level": "州",
+      "Latitude": 39.48722,
+      "Longitude": 115.96815,
+      "Present_Location": "河北省保定市涿州市"
+    },
+    {
+      "Location_ID": "zhou_00099",
+      "Location_Name": "瀛州",
+      "Parent_ID": "dao_004",
+      "Administrative_Level": "州",
+      "Latitude": 38.4357,
+      "Longitude": 116.08553,
+      "Present_Location": "河北省沧州市河间市"
+    },
+    {
+      "Location_ID": "zhou_00100",
+      "Location_Name": "莫州",
+      "Parent_ID": "dao_004",
+      "Administrative_Level": "州",
+      "Latitude": 38.70767,
+      "Longitude": 116.09048,
+      "Present_Location": "河北省沧州市任丘市"
+    },
+    {
+      "Location_ID": "zhou_00101",
+      "Location_Name": "平州",
+      "Parent_ID": "dao_004",
+      "Administrative_Level": "州",
+      "Latitude": 39.87732,
+      "Longitude": 118.86195,
+      "Present_Location": "河北省秦皇岛市卢龙县"
+    },
+    {
+      "Location_ID": "zhou_00102",
+      "Location_Name": "媯州",
+      "Parent_ID": "dao_004",
+      "Administrative_Level": "州",
+      "Latitude": 40.32557,
+      "Longitude": 115.72881,
+      "Present_Location": "河北省张家口市怀来县"
+    },
+    {
+      "Location_ID": "zhou_00103",
+      "Location_Name": "檀州",
+      "Parent_ID": "dao_004",
+      "Administrative_Level": "州",
+      "Latitude": 40.37148,
+      "Longitude": 116.84046,
+      "Present_Location": "北京市密云区"
+    },
+    {
+      "Location_ID": "zhou_00104",
+      "Location_Name": "薊州",
+      "Parent_ID": "dao_004",
+      "Administrative_Level": "州",
+      "Latitude": 40.04387,
+      "Longitude": 117.40182,
+      "Present_Location": "天津市蓟州区"
+    },
+    {
+      "Location_ID": "zhou_00105",
+      "Location_Name": "營州",
+      "Parent_ID": "dao_004",
+      "Administrative_Level": "州",
+      "Latitude": 41.58008,
+      "Longitude": 120.45078,
+      "Present_Location": "辽宁省朝阳市双塔区"
+    },
+    {
+      "Location_ID": "fu_00009",
+      "Location_Name": "安東都護府",
+      "Parent_ID": "dao_004",
+      "Administrative_Level": "府",
+      "Latitude": 39.87732,
+      "Longitude": 118.86195,
+      "Present_Location": "河北省秦皇岛市卢龙县"
+    },
+    {
+      "Location_ID": "dao_005",
+      "Location_Name": "山南道",
+      "Parent_ID": null,
+      "Administrative_Level": "道",
+      "Latitude": null,
+      "Longitude": null,
+      "Present_Location": null
+    },
+    {
+      "Location_ID": "dao_006",
+      "Location_Name": "山南東道",
+      "Parent_ID": "dao_005",
+      "Administrative_Level": "道",
+      "Latitude": null,
+      "Longitude": null,
+      "Present_Location": null
+    },
+    {
+      "Location_ID": "fu_00010",
+      "Location_Name": "江陵府",
+      "Parent_ID": "dao_006",
+      "Administrative_Level": "府",
+      "Latitude": 30.35044,
+      "Longitude": 112.19077,
+      "Present_Location": "湖北省荆州市荆州区"
+    },
+    {
+      "Location_ID": "zhou_00106",
+      "Location_Name": "峽州",
+      "Parent_ID": "dao_006",
+      "Administrative_Level": "州",
+      "Latitude": 30.70423,
+      "Longitude": 111.28712,
+      "Present_Location": "湖北省宜昌市西陵区"
+    },
+    {
+      "Location_ID": "zhou_00107",
+      "Location_Name": "歸州",
+      "Parent_ID": "dao_006",
+      "Administrative_Level": "州",
+      "Latitude": 30.99962,
+      "Longitude": 110.69416,
+      "Present_Location": "湖北省宜昌市秭归县"
+    },
+    {
+      "Location_ID": "zhou_00108",
+      "Location_Name": "夔州",
+      "Parent_ID": "dao_006",
+      "Administrative_Level": "州",
+      "Latitude": 31.05471,
+      "Longitude": 109.52475,
+      "Present_Location": "重庆市奉节县"
+    },
+    {
+      "Location_ID": "zhou_00109",
+      "Location_Name": "澧州",
+      "Parent_ID": "dao_006",
+      "Administrative_Level": "州",
+      "Latitude": 29.62132,
+      "Longitude": 111.82449,
+      "Present_Location": "湖南省常德市澧县"
+    },
+    {
+      "Location_ID": "zhou_00110",
+      "Location_Name": "朗州",
+      "Parent_ID": "dao_006",
+      "Administrative_Level": "州",
+      "Latitude": 29.03481,
+      "Longitude": 111.6913,
+      "Present_Location": "湖南省常德市武陵区"
+    },
+    {
+      "Location_ID": "zhou_00111",
+      "Location_Name": "忠州",
+      "Parent_ID": "dao_006",
+      "Administrative_Level": "州",
+      "Latitude": 30.29858,
+      "Longitude": 108.03158,
+      "Present_Location": "重庆市忠县"
+    },
+    {
+      "Location_ID": "zhou_00112",
+      "Location_Name": "涪州",
+      "Parent_ID": "dao_006",
+      "Administrative_Level": "州",
+      "Latitude": 29.70278,
+      "Longitude": 107.39096,
+      "Present_Location": "重庆市涪陵区"
+    },
+    {
+      "Location_ID": "zhou_00113",
+      "Location_Name": "萬州",
+      "Parent_ID": "dao_006",
+      "Administrative_Level": "州",
+      "Latitude": 30.81286,
+      "Longitude": 108.3736,
+      "Present_Location": "重庆市万州区"
+    },
+    {
+      "Location_ID": "zhou_00114",
+      "Location_Name": "襄州",
+      "Parent_ID": "dao_006",
+      "Administrative_Level": "州",
+      "Latitude": 32.02652,
+      "Longitude": 112.1587,
+      "Present_Location": "湖北省襄阳市襄城区"
+    },
+    {
+      "Location_ID": "zhou_00115",
+      "Location_Name": "泌州",
+      "Parent_ID": "dao_006",
+      "Administrative_Level": "州",
+      "Latitude": 32.72317,
+      "Longitude": 113.31919,
+      "Present_Location": "河南省驻马店市泌阳县"
+    },
+    {
+      "Location_ID": "zhou_00116",
+      "Location_Name": "隋州",
+      "Parent_ID": "dao_006",
+      "Administrative_Level": "州",
+      "Latitude": 31.71511,
+      "Longitude": 113.36982,
+      "Present_Location": "湖北省随州市曾都区"
+    },
+    {
+      "Location_ID": "zhou_00117",
+      "Location_Name": "鄧州",
+      "Parent_ID": "dao_006",
+      "Administrative_Level": "州",
+      "Latitude": 32.68483,
+      "Longitude": 112.08096,
+      "Present_Location": "河南省南阳市邓州市"
+    },
+    {
+      "Location_ID": "zhou_00118",
+      "Location_Name": "均州",
+      "Parent_ID": "dao_006",
+      "Administrative_Level": "州",
+      "Latitude": 32.66815,
+      "Longitude": 111.16557,
+      "Present_Location": "湖北省十堰市丹江口市"
+    },
+    {
+      "Location_ID": "zhou_00119",
+      "Location_Name": "房州",
+      "Parent_ID": "dao_006",
+      "Administrative_Level": "州",
+      "Latitude": 32.05897,
+      "Longitude": 110.72715,
+      "Present_Location": "湖北省十堰市房县"
+    },
+    {
+      "Location_ID": "zhou_00120",
+      "Location_Name": "復州",
+      "Parent_ID": "dao_006",
+      "Administrative_Level": "州",
+      "Latitude": 30.18954,
+      "Longitude": 113.2366,
+      "Present_Location": "湖北省仙桃市"
+    },
+    {
+      "Location_ID": "zhou_00121",
+      "Location_Name": "郢州",
+      "Parent_ID": "dao_006",
+      "Administrative_Level": "州",
+      "Latitude": 31.02481,
+      "Longitude": 113.11685,
+      "Present_Location": "湖北省荆门市京山市"
+    },
+    {
+      "Location_ID": "zhou_00122",
+      "Location_Name": "金州",
+      "Parent_ID": "dao_006",
+      "Administrative_Level": "州",
+      "Latitude": 32.70456,
+      "Longitude": 109.01698,
+      "Present_Location": "陕西省安康市汉滨区"
+    },
+    {
+      "Location_ID": "dao_007",
+      "Location_Name": "山南西道",
+      "Parent_ID": "dao_005",
+      "Administrative_Level": "道",
+      "Latitude": null,
+      "Longitude": null,
+      "Present_Location": null
+    },
+    {
+      "Location_ID": "fu_00011",
+      "Location_Name": "興元府",
+      "Parent_ID": "dao_007",
+      "Administrative_Level": "府",
+      "Latitude": 33.07648,
+      "Longitude": 107.03519,
+      "Present_Location": "陕西省汉中市汉台区"
+    },
+    {
+      "Location_ID": "zhou_00123",
+      "Location_Name": "洋州",
+      "Parent_ID": "dao_007",
+      "Administrative_Level": "州",
+      "Latitude": 32.99027,
+      "Longitude": 107.76037,
+      "Present_Location": "陕西省汉中市西乡县"
+    },
+    {
+      "Location_ID": "zhou_00124",
+      "Location_Name": "利州",
+      "Parent_ID": "dao_007",
+      "Administrative_Level": "州",
+      "Latitude": 32.44389,
+      "Longitude": 105.83299,
+      "Present_Location": "四川省广元市利州区"
+    },
+    {
+      "Location_ID": "zhou_00125",
+      "Location_Name": "鳳州",
+      "Parent_ID": "dao_007",
+      "Administrative_Level": "州",
+      "Latitude": 33.94525,
+      "Longitude": 106.62294,
+      "Present_Location": "陕西省宝鸡市凤县"
+    },
+    {
+      "Location_ID": "zhou_00126",
+      "Location_Name": "興州",
+      "Parent_ID": "dao_007",
+      "Administrative_Level": "州",
+      "Latitude": 33.3324,
+      "Longitude": 106.16131,
+      "Present_Location": "陕西省汉中市略阳县"
+    },
+    {
+      "Location_ID": "zhou_00127",
+      "Location_Name": "成州",
+      "Parent_ID": "dao_007",
+      "Administrative_Level": "州",
+      "Latitude": 34.19136,
+      "Longitude": 105.17829,
+      "Present_Location": "甘肃省陇南市礼县"
+    },
+    {
+      "Location_ID": "zhou_00128",
+      "Location_Name": "文州",
+      "Parent_ID": "dao_007",
+      "Administrative_Level": "州",
+      "Latitude": 32.948,
+      "Longitude": 104.67808,
+      "Present_Location": "甘肃省陇南市文县"
+    },
+    {
+      "Location_ID": "zhou_00129",
+      "Location_Name": "扶州",
+      "Parent_ID": "dao_007",
+      "Administrative_Level": "州",
+      "Latitude": 33.25882,
+      "Longitude": 104.22585,
+      "Present_Location": "四川省阿坝藏族羌族自治州九寨沟县"
+    },
+    {
+      "Location_ID": "zhou_00130",
+      "Location_Name": "集州",
+      "Parent_ID": "dao_007",
+      "Administrative_Level": "州",
+      "Latitude": 32.36176,
+      "Longitude": 106.83276,
+      "Present_Location": "四川省巴中市南江县"
+    },
+    {
+      "Location_ID": "zhou_00131",
+      "Location_Name": "壁州",
+      "Parent_ID": "dao_007",
+      "Administrative_Level": "州",
+      "Latitude": 31.92513,
+      "Longitude": 107.24596,
+      "Present_Location": "四川省巴中市通江县"
+    },
+    {
+      "Location_ID": "zhou_00132",
+      "Location_Name": "巴州",
+      "Parent_ID": "dao_007",
+      "Administrative_Level": "州",
+      "Latitude": 30.27226,
+      "Longitude": 109.47861,
+      "Present_Location": "湖北省恩施土家族苗族自治州恩施市"
+    },
+    {
+      "Location_ID": "zhou_00133",
+      "Location_Name": "蓬州",
+      "Parent_ID": "dao_007",
+      "Administrative_Level": "州",
+      "Latitude": 32.10964,
+      "Longitude": 102.57672,
+      "Present_Location": "四川省阿坝藏族羌族自治州红原县"
+    },
+    {
+      "Location_ID": "zhou_00134",
+      "Location_Name": "通州",
+      "Parent_ID": "dao_007",
+      "Administrative_Level": "州",
+      "Latitude": 31.22697,
+      "Longitude": 107.50009,
+      "Present_Location": "四川省达州市通川区"
+    },
+    {
+      "Location_ID": "zhou_00135",
+      "Location_Name": "開州",
+      "Parent_ID": "dao_007",
+      "Administrative_Level": "州",
+      "Latitude": 31.18791,
+      "Longitude": 108.4195,
+      "Present_Location": "重庆市开州区"
+    },
+    {
+      "Location_ID": "zhou_00136",
+      "Location_Name": "閬州",
+      "Parent_ID": "dao_007",
+      "Administrative_Level": "州",
+      "Latitude": 31.58316,
+      "Longitude": 105.96703,
+      "Present_Location": "四川省南充市阆中市"
+    },
+    {
+      "Location_ID": "zhou_00137",
+      "Location_Name": "果州",
+      "Parent_ID": "dao_007",
+      "Administrative_Level": "州",
+      "Latitude": 30.81911,
+      "Longitude": 106.10584,
+      "Present_Location": "四川省南充市顺庆区"
+    },
+    {
+      "Location_ID": "zhou_00138",
+      "Location_Name": "渠州",
+      "Parent_ID": "dao_007",
+      "Administrative_Level": "州",
+      "Latitude": 30.84433,
+      "Longitude": 106.96224,
+      "Present_Location": "四川省达州市渠县"
+    },
+    {
+      "Location_ID": "dao_008",
+      "Location_Name": "隴右道",
+      "Parent_ID": null,
+      "Administrative_Level": "道",
+      "Latitude": null,
+      "Longitude": null,
+      "Present_Location": null
+    },
+    {
+      "Location_ID": "zhou_00139",
+      "Location_Name": "秦州",
+      "Parent_ID": "dao_008",
+      "Administrative_Level": "州",
+      "Latitude": 34.58547,
+      "Longitude": 105.71696,
+      "Present_Location": "甘肃省天水市秦州区"
+    },
+    {
+      "Location_ID": "zhou_00140",
+      "Location_Name": "河州",
+      "Parent_ID": "dao_008",
+      "Administrative_Level": "州",
+      "Latitude": 35.49667,
+      "Longitude": 102.98101,
+      "Present_Location": "甘肃省临夏回族自治州临夏县"
+    },
+    {
+      "Location_ID": "zhou_00141",
+      "Location_Name": "渭州",
+      "Parent_ID": "dao_008",
+      "Administrative_Level": "州",
+      "Latitude": 35.37915,
+      "Longitude": 103.85794,
+      "Present_Location": "甘肃省定西市临洮县"
+    },
+    {
+      "Location_ID": "zhou_00142",
+      "Location_Name": "鄯州",
+      "Parent_ID": "dao_008",
+      "Administrative_Level": "州",
+      "Latitude": 36.60886,
+      "Longitude": 101.78394,
+      "Present_Location": "青海省西宁市城中区"
+    },
+    {
+      "Location_ID": "zhou_00143",
+      "Location_Name": "蘭州",
+      "Parent_ID": "dao_008",
+      "Administrative_Level": "州",
+      "Latitude": 36.04703,
+      "Longitude": 103.84714,
+      "Present_Location": "甘肃省兰州市城关区"
+    },
+    {
+      "Location_ID": "zhou_00144",
+      "Location_Name": "臨州",
+      "Parent_ID": "dao_008",
+      "Administrative_Level": "州",
+      "Latitude": 35.37915,
+      "Longitude": 103.85794,
+      "Present_Location": "甘肃省定西市临洮县"
+    },
+    {
+      "Location_ID": "zhou_00145",
+      "Location_Name": "階州",
+      "Parent_ID": "dao_008",
+      "Administrative_Level": "州",
+      "Latitude": 33.39484,
+      "Longitude": 104.92928,
+      "Present_Location": "甘肃省陇南市武都区"
+    },
+    {
+      "Location_ID": "zhou_00146",
+      "Location_Name": "洮州",
+      "Parent_ID": "dao_008",
+      "Administrative_Level": "州",
+      "Latitude": 34.68872,
+      "Longitude": 103.35958,
+      "Present_Location": "甘肃省甘南藏族自治州临潭县"
+    },
+    {
+      "Location_ID": "zhou_00147",
+      "Location_Name": "岷州",
+      "Parent_ID": "dao_008",
+      "Administrative_Level": "州",
+      "Latitude": 34.43646,
+      "Longitude": 104.03025,
+      "Present_Location": "甘肃省定西市岷县"
+    },
+    {
+      "Location_ID": "zhou_00148",
+      "Location_Name": "廓州",
+      "Parent_ID": "dao_008",
+      "Administrative_Level": "州",
+      "Latitude": 36.0401,
+      "Longitude": 101.97263,
+      "Present_Location": "青海省海东市化隆回族自治县"
+    },
+    {
+      "Location_ID": "zhou_00149",
+      "Location_Name": "疊州",
+      "Parent_ID": "dao_008",
+      "Administrative_Level": "州",
+      "Latitude": 34.06211,
+      "Longitude": 103.21825,
+      "Present_Location": "甘肃省甘南藏族自治州迭部县"
+    },
+    {
+      "Location_ID": "zhou_00150",
+      "Location_Name": "宕州",
+      "Parent_ID": "dao_008",
+      "Administrative_Level": "州",
+      "Latitude": 33.7908,
+      "Longitude": 104.3654,
+      "Present_Location": "甘肃省甘南藏族自治州舟曲县"
+    },
+    {
+      "Location_ID": "zhou_00151",
+      "Location_Name": "涼州",
+      "Parent_ID": "dao_008",
+      "Administrative_Level": "州",
+      "Latitude": 37.92692,
+      "Longitude": 102.6347,
+      "Present_Location": "甘肃省武威市凉州区"
+    },
+    {
+      "Location_ID": "zhou_00152",
+      "Location_Name": "沙州",
+      "Parent_ID": "dao_008",
+      "Administrative_Level": "州",
+      "Latitude": 40.14053,
+      "Longitude": 94.65088,
+      "Present_Location": "甘肃省酒泉市敦煌市"
+    },
+    {
+      "Location_ID": "zhou_00153",
+      "Location_Name": "瓜州",
+      "Parent_ID": "dao_008",
+      "Administrative_Level": "州",
+      "Latitude": 35.57509,
+      "Longitude": 104.62031,
+      "Present_Location": "甘肃省定西市安定区"
+    },
+    {
+      "Location_ID": "zhou_00154",
+      "Location_Name": "甘州",
+      "Parent_ID": "dao_008",
+      "Administrative_Level": "州",
+      "Latitude": 39.13467,
+      "Longitude": 100.21065,
+      "Present_Location": "甘肃省张掖市甘州区"
+    },
+    {
+      "Location_ID": "zhou_00155",
+      "Location_Name": "肅州",
+      "Parent_ID": "dao_008",
+      "Administrative_Level": "州",
+      "Latitude": 39.74494,
+      "Longitude": 98.51125,
+      "Present_Location": "甘肃省酒泉市肃州区"
+    },
+    {
+      "Location_ID": "zhou_00156",
+      "Location_Name": "伊州",
+      "Parent_ID": "dao_008",
+      "Administrative_Level": "州",
+      "Latitude": 42.81906,
+      "Longitude": 93.51872,
+      "Present_Location": "新疆维吾尔自治区哈密市伊州区"
+    },
+    {
+      "Location_ID": "zhou_00157",
+      "Location_Name": "西州",
+      "Parent_ID": "dao_008",
+      "Administrative_Level": "州",
+      "Latitude": 42.9403,
+      "Longitude": 89.18117,
+      "Present_Location": "新疆维吾尔自治区吐鲁番市高昌区"
+    },
+    {
+      "Location_ID": "fu_00012",
+      "Location_Name": "北庭大都護府",
+      "Parent_ID": "dao_008",
+      "Administrative_Level": "府",
+      "Latitude": null,
+      "Longitude": null,
+      "Present_Location": null
+    },
+    {
+      "Location_ID": "fu_00013",
+      "Location_Name": "安西大都護府",
+      "Parent_ID": "dao_008",
+      "Administrative_Level": "府",
+      "Latitude": null,
+      "Longitude": null,
+      "Present_Location": null
+    },
+    {
+      "Location_ID": "dao_009",
+      "Location_Name": "淮南道",
+      "Parent_ID": null,
+      "Administrative_Level": "道",
+      "Latitude": null,
+      "Longitude": null,
+      "Present_Location": null
+    },
+    {
+      "Location_ID": "zhou_00158",
+      "Location_Name": "揚州",
+      "Parent_ID": "dao_009",
+      "Administrative_Level": "州",
+      "Latitude": 32.39127,
+      "Longitude": 119.43719,
+      "Present_Location": "江苏省扬州市广陵区"
+    },
+    {
+      "Location_ID": "zhou_00159",
+      "Location_Name": "楚州",
+      "Parent_ID": "dao_009",
+      "Administrative_Level": "州",
+      "Latitude": 33.50279,
+      "Longitude": 119.14111,
+      "Present_Location": "江苏省淮安市淮安区"
+    },
+    {
+      "Location_ID": "zhou_00160",
+      "Location_Name": "滁州",
+      "Parent_ID": "dao_009",
+      "Administrative_Level": "州",
+      "Latitude": 32.31699,
+      "Longitude": 118.30416,
+      "Present_Location": "安徽省滁州市琅琊区"
+    },
+    {
+      "Location_ID": "zhou_00161",
+      "Location_Name": "和州",
+      "Parent_ID": "dao_009",
+      "Administrative_Level": "州",
+      "Latitude": 31.71422,
+      "Longitude": 118.36112,
+      "Present_Location": "安徽省马鞍山市和县"
+    },
+    {
+      "Location_ID": "zhou_00162",
+      "Location_Name": "壽州",
+      "Parent_ID": "dao_009",
+      "Administrative_Level": "州",
+      "Latitude": 32.57575,
+      "Longitude": 116.77711,
+      "Present_Location": "安徽省淮南市寿县"
+    },
+    {
+      "Location_ID": "zhou_00163",
+      "Location_Name": "廬州",
+      "Parent_ID": "dao_009",
+      "Administrative_Level": "州",
+      "Latitude": 31.86446,
+      "Longitude": 117.27646,
+      "Present_Location": "安徽省合肥市庐阳区"
+    },
+    {
+      "Location_ID": "zhou_00164",
+      "Location_Name": "舒州",
+      "Parent_ID": "dao_009",
+      "Administrative_Level": "州",
+      "Latitude": 30.63035,
+      "Longitude": 116.5672,
+      "Present_Location": "安徽省安庆市潜山市"
+    },
+    {
+      "Location_ID": "zhou_00165",
+      "Location_Name": "光州",
+      "Parent_ID": "dao_009",
+      "Administrative_Level": "州",
+      "Latitude": 32.1303,
+      "Longitude": 115.04458,
+      "Present_Location": "河南省信阳市潢川县"
+    },
+    {
+      "Location_ID": "zhou_00166",
+      "Location_Name": "蘄州",
+      "Parent_ID": "dao_009",
+      "Administrative_Level": "州",
+      "Latitude": 30.13756,
+      "Longitude": 115.32143,
+      "Present_Location": "湖北省黄冈市蕲春县"
+    },
+    {
+      "Location_ID": "zhou_00167",
+      "Location_Name": "安州",
+      "Parent_ID": "dao_009",
+      "Administrative_Level": "州",
+      "Latitude": 31.26371,
+      "Longitude": 113.68892,
+      "Present_Location": "湖北省孝感市安陆市"
+    },
+    {
+      "Location_ID": "zhou_00168",
+      "Location_Name": "黃州",
+      "Parent_ID": "dao_009",
+      "Administrative_Level": "州",
+      "Latitude": 30.57367,
+      "Longitude": 114.30666,
+      "Present_Location": "湖北省武汉市武昌区"
+    },
+    {
+      "Location_ID": "zhou_00169",
+      "Location_Name": "申州",
+      "Parent_ID": "dao_009",
+      "Administrative_Level": "州",
+      "Latitude": 32.13112,
+      "Longitude": 114.06924,
+      "Present_Location": "河南省信阳市浉河区"
+    },
+    {
+      "Location_ID": "dao_010",
+      "Location_Name": "江南東道",
+      "Parent_ID": null,
+      "Administrative_Level": "道",
+      "Latitude": null,
+      "Longitude": null,
+      "Present_Location": null
+    },
+    {
+      "Location_ID": "zhou_00170",
+      "Location_Name": "潤州",
+      "Parent_ID": "dao_010",
+      "Administrative_Level": "州",
+      "Latitude": 32.20649,
+      "Longitude": 119.44429,
+      "Present_Location": "江苏省镇江市润州区"
+    },
+    {
+      "Location_ID": "zhou_00171",
+      "Location_Name": "昇州",
+      "Parent_ID": "dao_010",
+      "Administrative_Level": "州",
+      "Latitude": 32.05256,
+      "Longitude": 118.76899,
+      "Present_Location": "江苏省南京市鼓楼区"
+    },
+    {
+      "Location_ID": "zhou_00172",
+      "Location_Name": "常州",
+      "Parent_ID": "dao_010",
+      "Administrative_Level": "州",
+      "Latitude": 31.78278,
+      "Longitude": 119.9523,
+      "Present_Location": "江苏省常州市钟楼区"
+    },
+    {
+      "Location_ID": "zhou_00173",
+      "Location_Name": "蘇州",
+      "Parent_ID": "dao_010",
+      "Administrative_Level": "州",
+      "Latitude": 31.31271,
+      "Longitude": 120.61862,
+      "Present_Location": "江苏省苏州市姑苏区"
+    },
+    {
+      "Location_ID": "zhou_00174",
+      "Location_Name": "湖州",
+      "Parent_ID": "dao_010",
+      "Administrative_Level": "州",
+      "Latitude": 30.86496,
+      "Longitude": 120.09931,
+      "Present_Location": "浙江省湖州市吴兴区"
+    },
+    {
+      "Location_ID": "zhou_00175",
+      "Location_Name": "杭州",
+      "Parent_ID": "dao_010",
+      "Administrative_Level": "州",
+      "Latitude": 30.29412,
+      "Longitude": 120.16862,
+      "Present_Location": "浙江省杭州市拱墅区"
+    },
+    {
+      "Location_ID": "zhou_00176",
+      "Location_Name": "穆州",
+      "Parent_ID": "dao_010",
+      "Administrative_Level": "州",
+      "Latitude": 29.54448,
+      "Longitude": 119.49886,
+      "Present_Location": "浙江省杭州市建德市"
+    },
+    {
+      "Location_ID": "zhou_00177",
+      "Location_Name": "越州",
+      "Parent_ID": "dao_010",
+      "Administrative_Level": "州",
+      "Latitude": 30.00451,
+      "Longitude": 120.57826,
+      "Present_Location": "浙江省绍兴市越城区"
+    },
+    {
+      "Location_ID": "zhou_00178",
+      "Location_Name": "明州",
+      "Parent_ID": "dao_010",
+      "Administrative_Level": "州",
+      "Latitude": 29.77501,
+      "Longitude": 121.35023,
+      "Present_Location": "浙江省宁波市海曙区"
+    },
+    {
+      "Location_ID": "zhou_00179",
+      "Location_Name": "衢州",
+      "Parent_ID": "dao_010",
+      "Administrative_Level": "州",
+      "Latitude": 28.95682,
+      "Longitude": 118.86765,
+      "Present_Location": "浙江省衢州市柯城区"
+    },
+    {
+      "Location_ID": "zhou_00180",
+      "Location_Name": "處州",
+      "Parent_ID": "dao_010",
+      "Administrative_Level": "州",
+      "Latitude": 28.44851,
+      "Longitude": 119.9357,
+      "Present_Location": "浙江省丽水市莲都区"
+    },
+    {
+      "Location_ID": "zhou_00181",
+      "Location_Name": "婺州",
+      "Parent_ID": "dao_010",
+      "Administrative_Level": "州",
+      "Latitude": 29.10471,
+      "Longitude": 119.64992,
+      "Present_Location": "浙江省金华市婺城区"
+    },
+    {
+      "Location_ID": "zhou_00182",
+      "Location_Name": "溫州",
+      "Parent_ID": "dao_010",
+      "Administrative_Level": "州",
+      "Latitude": 28.01829,
+      "Longitude": 120.65322,
+      "Present_Location": "浙江省温州市鹿城区"
+    },
+    {
+      "Location_ID": "zhou_00183",
+      "Location_Name": "台州",
+      "Parent_ID": "dao_010",
+      "Administrative_Level": "州",
+      "Latitude": 28.84313,
+      "Longitude": 121.1206,
+      "Present_Location": "浙江省台州市临海市"
+    },
+    {
+      "Location_ID": "zhou_00184",
+      "Location_Name": "福州",
+      "Parent_ID": "dao_010",
+      "Administrative_Level": "州",
+      "Latitude": 26.07395,
+      "Longitude": 119.32158,
+      "Present_Location": "福建省福州市鼓楼区"
+    },
+    {
+      "Location_ID": "zhou_00185",
+      "Location_Name": "建州",
+      "Parent_ID": "dao_010",
+      "Administrative_Level": "州",
+      "Latitude": 27.03886,
+      "Longitude": 118.32378,
+      "Present_Location": "福建省南平市建瓯市"
+    },
+    {
+      "Location_ID": "zhou_00186",
+      "Location_Name": "泉州",
+      "Parent_ID": "dao_010",
+      "Administrative_Level": "州",
+      "Latitude": 24.90964,
+      "Longitude": 118.5899,
+      "Present_Location": "福建省泉州市鲤城区"
+    },
+    {
+      "Location_ID": "zhou_00187",
+      "Location_Name": "汀州",
+      "Parent_ID": "dao_010",
+      "Administrative_Level": "州",
+      "Latitude": 26.00942,
+      "Longitude": 116.94433,
+      "Present_Location": "福建省三明市清流县"
+    },
+    {
+      "Location_ID": "zhou_00188",
+      "Location_Name": "漳州",
+      "Parent_ID": "dao_010",
+      "Administrative_Level": "州",
+      "Latitude": 24.1171,
+      "Longitude": 117.61073,
+      "Present_Location": "福建省漳州市漳浦县"
+    },
+    {
+      "Location_ID": "dao_011",
+      "Location_Name": "江南西道",
+      "Parent_ID": null,
+      "Administrative_Level": "道",
+      "Latitude": null,
+      "Longitude": null,
+      "Present_Location": null
+    },
+    {
+      "Location_ID": "zhou_00189",
+      "Location_Name": "宣州",
+      "Parent_ID": "dao_011",
+      "Administrative_Level": "州",
+      "Latitude": 30.94694,
+      "Longitude": 118.7425,
+      "Present_Location": "安徽省宣城市宣州区"
+    },
+    {
+      "Location_ID": "zhou_00190",
+      "Location_Name": "歙州",
+      "Parent_ID": "dao_011",
+      "Administrative_Level": "州",
+      "Latitude": 29.86577,
+      "Longitude": 118.43394,
+      "Present_Location": "安徽省黄山市歙县"
+    },
+    {
+      "Location_ID": "zhou_00191",
+      "Location_Name": "池州",
+      "Parent_ID": "dao_011",
+      "Administrative_Level": "州",
+      "Latitude": 30.65466,
+      "Longitude": 117.48183,
+      "Present_Location": "安徽省池州市贵池区"
+    },
+    {
+      "Location_ID": "zhou_00192",
+      "Location_Name": "洪州",
+      "Parent_ID": "dao_011",
+      "Administrative_Level": "州",
+      "Latitude": 28.6749,
+      "Longitude": 115.89772,
+      "Present_Location": "江西省南昌市西湖区"
+    },
+    {
+      "Location_ID": "zhou_00193",
+      "Location_Name": "江州",
+      "Parent_ID": "dao_011",
+      "Administrative_Level": "州",
+      "Latitude": 29.72236,
+      "Longitude": 115.98568,
+      "Present_Location": "江西省九江市浔阳区"
+    },
+    {
+      "Location_ID": "zhou_00194",
+      "Location_Name": "鄂州",
+      "Parent_ID": "dao_011",
+      "Administrative_Level": "州",
+      "Latitude": 30.57367,
+      "Longitude": 114.30666,
+      "Present_Location": "湖北省武汉市武昌区"
+    },
+    {
+      "Location_ID": "zhou_00195",
+      "Location_Name": "岳州",
+      "Parent_ID": "dao_011",
+      "Administrative_Level": "州",
+      "Latitude": 29.37126,
+      "Longitude": 113.09766,
+      "Present_Location": "湖南省岳阳市岳阳楼区"
+    },
+    {
+      "Location_ID": "zhou_00196",
+      "Location_Name": "饒州",
+      "Parent_ID": "dao_011",
+      "Administrative_Level": "州",
+      "Latitude": 28.99417,
+      "Longitude": 116.66383,
+      "Present_Location": "江西省上饶市鄱阳县"
+    },
+    {
+      "Location_ID": "zhou_00197",
+      "Location_Name": "虔州",
+      "Parent_ID": "dao_011",
+      "Administrative_Level": "州",
+      "Latitude": 25.847,
+      "Longitude": 114.93248,
+      "Present_Location": "江西省赣州市章贡区"
+    },
+    {
+      "Location_ID": "zhou_00198",
+      "Location_Name": "吉州",
+      "Parent_ID": "dao_011",
+      "Administrative_Level": "州",
+      "Latitude": 27.10324,
+      "Longitude": 114.97128,
+      "Present_Location": "江西省吉安市吉州区"
+    },
+    {
+      "Location_ID": "zhou_00199",
+      "Location_Name": "袁州",
+      "Parent_ID": "dao_011",
+      "Administrative_Level": "州",
+      "Latitude": 27.7919,
+      "Longitude": 114.39896,
+      "Present_Location": "江西省宜春市袁州区"
+    },
+    {
+      "Location_ID": "zhou_00200",
+      "Location_Name": "信州",
+      "Parent_ID": "dao_011",
+      "Administrative_Level": "州",
+      "Latitude": 32.91389,
+      "Longitude": 115.80424,
+      "Present_Location": "安徽省阜阳市颍州区"
+    },
+    {
+      "Location_ID": "zhou_00201",
+      "Location_Name": "撫州",
+      "Parent_ID": "dao_011",
+      "Administrative_Level": "州",
+      "Latitude": 27.98513,
+      "Longitude": 116.33858,
+      "Present_Location": "江西省抚州市临川区"
+    },
+    {
+      "Location_ID": "zhou_00202",
+      "Location_Name": "潭州",
+      "Parent_ID": "dao_011",
+      "Administrative_Level": "州",
+      "Latitude": 28.1982,
+      "Longitude": 112.97813,
+      "Present_Location": "湖南省长沙市芙蓉区"
+    },
+    {
+      "Location_ID": "zhou_00203",
+      "Location_Name": "衡州",
+      "Parent_ID": "dao_011",
+      "Administrative_Level": "州",
+      "Latitude": 26.90162,
+      "Longitude": 112.59704,
+      "Present_Location": "湖南省衡阳市蒸湘区"
+    },
+    {
+      "Location_ID": "zhou_00204",
+      "Location_Name": "永州",
+      "Parent_ID": "dao_011",
+      "Administrative_Level": "州",
+      "Latitude": 26.21034,
+      "Longitude": 111.61256,
+      "Present_Location": "湖南省永州市零陵区"
+    },
+    {
+      "Location_ID": "zhou_00205",
+      "Location_Name": "道州",
+      "Parent_ID": "dao_011",
+      "Administrative_Level": "州",
+      "Latitude": 25.53136,
+      "Longitude": 111.59088,
+      "Present_Location": "湖南省永州市道县"
+    },
+    {
+      "Location_ID": "zhou_00206",
+      "Location_Name": "郴州",
+      "Parent_ID": "dao_011",
+      "Administrative_Level": "州",
+      "Latitude": 25.80272,
+      "Longitude": 113.02514,
+      "Present_Location": "湖南省郴州市北湖区"
+    },
+    {
+      "Location_ID": "zhou_00207",
+      "Location_Name": "邵州",
+      "Parent_ID": "dao_011",
+      "Administrative_Level": "州",
+      "Latitude": 27.24932,
+      "Longitude": 111.47494,
+      "Present_Location": "湖南省邵阳市双清区"
+    },
+    {
+      "Location_ID": "zhou_00208",
+      "Location_Name": "黔州",
+      "Parent_ID": "dao_011",
+      "Administrative_Level": "州",
+      "Latitude": 29.29206,
+      "Longitude": 108.17096,
+      "Present_Location": "重庆市彭水苗族土家族自治县"
+    },
+    {
+      "Location_ID": "zhou_00209",
+      "Location_Name": "辰州",
+      "Parent_ID": "dao_011",
+      "Administrative_Level": "州",
+      "Latitude": 28.45819,
+      "Longitude": 110.39697,
+      "Present_Location": "湖南省怀化市沅陵县"
+    },
+    {
+      "Location_ID": "zhou_00210",
+      "Location_Name": "錦州",
+      "Parent_ID": "dao_011",
+      "Administrative_Level": "州",
+      "Latitude": 27.71419,
+      "Longitude": 109.57986,
+      "Present_Location": "湖南省怀化市麻阳苗族自治县"
+    },
+    {
+      "Location_ID": "zhou_00211",
+      "Location_Name": "施州",
+      "Parent_ID": "dao_011",
+      "Administrative_Level": "州",
+      "Latitude": 30.27226,
+      "Longitude": 109.47861,
+      "Present_Location": "湖北省恩施土家族苗族自治州恩施市"
+    },
+    {
+      "Location_ID": "zhou_00212",
+      "Location_Name": "敍州",
+      "Parent_ID": "dao_011",
+      "Administrative_Level": "州",
+      "Latitude": 27.19513,
+      "Longitude": 109.81185,
+      "Present_Location": "湖南省怀化市洪江市"
+    },
+    {
+      "Location_ID": "zhou_00213",
+      "Location_Name": "奬州",
+      "Parent_ID": "dao_011",
+      "Administrative_Level": "州",
+      "Latitude": 27.39619,
+      "Longitude": 109.31825,
+      "Present_Location": "湖南省怀化市新晃侗族自治县"
+    },
+    {
+      "Location_ID": "zhou_00214",
+      "Location_Name": "夷州",
+      "Parent_ID": "dao_011",
+      "Administrative_Level": "州",
+      "Latitude": 27.97121,
+      "Longitude": 107.72446,
+      "Present_Location": "贵州省遵义市凤冈县"
+    },
+    {
+      "Location_ID": "zhou_00215",
+      "Location_Name": "播州",
+      "Parent_ID": "dao_011",
+      "Administrative_Level": "州",
+      "Latitude": 27.69562,
+      "Longitude": 106.9316,
+      "Present_Location": "贵州省遵义市红花岗区"
+    },
+    {
+      "Location_ID": "zhou_00216",
+      "Location_Name": "思州",
+      "Parent_ID": "dao_011",
+      "Administrative_Level": "州",
+      "Latitude": 28.56075,
+      "Longitude": 108.49393,
+      "Present_Location": "贵州省铜仁市沿河土家族自治县"
+    },
+    {
+      "Location_ID": "zhou_00217",
+      "Location_Name": "費州",
+      "Parent_ID": "dao_011",
+      "Administrative_Level": "州",
+      "Latitude": 27.94015,
+      "Longitude": 108.24183,
+      "Present_Location": "贵州省铜仁市思南县"
+    },
+    {
+      "Location_ID": "zhou_00218",
+      "Location_Name": "南州",
+      "Parent_ID": "dao_011",
+      "Administrative_Level": "州",
+      "Latitude": 29.03938,
+      "Longitude": 106.64256,
+      "Present_Location": "重庆市綦江区"
+    },
+    {
+      "Location_ID": "zhou_00219",
+      "Location_Name": "溪州",
+      "Parent_ID": "dao_011",
+      "Administrative_Level": "州",
+      "Latitude": 28.98516,
+      "Longitude": 109.96597,
+      "Present_Location": "湖南省湘西土家族苗族自治州永顺县"
+    },
+    {
+      "Location_ID": "zhou_00220",
+      "Location_Name": "溱州",
+      "Parent_ID": "dao_011",
+      "Administrative_Level": "州",
+      "Latitude": 28.85931,
+      "Longitude": 106.84008,
+      "Present_Location": "重庆市綦江区"
+    },
+    {
+      "Location_ID": "dao_012",
+      "Location_Name": "劍南道",
+      "Parent_ID": null,
+      "Administrative_Level": "道",
+      "Latitude": null,
+      "Longitude": null,
+      "Present_Location": null
+    },
+    {
+      "Location_ID": "fu_00014",
+      "Location_Name": "成都府",
+      "Parent_ID": "dao_012",
+      "Administrative_Level": "府",
+      "Latitude": 30.65039,
+      "Longitude": 104.078,
+      "Present_Location": "四川省成都市锦江区"
+    },
+    {
+      "Location_ID": "zhou_00221",
+      "Location_Name": "彭州",
+      "Parent_ID": "dao_012",
+      "Administrative_Level": "州",
+      "Latitude": 30.99188,
+      "Longitude": 103.94507,
+      "Present_Location": "四川省成都市彭州市"
+    },
+    {
+      "Location_ID": "zhou_00222",
+      "Location_Name": "蜀州",
+      "Parent_ID": "dao_012",
+      "Administrative_Level": "州",
+      "Latitude": 30.63656,
+      "Longitude": 103.67261,
+      "Present_Location": "四川省成都市崇州市"
+    },
+    {
+      "Location_ID": "zhou_00223",
+      "Location_Name": "漢州",
+      "Parent_ID": "dao_012",
+      "Administrative_Level": "州",
+      "Latitude": 30.50392,
+      "Longitude": 105.57021,
+      "Present_Location": "四川省遂宁市船山区"
+    },
+    {
+      "Location_ID": "zhou_00224",
+      "Location_Name": "嘉州",
+      "Parent_ID": "dao_012",
+      "Administrative_Level": "州",
+      "Latitude": 29.57069,
+      "Longitude": 103.75156,
+      "Present_Location": "四川省乐山市市中区"
+    },
+    {
+      "Location_ID": "zhou_00225",
+      "Location_Name": "眉州",
+      "Parent_ID": "dao_012",
+      "Administrative_Level": "州",
+      "Latitude": 30.0505,
+      "Longitude": 103.83146,
+      "Present_Location": "四川省眉山市东坡区"
+    },
+    {
+      "Location_ID": "zhou_00226",
+      "Location_Name": "邛州",
+      "Parent_ID": "dao_012",
+      "Administrative_Level": "州",
+      "Latitude": 30.41659,
+      "Longitude": 103.45682,
+      "Present_Location": "四川省成都市邛崃市"
+    },
+    {
+      "Location_ID": "zhou_00227",
+      "Location_Name": "簡州",
+      "Parent_ID": "dao_012",
+      "Administrative_Level": "州",
+      "Latitude": 30.39027,
+      "Longitude": 104.55041,
+      "Present_Location": "四川省成都市简阳市"
+    },
+    {
+      "Location_ID": "zhou_00228",
+      "Location_Name": "資州",
+      "Parent_ID": "dao_012",
+      "Administrative_Level": "州",
+      "Latitude": 29.78475,
+      "Longitude": 104.84836,
+      "Present_Location": "四川省内江市资中县"
+    },
+    {
+      "Location_ID": "zhou_00229",
+      "Location_Name": "巂州",
+      "Parent_ID": "dao_012",
+      "Administrative_Level": "州",
+      "Latitude": 27.89982,
+      "Longitude": 102.26695,
+      "Present_Location": "四川省凉山彝族自治州西昌市"
+    },
+    {
+      "Location_ID": "zhou_00230",
+      "Location_Name": "雅州",
+      "Parent_ID": "dao_012",
+      "Administrative_Level": "州",
+      "Latitude": 29.98556,
+      "Longitude": 102.98437,
+      "Present_Location": "四川省雅安市雨城区"
+    },
+    {
+      "Location_ID": "zhou_00231",
+      "Location_Name": "黎州",
+      "Parent_ID": "dao_012",
+      "Administrative_Level": "州",
+      "Latitude": 24.27566,
+      "Longitude": 102.77002,
+      "Present_Location": "云南省玉溪市江川区"
+    },
+    {
+      "Location_ID": "zhou_00232",
+      "Location_Name": "茂州",
+      "Parent_ID": "dao_012",
+      "Administrative_Level": "州",
+      "Latitude": 31.68893,
+      "Longitude": 103.85304,
+      "Present_Location": "四川省阿坝藏族羌族自治州茂县"
+    },
+    {
+      "Location_ID": "zhou_00233",
+      "Location_Name": "翼州",
+      "Parent_ID": "dao_012",
+      "Administrative_Level": "州",
+      "Latitude": 31.8334,
+      "Longitude": 103.72406,
+      "Present_Location": "四川省阿坝藏族羌族自治州茂县"
+    },
+    {
+      "Location_ID": "zhou_00234",
+      "Location_Name": "維州",
+      "Parent_ID": "dao_012",
+      "Administrative_Level": "州",
+      "Latitude": 31.54915,
+      "Longitude": 103.31068,
+      "Present_Location": "四川省阿坝藏族羌族自治州理县"
+    },
+    {
+      "Location_ID": "zhou_00235",
+      "Location_Name": "戎州",
+      "Parent_ID": "dao_012",
+      "Administrative_Level": "州",
+      "Latitude": 28.77483,
+      "Longitude": 104.61636,
+      "Present_Location": "四川省宜宾市翠屏区"
+    },
+    {
+      "Location_ID": "zhou_00236",
+      "Location_Name": "姚州",
+      "Parent_ID": "dao_012",
+      "Administrative_Level": "州",
+      "Latitude": 25.51821,
+      "Longitude": 101.29034,
+      "Present_Location": "云南省楚雄彝族自治州姚安县"
+    },
+    {
+      "Location_ID": "zhou_00237",
+      "Location_Name": "松州",
+      "Parent_ID": "dao_012",
+      "Administrative_Level": "州",
+      "Latitude": 32.64832,
+      "Longitude": 103.5927,
+      "Present_Location": "四川省阿坝藏族羌族自治州松潘县"
+    },
+    {
+      "Location_ID": "zhou_00238",
+      "Location_Name": "當州",
+      "Parent_ID": "dao_012",
+      "Administrative_Level": "州",
+      "Latitude": 32.23206,
+      "Longitude": 103.14473,
+      "Present_Location": "四川省阿坝藏族羌族自治州黑水县"
+    },
+    {
+      "Location_ID": "zhou_00239",
+      "Location_Name": "悉州",
+      "Parent_ID": "dao_012",
+      "Administrative_Level": "州",
+      "Latitude": 32.06562,
+      "Longitude": 102.98004,
+      "Present_Location": "四川省阿坝藏族羌族自治州黑水县"
+    },
+    {
+      "Location_ID": "zhou_00240",
+      "Location_Name": "靜州",
+      "Parent_ID": "dao_012",
+      "Administrative_Level": "州",
+      "Latitude": 32.03233,
+      "Longitude": 103.6908,
+      "Present_Location": "四川省阿坝藏族羌族自治州茂县"
+    },
+    {
+      "Location_ID": "zhou_00241",
+      "Location_Name": "柘州",
+      "Parent_ID": "dao_012",
+      "Administrative_Level": "州",
+      "Latitude": 32.10964,
+      "Longitude": 102.57672,
+      "Present_Location": "四川省阿坝藏族羌族自治州红原县"
+    },
+    {
+      "Location_ID": "zhou_00242",
+      "Location_Name": "恭州",
+      "Parent_ID": "dao_012",
+      "Administrative_Level": "州",
+      "Latitude": 31.90115,
+      "Longitude": 102.44739,
+      "Present_Location": "四川省阿坝藏族羌族自治州马尔康市"
+    },
+    {
+      "Location_ID": "zhou_00243",
+      "Location_Name": "保州",
+      "Parent_ID": "dao_012",
+      "Administrative_Level": "州",
+      "Latitude": null,
+      "Longitude": null,
+      "Present_Location": null
+    },
+    {
+      "Location_ID": "zhou_00244",
+      "Location_Name": "真州",
+      "Parent_ID": "dao_012",
+      "Administrative_Level": "州",
+      "Latitude": 31.82769,
+      "Longitude": 103.66592,
+      "Present_Location": "四川省阿坝藏族羌族自治州茂县"
+    },
+    {
+      "Location_ID": "zhou_00245",
+      "Location_Name": "霸州",
+      "Parent_ID": "dao_012",
+      "Administrative_Level": "州",
+      "Latitude": 39.10154,
+      "Longitude": 116.39525,
+      "Present_Location": "河北省廊坊市霸州市"
+    },
+    {
+      "Location_ID": "zhou_00246",
+      "Location_Name": "乾州",
+      "Parent_ID": "dao_012",
+      "Administrative_Level": "州",
+      "Latitude": 34.5303,
+      "Longitude": 108.2356,
+      "Present_Location": "陕西省咸阳市乾县"
+    },
+    {
+      "Location_ID": "zhou_00247",
+      "Location_Name": "梓州",
+      "Parent_ID": "dao_012",
+      "Administrative_Level": "州",
+      "Latitude": 31.09462,
+      "Longitude": 105.08757,
+      "Present_Location": "四川省绵阳市三台县"
+    },
+    {
+      "Location_ID": "zhou_00248",
+      "Location_Name": "遂州",
+      "Parent_ID": "dao_012",
+      "Administrative_Level": "州",
+      "Latitude": 30.50392,
+      "Longitude": 105.57021,
+      "Present_Location": "四川省遂宁市船山区"
+    },
+    {
+      "Location_ID": "zhou_00249",
+      "Location_Name": "綿州",
+      "Parent_ID": "dao_012",
+      "Administrative_Level": "州",
+      "Latitude": 31.46428,
+      "Longitude": 104.7676,
+      "Present_Location": "四川省绵阳市游仙区"
+    },
+    {
+      "Location_ID": "zhou_00250",
+      "Location_Name": "劍州",
+      "Parent_ID": "dao_012",
+      "Administrative_Level": "州",
+      "Latitude": 32.0334,
+      "Longitude": 105.46332,
+      "Present_Location": "四川省广元市剑阁县"
+    },
+    {
+      "Location_ID": "zhou_00251",
+      "Location_Name": "合州",
+      "Parent_ID": "dao_012",
+      "Administrative_Level": "州",
+      "Latitude": 30.00394,
+      "Longitude": 106.25956,
+      "Present_Location": "重庆市合川区"
+    },
+    {
+      "Location_ID": "zhou_00252",
+      "Location_Name": "龍州",
+      "Parent_ID": "dao_012",
+      "Administrative_Level": "州",
+      "Latitude": 22.52632,
+      "Longitude": 106.77722,
+      "Present_Location": "广西壮族自治区崇左市龙州县"
+    },
+    {
+      "Location_ID": "zhou_00253",
+      "Location_Name": "普州",
+      "Parent_ID": "dao_012",
+      "Administrative_Level": "州",
+      "Latitude": 30.1127,
+      "Longitude": 105.32452,
+      "Present_Location": "四川省资阳市安岳县"
+    },
+    {
+      "Location_ID": "zhou_00254",
+      "Location_Name": "渝州",
+      "Parent_ID": "dao_012",
+      "Administrative_Level": "州",
+      "Latitude": 29.5904,
+      "Longitude": 106.44495,
+      "Present_Location": "重庆市沙坪坝区"
+    },
+    {
+      "Location_ID": "zhou_00255",
+      "Location_Name": "陵州",
+      "Parent_ID": "dao_012",
+      "Administrative_Level": "州",
+      "Latitude": 30.00445,
+      "Longitude": 104.14377,
+      "Present_Location": "四川省眉山市仁寿县"
+    },
+    {
+      "Location_ID": "zhou_00256",
+      "Location_Name": "榮州",
+      "Parent_ID": "dao_012",
+      "Administrative_Level": "州",
+      "Latitude": 29.4639,
+      "Longitude": 104.42037,
+      "Present_Location": "四川省自贡市荣县"
+    },
+    {
+      "Location_ID": "zhou_00257",
+      "Location_Name": "昌州",
+      "Parent_ID": "dao_012",
+      "Administrative_Level": "州",
+      "Latitude": 36.41576,
+      "Longitude": 111.0968,
+      "Present_Location": "山西省临汾市蒲县"
+    },
+    {
+      "Location_ID": "zhou_00258",
+      "Location_Name": "瀘州",
+      "Parent_ID": "dao_012",
+      "Administrative_Level": "州",
+      "Latitude": 28.88436,
+      "Longitude": 105.437,
+      "Present_Location": "四川省泸州市江阳区"
+    },
+    {
+      "Location_ID": "fu_00015",
+      "Location_Name": "保寧都護府",
+      "Parent_ID": "dao_012",
+      "Administrative_Level": "府",
+      "Latitude": 31.9056,
+      "Longitude": 102.51024,
+      "Present_Location": "四川省阿坝藏族羌族自治州马尔康市"
+    },
+    {
+      "Location_ID": "dao_013",
+      "Location_Name": "嶺南道",
+      "Parent_ID": null,
+      "Administrative_Level": "道",
+      "Latitude": null,
+      "Longitude": null,
+      "Present_Location": null
+    },
+    {
+      "Location_ID": "zhou_00259",
+      "Location_Name": "廣州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 23.13462,
+      "Longitude": 113.25607,
+      "Present_Location": "广东省广州市越秀区"
+    },
+    {
+      "Location_ID": "zhou_00260",
+      "Location_Name": "韶州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 24.81021,
+      "Longitude": 113.60342,
+      "Present_Location": "广东省韶关市浈江区"
+    },
+    {
+      "Location_ID": "zhou_00261",
+      "Location_Name": "循州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 23.08979,
+      "Longitude": 114.41498,
+      "Present_Location": "广东省惠州市惠城区"
+    },
+    {
+      "Location_ID": "zhou_00262",
+      "Location_Name": "潮州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 23.66771,
+      "Longitude": 116.63666,
+      "Present_Location": "广东省潮州市湘桥区"
+    },
+    {
+      "Location_ID": "zhou_00263",
+      "Location_Name": "康州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 23.14679,
+      "Longitude": 111.77102,
+      "Present_Location": "广东省肇庆市德庆县"
+    },
+    {
+      "Location_ID": "zhou_00264",
+      "Location_Name": "瀧州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 22.54706,
+      "Longitude": 111.43831,
+      "Present_Location": "广东省云浮市罗定市"
+    },
+    {
+      "Location_ID": "zhou_00265",
+      "Location_Name": "端州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 23.05692,
+      "Longitude": 112.45316,
+      "Present_Location": "广东省肇庆市端州区"
+    },
+    {
+      "Location_ID": "zhou_00266",
+      "Location_Name": "新州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 22.70292,
+      "Longitude": 112.22508,
+      "Present_Location": "广东省云浮市新兴县"
+    },
+    {
+      "Location_ID": "zhou_00267",
+      "Location_Name": "封州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 23.40005,
+      "Longitude": 111.50941,
+      "Present_Location": "广东省肇庆市封开县"
+    },
+    {
+      "Location_ID": "zhou_00268",
+      "Location_Name": "潘州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 21.91921,
+      "Longitude": 110.85381,
+      "Present_Location": "广东省茂名市高州市"
+    },
+    {
+      "Location_ID": "zhou_00269",
+      "Location_Name": "春州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 22.17591,
+      "Longitude": 111.79068,
+      "Present_Location": "广东省阳江市阳春市"
+    },
+    {
+      "Location_ID": "zhou_00270",
+      "Location_Name": "勤州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 22.66627,
+      "Longitude": 111.90462,
+      "Present_Location": "广东省云浮市云安区"
+    },
+    {
+      "Location_ID": "zhou_00271",
+      "Location_Name": "羅州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 21.74403,
+      "Longitude": 110.32371,
+      "Present_Location": "广东省湛江市廉江市"
+    },
+    {
+      "Location_ID": "zhou_00272",
+      "Location_Name": "辯州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 21.65403,
+      "Longitude": 110.62531,
+      "Present_Location": "广东省茂名市化州市"
+    },
+    {
+      "Location_ID": "zhou_00273",
+      "Location_Name": "高州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 22.15176,
+      "Longitude": 111.01796,
+      "Present_Location": "广东省茂名市高州市"
+    },
+    {
+      "Location_ID": "zhou_00274",
+      "Location_Name": "恩州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 22.23814,
+      "Longitude": 112.35195,
+      "Present_Location": "广东省江门市恩平市"
+    },
+    {
+      "Location_ID": "zhou_00275",
+      "Location_Name": "雷州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 20.90196,
+      "Longitude": 110.08791,
+      "Present_Location": "广东省湛江市雷州市"
+    },
+    {
+      "Location_ID": "zhou_00276",
+      "Location_Name": "崖州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 19.87723,
+      "Longitude": 110.42311,
+      "Present_Location": "海南省海口市琼山区"
+    },
+    {
+      "Location_ID": "zhou_00277",
+      "Location_Name": "瓊州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 19.76259,
+      "Longitude": 110.40539,
+      "Present_Location": "海南省海口市琼山区"
+    },
+    {
+      "Location_ID": "zhou_00278",
+      "Location_Name": "振州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 18.37546,
+      "Longitude": 109.16698,
+      "Present_Location": "海南省三亚市崖州区"
+    },
+    {
+      "Location_ID": "zhou_00279",
+      "Location_Name": "儋州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 19.7487,
+      "Longitude": 109.34164,
+      "Present_Location": "海南省儋州市"
+    },
+    {
+      "Location_ID": "zhou_00280",
+      "Location_Name": "萬安州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 18.48567,
+      "Longitude": 110.06864,
+      "Present_Location": "海南省陵水黎族自治县"
+    },
+    {
+      "Location_ID": "zhou_00281",
+      "Location_Name": "邕州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 22.79288,
+      "Longitude": 108.31185,
+      "Present_Location": "广西壮族自治区南宁市江南区"
+    },
+    {
+      "Location_ID": "zhou_00282",
+      "Location_Name": "澄州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 23.44216,
+      "Longitude": 108.59114,
+      "Present_Location": "广西壮族自治区南宁市上林县"
+    },
+    {
+      "Location_ID": "zhou_00283",
+      "Location_Name": "賓州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 22.98498,
+      "Longitude": 108.99705,
+      "Present_Location": "广西壮族自治区南宁市宾阳县"
+    },
+    {
+      "Location_ID": "zhou_00284",
+      "Location_Name": "橫州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 22.6792,
+      "Longitude": 109.2594,
+      "Present_Location": "广西壮族自治区南宁市横州市"
+    },
+    {
+      "Location_ID": "zhou_00285",
+      "Location_Name": "潯州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 23.37969,
+      "Longitude": 110.02782,
+      "Present_Location": "广西壮族自治区贵港市桂平市"
+    },
+    {
+      "Location_ID": "zhou_00286",
+      "Location_Name": "巒州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 22.82211,
+      "Longitude": 108.91095,
+      "Present_Location": "广西壮族自治区南宁市横州市"
+    },
+    {
+      "Location_ID": "zhou_00287",
+      "Location_Name": "欽州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 22.07272,
+      "Longitude": 108.71877,
+      "Present_Location": "广西壮族自治区钦州市钦南区"
+    },
+    {
+      "Location_ID": "zhou_00288",
+      "Location_Name": "貴州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 23.09909,
+      "Longitude": 109.60844,
+      "Present_Location": "广西壮族自治区贵港市港北区"
+    },
+    {
+      "Location_ID": "zhou_00289",
+      "Location_Name": "龔州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 23.54998,
+      "Longitude": 110.39474,
+      "Present_Location": "广西壮族自治区贵港市平南县"
+    },
+    {
+      "Location_ID": "zhou_00290",
+      "Location_Name": "象州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 24.07734,
+      "Longitude": 109.8803,
+      "Present_Location": "广西壮族自治区来宾市象州县"
+    },
+    {
+      "Location_ID": "zhou_00291",
+      "Location_Name": "藤州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 23.37851,
+      "Longitude": 110.91352,
+      "Present_Location": "广西壮族自治区梧州市藤县"
+    },
+    {
+      "Location_ID": "zhou_00292",
+      "Location_Name": "巖州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": null,
+      "Longitude": null,
+      "Present_Location": null
+    },
+    {
+      "Location_ID": "zhou_00293",
+      "Location_Name": "宜州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 24.49073,
+      "Longitude": 108.65588,
+      "Present_Location": "广西壮族自治区河池市宜州区"
+    },
+    {
+      "Location_ID": "zhou_00294",
+      "Location_Name": "瀼州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 22.01563,
+      "Longitude": 107.71925,
+      "Present_Location": "广西壮族自治区防城港市上思县"
+    },
+    {
+      "Location_ID": "zhou_00295",
+      "Location_Name": "籠州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 22.64334,
+      "Longitude": 107.90538,
+      "Present_Location": "广西壮族自治区崇左市扶绥县"
+    },
+    {
+      "Location_ID": "zhou_00296",
+      "Location_Name": "田州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 23.65369,
+      "Longitude": 106.94929,
+      "Present_Location": "广西壮族自治区百色市田阳区"
+    },
+    {
+      "Location_ID": "zhou_00297",
+      "Location_Name": "環州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 24.83764,
+      "Longitude": 108.23782,
+      "Present_Location": "广西壮族自治区河池市环江毛南族自治县"
+    },
+    {
+      "Location_ID": "zhou_00298",
+      "Location_Name": "桂州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 25.28006,
+      "Longitude": 110.28626,
+      "Present_Location": "广西壮族自治区桂林市秀峰区"
+    },
+    {
+      "Location_ID": "zhou_00299",
+      "Location_Name": "梧州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 23.4869,
+      "Longitude": 111.30857,
+      "Present_Location": "广西壮族自治区梧州市万秀区"
+    },
+    {
+      "Location_ID": "zhou_00300",
+      "Location_Name": "賀州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 24.33682,
+      "Longitude": 111.65885,
+      "Present_Location": "广西壮族自治区贺州市八步区"
+    },
+    {
+      "Location_ID": "zhou_00301",
+      "Location_Name": "連州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 24.7797,
+      "Longitude": 112.37812,
+      "Present_Location": "广东省清远市连州市"
+    },
+    {
+      "Location_ID": "zhou_00302",
+      "Location_Name": "柳州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 24.30999,
+      "Longitude": 109.4044,
+      "Present_Location": "广西壮族自治区柳州市城中区"
+    },
+    {
+      "Location_ID": "zhou_00303",
+      "Location_Name": "富州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 24.16912,
+      "Longitude": 110.80361,
+      "Present_Location": "广西壮族自治区贺州市昭平县"
+    },
+    {
+      "Location_ID": "zhou_00304",
+      "Location_Name": "昭州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 24.64235,
+      "Longitude": 110.63487,
+      "Present_Location": "广西壮族自治区桂林市平乐县"
+    },
+    {
+      "Location_ID": "zhou_00305",
+      "Location_Name": "蒙州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 24.11503,
+      "Longitude": 110.57578,
+      "Present_Location": "广西壮族自治区梧州市蒙山县"
+    },
+    {
+      "Location_ID": "zhou_00306",
+      "Location_Name": "嚴州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 23.68131,
+      "Longitude": 109.27638,
+      "Present_Location": "广西壮族自治区来宾市兴宾区"
+    },
+    {
+      "Location_ID": "zhou_00307",
+      "Location_Name": "融州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 25.06544,
+      "Longitude": 109.24854,
+      "Present_Location": "广西壮族自治区柳州市融水苗族自治县"
+    },
+    {
+      "Location_ID": "zhou_00308",
+      "Location_Name": "思唐州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 23.85041,
+      "Longitude": 110.26015,
+      "Present_Location": "广西壮族自治区贵港市平南县"
+    },
+    {
+      "Location_ID": "zhou_00309",
+      "Location_Name": "古州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 25.92254,
+      "Longitude": 108.51667,
+      "Present_Location": "贵州省黔东南苗族侗族自治州榕江县"
+    },
+    {
+      "Location_ID": "zhou_00310",
+      "Location_Name": "容州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 22.71418,
+      "Longitude": 110.34752,
+      "Present_Location": "广西壮族自治区玉林市北流市"
+    },
+    {
+      "Location_ID": "zhou_00311",
+      "Location_Name": "牢州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 22.6321,
+      "Longitude": 110.14588,
+      "Present_Location": "广西壮族自治区玉林市玉州区"
+    },
+    {
+      "Location_ID": "zhou_00312",
+      "Location_Name": "白州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 22.27587,
+      "Longitude": 109.97141,
+      "Present_Location": "广西壮族自治区玉林市博白县"
+    },
+    {
+      "Location_ID": "zhou_00313",
+      "Location_Name": "順州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 41.54499,
+      "Longitude": 120.36416,
+      "Present_Location": "辽宁省朝阳市龙城区"
+    },
+    {
+      "Location_ID": "zhou_00314",
+      "Location_Name": "繡州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 23.21534,
+      "Longitude": 109.92657,
+      "Present_Location": "广西壮族自治区贵港市桂平市"
+    },
+    {
+      "Location_ID": "zhou_00315",
+      "Location_Name": "鬱林州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": null,
+      "Longitude": null,
+      "Present_Location": null
+    },
+    {
+      "Location_ID": "zhou_00316",
+      "Location_Name": "黨州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 22.89311,
+      "Longitude": 110.13443,
+      "Present_Location": "广西壮族自治区玉林市兴业县"
+    },
+    {
+      "Location_ID": "zhou_00317",
+      "Location_Name": "竇州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 22.36349,
+      "Longitude": 110.9388,
+      "Present_Location": "广东省茂名市信宜市"
+    },
+    {
+      "Location_ID": "zhou_00318",
+      "Location_Name": "禺州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 22.53152,
+      "Longitude": 110.45359,
+      "Present_Location": "广西壮族自治区玉林市北流市"
+    },
+    {
+      "Location_ID": "zhou_00319",
+      "Location_Name": "廉州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 21.91326,
+      "Longitude": 109.47007,
+      "Present_Location": "广西壮族自治区钦州市浦北县"
+    },
+    {
+      "Location_ID": "zhou_00320",
+      "Location_Name": "義州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 22.92906,
+      "Longitude": 111.00085,
+      "Present_Location": "广西壮族自治区梧州市岑溪市"
+    },
+    {
+      "Location_ID": "fu_00016",
+      "Location_Name": "安南中都護府",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "府",
+      "Latitude": null,
+      "Longitude": null,
+      "Present_Location": null
+    },
+    {
+      "Location_ID": "zhou_00321",
+      "Location_Name": "陸州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 21.62609,
+      "Longitude": 108.74227,
+      "Present_Location": "广西壮族自治区钦州市钦南区"
+    },
+    {
+      "Location_ID": "zhou_00322",
+      "Location_Name": "峯州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 21.419,
+      "Longitude": 105.256,
+      "Present_Location": null
+    },
+    {
+      "Location_ID": "zhou_00323",
+      "Location_Name": "愛州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 19.852,
+      "Longitude": 105.813,
+      "Present_Location": null
+    },
+    {
+      "Location_ID": "zhou_00324",
+      "Location_Name": "驩州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 18.671,
+      "Longitude": 105.6734,
+      "Present_Location": null
+    },
+    {
+      "Location_ID": "zhou_00325",
+      "Location_Name": "長州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 31.31271,
+      "Longitude": 120.61862,
+      "Present_Location": "江苏省苏州市姑苏区"
+    },
+    {
+      "Location_ID": "zhou_00326",
+      "Location_Name": "福祿州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 18.312,
+      "Longitude": 105.913,
+      "Present_Location": null
+    },
+    {
+      "Location_ID": "zhou_00327",
+      "Location_Name": "湯州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 20.4277,
+      "Longitude": 106.17,
+      "Present_Location": null
+    },
+    {
+      "Location_ID": "zhou_00328",
+      "Location_Name": "芝州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 24.06404,
+      "Longitude": 108.66047,
+      "Present_Location": "广西壮族自治区来宾市忻城县"
+    },
+    {
+      "Location_ID": "zhou_00329",
+      "Location_Name": "武峩州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": null,
+      "Longitude": null,
+      "Present_Location": null
+    },
+    {
+      "Location_ID": "zhou_00330",
+      "Location_Name": "演州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 21.7364,
+      "Longitude": 109.74473,
+      "Present_Location": "广西壮族自治区玉林市博白县"
+    },
+    {
+      "Location_ID": "zhou_00331",
+      "Location_Name": "武安州",
+      "Parent_ID": "dao_013",
+      "Administrative_Level": "州",
+      "Latitude": 24.28505,
+      "Longitude": 111.0526,
+      "Present_Location": "广西壮族自治区贺州市昭平县"
+    }
+  ]
+}

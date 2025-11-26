@@ -1,0 +1,13 @@
+/* 卡片容器基础样式 */
+
+.card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: var(--spacing-md);
+}
+
+.card__title {
+  margin-bottom: var(--spacing-sm);
+  font-size: var(--font-size-md);
+}

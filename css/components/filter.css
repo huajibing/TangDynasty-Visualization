@@ -1,0 +1,17 @@
+/* 筛选器区域占位样式 */
+
+.filter {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.filter__group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.filter__label {
+  font-size: var(--font-size-sm);
+}

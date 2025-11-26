@@ -1,0 +1,5 @@
+/* 散点图占位样式 */
+
+.chart--scatter {
+  min-height: 260px;
+}

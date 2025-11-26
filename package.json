@@ -1,0 +1,38 @@
+{
+  "name": "tang-visualization",
+  "version": "1.0.0",
+  "description": "唐代人口与物产地理分布可视分析系统",
+  "main": "js/main.js",
+  "type": "module",
+  "scripts": {
+    "start": "npx http-server -p 8080 -c-1",
+    "lint": "eslint js/**/*.js",
+    "lint:fix": "eslint js/**/*.js --fix",
+    "format": "prettier --write \"js/**/*.js\" \"css/**/*.css\" \"*.html\"",
+    "format:check": "prettier --check \"js/**/*.js\" \"css/**/*.css\" \"*.html\"",
+    "validate": "npm run lint && npm run format:check"
+  },
+  "keywords": [
+    "visualization",
+    "d3",
+    "tang-dynasty",
+    "historical-geography",
+    "data-visualization"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "prettier": "^3.2.0",
+    "http-server": "^14.1.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "browserslist": [
+    "last 2 Chrome versions",
+    "last 2 Firefox versions",
+    "last 2 Safari versions",
+    "last 2 Edge versions"
+  ]
+}

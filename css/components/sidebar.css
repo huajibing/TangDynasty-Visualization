@@ -1,0 +1,16 @@
+/* 侧边栏基础样式，占位实现 */
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.sidebar__title {
+  font-size: var(--font-size-md);
+}
+
+.sidebar__text {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}

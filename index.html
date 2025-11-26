@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>盛世霓裳——唐代人口与物产地理分布可视分析</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <!-- D3.js 主库，后续图表组件将基于此实现 -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+  </head>
+  <body>
+    <a href="#main" class="skip-link">跳到主要内容</a>
+
+    <div class="dashboard" id="app">
+      <header class="dashboard__header">
+        <h1 class="app-title">盛世霓裳——唐代人口与物产地理分布可视分析</h1>
+        <p class="app-subtitle">基于《新唐书·地理志》的多视图联动可视化实验</p>
+      </header>
+
+      <aside class="dashboard__sidebar" aria-label="筛选与说明">
+        <section class="sidebar sidebar--intro">
+          <h2 class="sidebar__title">探索指引</h2>
+          <p class="sidebar__text">
+            后续阶段将在此提供按道、物产类别等维度的筛选器，以及任务引导说明。
+          </p>
+        </section>
+      </aside>
+
+      <main class="dashboard__main" id="main">
+        <section class="card card--map" aria-labelledby="map-title">
+          <h2 class="card__title" id="map-title">唐代地理分布地图</h2>
+          <div id="map-container" class="chart chart--map" aria-label="地图视图"></div>
+        </section>
+
+        <section class="card card--row" aria-label="人口与物产统计">
+          <div class="card card--histogram" aria-labelledby="histogram-title">
+            <h2 class="card__title" id="histogram-title">户均人口分布</h2>
+            <div
+              id="histogram-container"
+              class="chart chart--histogram"
+              aria-label="户均人口直方图"
+            ></div>
+          </div>
+
+          <div class="card card--scatter" aria-labelledby="scatter-title">
+            <h2 class="card__title" id="scatter-title">人口与物产丰富度</h2>
+            <div
+              id="scatter-container"
+              class="chart chart--scatter"
+              aria-label="人口与物产散点图"
+            ></div>
+          </div>
+        </section>
+      </main>
+
+      <aside class="dashboard__aside" aria-label="物产关系视图">
+        <section class="card card--network" aria-labelledby="network-title">
+          <h2 class="card__title" id="network-title">物产共现网络</h2>
+          <div
+            id="network-container"
+            class="chart chart--network"
+            aria-label="物产共现网络图"
+          ></div>
+        </section>
+      </aside>
+
+      <footer class="dashboard__footer">
+        <p class="footer__text">
+          数据来源：整理自《新唐书·地理志》等史料 · 本站仅用于教学与可视化实验。
+        </p>
+      </footer>
+    </div>
+
+    <script type="module" src="js/main.js"></script>
+  </body>
+</html>
