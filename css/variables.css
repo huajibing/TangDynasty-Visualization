@@ -4,16 +4,49 @@
  */
 
 :root {
-  /* 主题色（唐风配色预留） */
-  --color-primary: #c0392b;
-  --color-primary-soft: #e74c3c;
-  --color-accent: #f39c12;
+  /* 主题色（唐风配色） */
+  --color-primary: #c0392b; /* 朱红 */
+  --color-primary-light: #e74c3c;
+  --color-primary-dark: #922b21;
+  --color-primary-soft: var(--color-primary-light);
+  --color-secondary: #d35400; /* 赭石 */
+  --color-accent: #f39c12; /* 藤黄 */
 
   /* 背景与文字 */
   --color-bg-primary: #fdf6e3;
   --color-bg-secondary: #f5f0e1;
+  --color-bg-tertiary: #ebe6d7;
   --color-text-primary: #2c3e50;
   --color-text-secondary: #7f8c8d;
+  --color-text-muted: #bdc3c7;
+  --color-border: #d5d0c1;
+  --color-border-light: #e8e4d9;
+
+  /* 语义色 */
+  --color-success: #27ae60;
+  --color-warning: #f39c12;
+  --color-error: #e74c3c;
+  --color-info: #3498db;
+
+  /* 物产类别 */
+  --color-product-agriculture: #27ae60;
+  --color-product-textile: #9b59b6;
+  --color-product-medicine: #1abc9c;
+  --color-product-mineral: #95a5a6;
+  --color-product-livestock: #e67e22;
+  --color-product-other: #34495e;
+
+  /* 行政区配色（十道） */
+  --color-dao-guannei: #c0392b;
+  --color-dao-henan: #2980b9;
+  --color-dao-hedong: #8e44ad;
+  --color-dao-hebei: #16a085;
+  --color-dao-shannan: #d35400;
+  --color-dao-longyou: #f39c12;
+  --color-dao-huainan: #27ae60;
+  --color-dao-jiangnan: #1abc9c;
+  --color-dao-jiannan: #9b59b6;
+  --color-dao-lingnan: #e74c3c;
 
   /* 布局尺寸 */
   --header-height: 72px;
@@ -26,12 +59,20 @@
   --spacing-md: 16px;
   --spacing-lg: 24px;
   --spacing-xl: 32px;
+  --spacing-2xl: 48px;
 
   /* 字体系统 */
   --font-family-base:
     -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
     'Microsoft YaHei', sans-serif;
+  --font-family-serif: 'Songti SC', 'STSong', 'SimSun', serif;
+  --font-family-mono: 'SF Mono', 'Fira Code', Consolas, monospace;
+  --font-size-xs: 12px;
   --font-size-sm: 14px;
   --font-size-md: 16px;
   --font-size-lg: 20px;
+  --font-size-xl: 24px;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 600;
 }

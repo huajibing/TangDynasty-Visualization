@@ -200,11 +200,18 @@
 
 ### 阶段 2：工具层与可视化基类（Utils + BaseChart）
 
-- [ ] 在 `js/utils/scales.js` 定义统一的比例尺工厂函数：人口半径比例尺、人口/户均人口坐标轴比例尺、物产丰富度比例尺、颜色比例尺等，所有图表从这里获取 scale，避免重复配置。
-- [ ] 在 `js/utils/colors.js` 建立全局色板：唐代风格主色（朱红、赭石、藤黄等）以及按道/物产类别的颜色映射，保持 JS 中的色值与 `css/variables.css` 中 CSS 变量一致。
-- [ ] 在 `js/utils/format.js` 实现格式化工具函数：人口/户数千分位格式化、百分比显示、中文单位（“万户”“万人”）转换以及 Tooltip 文本拼接，供各个组件统一使用。
-- [ ] 在 `js/utils/eventBus.js` 实现轻量级事件总线（`on`/`off`/`emit`），用于图表和 UI 组件之间的解耦通信（如 `daoSelected`、`householdRangeChanged`、`productSelected` 等事件）。
-- [ ] 参考 `docs/COMPONENT_GUIDE.md` 在 `js/charts/BaseChart.js` 实现 `BaseChart` 基类：容器校验、尺寸与 margin 初始化、`<svg>` 和主 `<g>` 创建、自适应 `resize` 逻辑，以及抽象的 `render()`/`update()`/`destroy()` 生命周期接口，供后续所有图表继承。
+- [x] 在 `js/utils/scales.js` 定义统一的比例尺工厂函数：人口半径比例尺、人口/户均人口坐标轴比例尺、物产丰富度比例尺、颜色比例尺等，所有图表从这里获取 scale，避免重复配置。
+- [x] 在 `js/utils/colors.js` 建立全局色板：唐代风格主色（朱红、赭石、藤黄等）以及按道/物产类别的颜色映射，保持 JS 中的色值与 `css/variables.css` 中 CSS 变量一致。
+- [x] 在 `js/utils/format.js` 实现格式化工具函数：人口/户数千分位格式化、百分比显示、中文单位（“万户”“万人”）转换以及 Tooltip 文本拼接，供各个组件统一使用。
+- [x] 在 `js/utils/eventBus.js` 实现轻量级事件总线（`on`/`off`/`emit`），用于图表和 UI 组件之间的解耦通信（如 `daoSelected`、`householdRangeChanged`、`productSelected` 等事件）。
+- [x] 参考 `docs/COMPONENT_GUIDE.md` 在 `js/charts/BaseChart.js` 实现 `BaseChart` 基类：容器校验、尺寸与 margin 初始化、`<svg>` 和主 `<g>` 创建、自适应 `resize` 逻辑，以及抽象的 `render()`/`update()`/`destroy()` 生命周期接口，供后续所有图表继承。
+
+> 阶段 2 实施记录：
+> - 在 `utils/scales.js` 统一人口、户均人口、物产丰富度及颜色比例尺工厂，加入极值兜底和 log/linear 选项。
+> - 在 `utils/colors.js` 读取 CSS 设计令牌生成色板，覆盖主题色、十道颜色与物产类别颜色，并提供快捷获取函数。
+> - 在 `utils/format.js` 提供数字、百分比、万人/万户单位转换与 Tooltip 拼接的安全格式化工具（包含 HTML 转义）。
+> - 在 `utils/eventBus.js` 引入带 on/off/once/emit 的事件总线及常用事件常量，支持取消订阅与错误隔离。
+> - 在 `charts/BaseChart.js` 完成基类：容器校验、尺寸计算、SVG/`<g>` 创建、可选自动渲染与 resize 防抖，提供 `render`/`update`/`destroy` 占位以供子类扩展。
 
 ### 阶段 3：四个核心视图实现（地图 + 直方图 + 散点图 + 网络图）
 

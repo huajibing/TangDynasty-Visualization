@@ -1,24 +1,79 @@
-// 轻量级事件总线占位实现
+// 轻量级事件总线，用于跨组件通信（地图、直方图、散点图、网络图等）。
 
-export const eventBus = {
-  _listeners: new Map(),
+class EventBus {
+  constructor() {
+    this.events = new Map();
+  }
 
-  on(eventName, handler) {
-    if (!this._listeners.has(eventName)) {
-      this._listeners.set(eventName, new Set());
+  on(event, callback) {
+    if (!event || typeof callback !== 'function') return () => {};
+
+    if (!this.events.has(event)) {
+      this.events.set(event, new Set());
     }
-    this._listeners.get(eventName).add(handler);
-  },
+    const listeners = this.events.get(event);
+    listeners.add(callback);
 
-  off(eventName, handler) {
-    const handlers = this._listeners.get(eventName);
-    if (!handlers) return;
-    handlers.delete(handler);
-  },
+    return () => this.off(event, callback);
+  }
 
-  emit(eventName, payload) {
-    const handlers = this._listeners.get(eventName);
-    if (!handlers) return;
-    handlers.forEach((handler) => handler(payload));
-  },
+  once(event, callback) {
+    if (!event || typeof callback !== 'function') return () => {};
+    const wrapper = payload => {
+      callback(payload);
+      this.off(event, wrapper);
+    };
+    return this.on(event, wrapper);
+  }
+
+  off(event, callback) {
+    if (!event) return;
+    const listeners = this.events.get(event);
+    if (!listeners) return;
+
+    if (callback) {
+      listeners.delete(callback);
+      if (listeners.size === 0) {
+        this.events.delete(event);
+      }
+    } else {
+      this.events.delete(event);
+    }
+  }
+
+  emit(event, payload) {
+    const listeners = this.events.get(event);
+    if (!listeners || listeners.size === 0) return;
+
+    listeners.forEach(listener => {
+      try {
+        listener(payload);
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error(`[eventBus] handler for ${event} failed`, error);
+      }
+    });
+  }
+
+  clear(event) {
+    if (event) {
+      this.events.delete(event);
+    } else {
+      this.events.clear();
+    }
+  }
+}
+
+export const EVENTS = {
+  LOCATION_SELECT: 'location:select',
+  LOCATION_HOVER: 'location:hover',
+  BRUSH_UPDATE: 'brush:update',
+  FILTER_CHANGE: 'filter:change',
+  PRODUCT_SELECT: 'productSelected',
+  DAO_SELECT: 'daoSelected',
+  HOUSEHOLD_RANGE_CHANGE: 'householdRangeChanged',
 };
+
+export const eventBus = new EventBus();
+
+export default eventBus;
