@@ -1,5 +1,46 @@
-/* 地图视图占位样式 */
+/* 地图视图样式 */
 
 .chart--map {
+  position: relative;
   min-height: 360px;
+}
+
+.map__boundary {
+  fill: var(--color-bg-secondary);
+  stroke: var(--color-border);
+  stroke-width: 1;
+}
+
+.map__boundary:hover {
+  fill: var(--color-bg-tertiary);
+}
+
+.location-point {
+  stroke: #fff;
+  stroke-width: 0.8;
+  opacity: 0.85;
+  transition:
+    r 160ms ease,
+    opacity 140ms ease,
+    stroke-width 140ms ease;
+}
+
+.location-point.is-hovered,
+.location-point.is-highlighted {
+  opacity: 1;
+  stroke-width: 1.2;
+}
+
+.location-point.is-selected {
+  stroke: var(--color-accent);
+  stroke-width: 1.6;
+}
+
+.location-point.is-dimmed {
+  opacity: 0.2;
+}
+
+.chart__empty {
+  fill: var(--color-text-muted);
+  font-size: var(--font-size-sm);
 }

@@ -1,5 +1,28 @@
-/* 散点图占位样式 */
+/* 人口 vs 物产丰富度散点图样式 */
 
 .chart--scatter {
   min-height: 260px;
+}
+
+.scatter-point {
+  stroke: rgba(255, 255, 255, 0.9);
+  stroke-width: 0.8;
+  opacity: 0.85;
+  transition:
+    r 140ms ease,
+    opacity 140ms ease;
+}
+
+.scatter-point.is-highlighted {
+  opacity: 1;
+  stroke-width: 1.2;
+}
+
+.scatter-point.is-dimmed {
+  opacity: 0.25;
+}
+
+.scatter-legend__label {
+  fill: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
 }

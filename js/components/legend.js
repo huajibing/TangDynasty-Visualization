@@ -5,7 +5,7 @@ export class Legend {
     this.container = container;
   }
 
-  render(_items) {
+  render() {
     // 阶段 2 中根据颜色与类别渲染图例
   }
 }

@@ -215,11 +215,19 @@
 
 ### 阶段 3：四个核心视图实现（地图 + 直方图 + 散点图 + 网络图）
 
-- [ ] 准备并接入底图数据：获取符合 `docs/DATA_SPECIFICATION.md` 要求的 `china_geo.json` 并放入 `data/`，在 `DataLoader.loadAll()` 中加入加载逻辑；在 `MapView` 中验证 GeoJSON 能正确渲染。
-- [ ] 在 `js/charts/MapView.js` 基于 D3-geo 实现地图视图：绘制中国轮廓（`FeatureCollection`）、将 `ProcessedLocation` 中有经纬度的数据投影为点，使用人口大小和道/行政级别映射圆半径和颜色，Hover 展示 Tooltip，Click 触发选中事件。
-- [ ] 在 `js/charts/Histogram.js` 实现户均人口直方图：使用 `d3.bin()` 对 `householdSize` 分箱，绘制条形，支持 Brush 交互将选中区间通过 `eventBus.emit('householdRangeChanged', range)` 广播。
-- [ ] 在 `js/charts/ScatterPlot.js` 实现人口 vs 物产丰富度散点图：X 轴人口（可选对数坐标），Y 轴 `productRichness`，颜色编码 `dominantProductType`，支持点的 Hover 高亮和根据外部状态（如地图选中）进行点高亮。
-- [ ] 在 `js/charts/NetworkGraph.js` 实现物产共现网络图：从 `productCooccurrence` 构建节点与边，使用 `d3.forceSimulation` 进行布局，节点 Hover 显示物产信息，Click 通过事件总线广播 `productSelected`，以驱动地图和其他图表高亮相关地点。
+- [x] 准备并接入底图数据：获取符合 `docs/DATA_SPECIFICATION.md` 要求的 `china_geo.json` 并放入 `data/`，在 `DataLoader.loadAll()` 中加入加载逻辑；在 `MapView` 中验证 GeoJSON 能正确渲染。
+- [x] 在 `js/charts/MapView.js` 基于 D3-geo 实现地图视图：绘制中国轮廓（`FeatureCollection`）、将 `ProcessedLocation` 中有经纬度的数据投影为点，使用人口大小和道/行政级别映射圆半径和颜色，Hover 展示 Tooltip，Click 触发选中事件。
+- [x] 在 `js/charts/Histogram.js` 实现户均人口直方图：使用 `d3.bin()` 对 `householdSize` 分箱，绘制条形，支持 Brush 交互将选中区间通过 `eventBus.emit('householdRangeChanged', range)` 广播。
+- [x] 在 `js/charts/ScatterPlot.js` 实现人口 vs 物产丰富度散点图：X 轴人口（可选对数坐标），Y 轴 `productRichness`，颜色编码 `dominantProductType`，支持点的 Hover 高亮和根据外部状态（如地图选中）进行点高亮。
+- [x] 在 `js/charts/NetworkGraph.js` 实现物产共现网络图：从 `productCooccurrence` 构建节点与边，使用 `d3.forceSimulation` 进行布局，节点 Hover 显示物产信息，Click 通过事件总线广播 `productSelected`，以驱动地图和其他图表高亮相关地点。
+
+> 阶段 3 实施记录：
+> - 接入真实 `china_geo.json`，MapView 使用 Mercator 投影 + `fitExtent` 绘制边界并支持缩放平移。
+> - MapView 基于人口半径与道颜色渲染地点，Hover Tooltip，点击选中并通过事件总线广播地点高亮。
+> - Histogram 使用 `d3.bin` 分箱户均人口，Brush 选区通过 `HOUSEHOLD_RANGE_CHANGE` 广播并驱动地图/散点高亮。
+> - ScatterPlot 采用人口对数轴与物产丰富度轴，颜色映射主导物产类型，Hover/点击联动地图与事件总线。
+> - NetworkGraph 读取共现 Map 构建力导向网络，节点/连线 Tooltip 与点击广播 `PRODUCT_SELECT`，支持高亮联动。
+> - `main.js` 完成四图初始化与基础联动：地点选中、户均 Brush、物产点击均可驱动跨视图高亮。
 
 ### 阶段 4：全局状态管理、联动交互与 UI 组件
 

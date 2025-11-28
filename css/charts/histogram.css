@@ -1,5 +1,45 @@
-/* 户均人口直方图占位样式 */
+/* 户均人口直方图样式 */
 
 .chart--histogram {
   min-height: 260px;
+}
+
+.axis path,
+.axis line {
+  stroke: var(--color-border);
+}
+
+.axis text {
+  fill: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+}
+
+.axis-label {
+  fill: var(--color-text-primary);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-sm);
+}
+
+.bar {
+  fill: var(--color-primary);
+  opacity: 0.75;
+  transition:
+    fill 140ms ease,
+    opacity 140ms ease;
+}
+
+.bar.is-hovered,
+.bar.is-selected {
+  fill: var(--color-secondary);
+  opacity: 1;
+}
+
+.bar.is-highlighted {
+  stroke: var(--color-accent);
+  stroke-width: 1.2;
+}
+
+.brush .selection {
+  fill: rgba(192, 57, 43, 0.18);
+  stroke: var(--color-primary);
 }

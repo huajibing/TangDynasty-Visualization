@@ -1,5 +1,38 @@
-/* 物产共现网络图占位样式 */
+/* 物产共现网络图样式 */
 
 .chart--network {
   min-height: 360px;
+}
+
+.network-link {
+  stroke: rgba(52, 73, 94, 0.4);
+  transition: stroke 140ms ease, stroke-opacity 140ms ease;
+}
+
+.network-link.is-dimmed {
+  stroke-opacity: 0.2;
+}
+
+.network-link.is-highlighted {
+  stroke: var(--color-secondary);
+  stroke-opacity: 0.85;
+}
+
+.network-node {
+  cursor: grab;
+  transition: opacity 140ms ease;
+}
+
+.network-node.is-dimmed {
+  opacity: 0.35;
+}
+
+.network-node.is-highlighted circle {
+  fill: var(--color-accent);
+}
+
+.network-label {
+  fill: var(--color-text-primary);
+  font-size: var(--font-size-xs);
+  pointer-events: none;
 }

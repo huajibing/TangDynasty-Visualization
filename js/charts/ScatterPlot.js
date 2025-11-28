@@ -1,7 +1,238 @@
-// 人口 vs 物产丰富度散点图占位实现
+// 人口 vs 物产丰富度散点图：支持 Hover 提示与外部高亮。
 
 import BaseChart from './BaseChart.js';
+import { Tooltip } from '../components/tooltip.js';
+import {
+  createPopulationScale,
+  createProductRichnessScale,
+  createProductTypeColorScale,
+} from '../utils/scales.js';
+import { formatPopulation, Format } from '../utils/format.js';
+import eventBus, { EVENTS } from '../utils/eventBus.js';
 
-class ScatterPlot extends BaseChart {}
+class ScatterPlot extends BaseChart {
+  get defaultOptions() {
+    return {
+      ...super.defaultOptions,
+      xField: 'Population',
+      yField: 'productRichness',
+      colorField: 'dominantProductType',
+      xLabel: '人口数量',
+      yLabel: '物产种类数',
+      logScale: true,
+      pointRadius: 5,
+    };
+  }
+
+  _setupScales() {
+    const { xField, yField } = this.options;
+
+    this.validData = this.data.filter(
+      d => Number.isFinite(d[xField]) && Number.isFinite(d[yField]),
+    );
+
+    const xValues = this.validData.map(d => d[xField]);
+    const yValues = this.validData.map(d => d[yField]);
+
+    const xExtent = xValues.length > 0 ? d3.extent(xValues) : [1, 10];
+    const yExtent = yValues.length > 0 ? d3.extent(yValues) : [0, 10];
+
+    this.xScale = createPopulationScale(xExtent, [0, this.width], {
+      log: this.options.logScale,
+      nice: true,
+    });
+
+    this.yScale = createProductRichnessScale(
+      [Math.min(0, yExtent[0]), yExtent[1]],
+      [this.height, 0],
+      { nice: true },
+    );
+
+    this.colorScale = createProductTypeColorScale();
+  }
+
+  render() {
+    this.chartGroup.selectAll('.chart__empty').remove();
+    if (!this.validData || this.validData.length === 0) {
+      this.chartGroup
+        .selectAll('.chart__empty')
+        .data([null])
+        .join('text')
+        .attr('class', 'chart__empty')
+        .attr('x', this.width / 2)
+        .attr('y', this.height / 2)
+        .attr('text-anchor', 'middle')
+        .text('暂无数据');
+      return;
+    }
+
+    this._renderAxes();
+    this._renderPoints();
+    this._renderLegend();
+  }
+
+  _renderAxes() {
+    const xAxis = this.options.logScale
+      ? d3.axisBottom(this.xScale).ticks(6, '~s')
+      : d3.axisBottom(this.xScale).ticks(6);
+    const yAxis = d3.axisLeft(this.yScale).ticks(6).tickFormat(d3.format('d'));
+
+    this.chartGroup
+      .selectAll('.x-axis')
+      .data([null])
+      .join('g')
+      .attr('class', 'axis x-axis')
+      .attr('transform', `translate(0,${this.height})`)
+      .call(xAxis);
+
+    this.chartGroup
+      .selectAll('.y-axis')
+      .data([null])
+      .join('g')
+      .attr('class', 'axis y-axis')
+      .call(yAxis);
+
+    this.chartGroup
+      .selectAll('.x-label')
+      .data([null])
+      .join('text')
+      .attr('class', 'axis-label x-label')
+      .attr('x', this.width / 2)
+      .attr('y', this.height + 36)
+      .attr('text-anchor', 'middle')
+      .text(this.options.xLabel);
+
+    this.chartGroup
+      .selectAll('.y-label')
+      .data([null])
+      .join('text')
+      .attr('class', 'axis-label y-label')
+      .attr('transform', 'rotate(-90)')
+      .attr('x', -this.height / 2)
+      .attr('y', -40)
+      .attr('text-anchor', 'middle')
+      .text(this.options.yLabel);
+  }
+
+  _renderPoints() {
+    const { xField, yField, colorField, pointRadius } = this.options;
+
+    this.points = this.chartGroup
+      .selectAll('.scatter-point')
+      .data(this.validData, d => d.Location_ID)
+      .join(
+        enter =>
+          enter
+            .append('circle')
+            .attr('class', 'scatter-point')
+            .attr('cx', d => this.xScale(d[xField]))
+            .attr('cy', d => this.yScale(d[yField]))
+            .attr('r', 0)
+            .attr('fill', d => this.colorScale(d[colorField]))
+            .attr('opacity', 0.9)
+            .call(enterSelection =>
+              enterSelection
+                .transition()
+                .duration(this.options.animationDuration)
+                .attr('r', pointRadius),
+            ),
+        update =>
+          update.call(updateSelection =>
+            updateSelection
+              .transition()
+              .duration(this.options.animationDuration)
+              .attr('cx', d => this.xScale(d[xField]))
+              .attr('cy', d => this.yScale(d[yField]))
+              .attr('fill', d => this.colorScale(d[colorField])),
+          ),
+        exit =>
+          exit.call(exitSelection =>
+            exitSelection
+              .transition()
+              .duration(this.options.animationDuration)
+              .attr('r', 0)
+              .remove(),
+          ),
+      );
+
+    this.points
+      .on('mouseenter', (event, d) => {
+        d3.select(event.currentTarget)
+          .classed('is-hovered', true)
+          .raise()
+          .attr('r', pointRadius * 1.4);
+        Tooltip.show(event, this._formatTooltip(d));
+        eventBus.emit(EVENTS.LOCATION_HOVER, d);
+        this.options.onHover?.(d);
+      })
+      .on('mouseleave', event => {
+        d3.select(event.currentTarget).classed('is-hovered', false).attr('r', pointRadius);
+        Tooltip.hide();
+        eventBus.emit(EVENTS.LOCATION_HOVER, null);
+      })
+      .on('click', (_event, d) => {
+        eventBus.emit(EVENTS.LOCATION_SELECT, d);
+        this.options.onClick?.(d);
+      });
+  }
+
+  _renderLegend() {
+    if (!this.colorScale) return;
+    const items = this.colorScale.domain();
+
+    const legend = this.chartGroup
+      .selectAll('.scatter-legend')
+      .data([null])
+      .join('g')
+      .attr('class', 'scatter-legend')
+      .attr('transform', `translate(${this.width - 140}, 8)`);
+
+    const legendItems = legend
+      .selectAll('.scatter-legend__item')
+      .data(items)
+      .join('g')
+      .attr('class', 'scatter-legend__item')
+      .attr('transform', (_, index) => `translate(0, ${index * 20})`);
+
+    legendItems
+      .selectAll('rect')
+      .data(d => [d])
+      .join('rect')
+      .attr('width', 12)
+      .attr('height', 12)
+      .attr('rx', 2)
+      .attr('ry', 2)
+      .attr('fill', d => this.colorScale(d));
+
+    legendItems
+      .selectAll('text')
+      .data(d => [d])
+      .join('text')
+      .attr('x', 18)
+      .attr('y', 10)
+      .attr('class', 'scatter-legend__label')
+      .text(d => d);
+  }
+
+  _formatTooltip(datum) {
+    return Format.tooltip(datum.Location_Name, [
+      { label: this.options.xLabel, value: formatPopulation(datum[this.options.xField]) },
+      { label: this.options.yLabel, value: Format.number(datum[this.options.yField]) },
+      { label: '主导物产', value: datum.dominantProductType || '-' },
+      { label: '所属道', value: datum.daoName || '-' },
+    ]);
+  }
+
+  highlight(ids = []) {
+    const idSet = new Set(ids || []);
+    this.points
+      ?.classed('is-highlighted', d => idSet.has(d.Location_ID))
+      .classed('is-dimmed', d => idSet.size > 0 && !idSet.has(d.Location_ID));
+  }
+
+  clearHighlight() {
+    this.points?.classed('is-highlighted', false).classed('is-dimmed', false);
+  }
+}
 
 export default ScatterPlot;
