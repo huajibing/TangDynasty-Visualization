@@ -2,15 +2,8 @@
 
 import BaseChart from './BaseChart.js';
 import { Tooltip } from '../components/tooltip.js';
-import {
-  createDaoColorScale,
-  createPopulationRadiusScale,
-} from '../utils/scales.js';
-import {
-  getAdministrativeLevelColor,
-  getDaoColor,
-  getProductTypeColor,
-} from '../utils/colors.js';
+import { createDaoColorScale, createPopulationRadiusScale } from '../utils/scales.js';
+import { getAdministrativeLevelColor, getDaoColor, getProductTypeColor } from '../utils/colors.js';
 import {
   formatHouseholdSize,
   formatHouseholds,
@@ -41,8 +34,8 @@ class MapView extends BaseChart {
     this.pathGenerator = d3.geoPath().projection(this.projection);
 
     const populations = this.data
-      .map(d => d.Population)
-      .filter(value => Number.isFinite(value));
+      .map((d) => d.Population)
+      .filter((value) => Number.isFinite(value));
     const popExtent = populations.length > 0 ? d3.extent(populations) : [1000, 1000000];
     this.radiusScale = createPopulationRadiusScale(popExtent, this.options.radiusRange);
 
@@ -88,17 +81,20 @@ class MapView extends BaseChart {
     }
 
     // 只渲染多边形类型的 features
-    const polygonFeatures = features.filter(f => {
+    const polygonFeatures = features.filter((f) => {
       const type = f?.geometry?.type;
       return type === 'Polygon' || type === 'MultiPolygon';
     });
 
     const paths = this.boundaryLayer
       .selectAll('.map__boundary')
-      .data(polygonFeatures, d => d?.properties?.code || d?.id || d?.properties?.name || Math.random())
+      .data(
+        polygonFeatures,
+        (d) => d?.properties?.code || d?.id || d?.properties?.name || Math.random(),
+      )
       .join('path')
       .attr('class', 'map__boundary')
-      .attr('d', d => this.pathGenerator(d))
+      .attr('d', (d) => this.pathGenerator(d))
       .style('stroke-width', `${this.options.boundaryStrokeWidth}px`);
 
     // 当边界计算结果异常时，提供调试提示
@@ -111,7 +107,7 @@ class MapView extends BaseChart {
 
   _renderPoints() {
     const validData = this.data.filter(
-      d => Number.isFinite(d.Latitude) && Number.isFinite(d.Longitude),
+      (d) => Number.isFinite(d.Latitude) && Number.isFinite(d.Longitude),
     );
 
     this.chartGroup.selectAll('.chart__empty').remove();
@@ -130,36 +126,36 @@ class MapView extends BaseChart {
 
     this.points = this.pointLayer
       .selectAll('.location-point')
-      .data(validData, d => d.Location_ID)
+      .data(validData, (d) => d.Location_ID)
       .join(
-        enter =>
+        (enter) =>
           enter
             .append('circle')
             .attr('class', 'location-point')
-            .attr('cx', d => this._projectPoint(d)[0])
-            .attr('cy', d => this._projectPoint(d)[1])
+            .attr('cx', (d) => this._projectPoint(d)[0])
+            .attr('cy', (d) => this._projectPoint(d)[1])
             .attr('r', 0)
-            .attr('fill', d => this._getColor(d))
+            .attr('fill', (d) => this._getColor(d))
             .attr('opacity', this.options.pointOpacity)
-            .call(enterSelection =>
+            .call((enterSelection) =>
               enterSelection
                 .transition()
                 .duration(this.options.animationDuration)
-                .attr('r', d => this._getRadius(d)),
+                .attr('r', (d) => this._getRadius(d)),
             ),
-        update =>
-          update.call(updateSelection =>
+        (update) =>
+          update.call((updateSelection) =>
             updateSelection
               .transition()
               .duration(this.options.animationDuration)
-              .attr('cx', d => this._projectPoint(d)[0])
-              .attr('cy', d => this._projectPoint(d)[1])
-              .attr('r', d => this._getRadius(d))
-              .attr('fill', d => this._getColor(d))
+              .attr('cx', (d) => this._projectPoint(d)[0])
+              .attr('cy', (d) => this._projectPoint(d)[1])
+              .attr('r', (d) => this._getRadius(d))
+              .attr('fill', (d) => this._getColor(d))
               .attr('opacity', this.options.pointOpacity),
           ),
-        exit =>
-          exit.call(exitSelection =>
+        (exit) =>
+          exit.call((exitSelection) =>
             exitSelection
               .transition()
               .duration(this.options.animationDuration)
@@ -196,7 +192,7 @@ class MapView extends BaseChart {
     const isSame = this.selectedId === location?.Location_ID;
     this.selectedId = isSame ? null : location?.Location_ID || null;
 
-    this.points.classed('is-selected', d => d.Location_ID === this.selectedId);
+    this.points.classed('is-selected', (d) => d.Location_ID === this.selectedId);
 
     const payload = this.selectedId ? location : null;
     eventBus.emit(EVENTS.LOCATION_SELECT, payload);
@@ -219,7 +215,7 @@ class MapView extends BaseChart {
 
     if (featureCollection?.features?.length) {
       // 只使用多边形类型的 features
-      const polygonFeatures = featureCollection.features.filter(f => {
+      const polygonFeatures = featureCollection.features.filter((f) => {
         const type = f?.geometry?.type;
         return type === 'Polygon' || type === 'MultiPolygon';
       });
@@ -256,10 +252,8 @@ class MapView extends BaseChart {
       const daoIds = Array.from(
         new Set(
           this.data
-            .map(d =>
-              d.Administrative_Level === '道'
-                ? d.Location_ID
-                : d.Parent_ID || d.daoId || d.daoName,
+            .map((d) =>
+              d.Administrative_Level === '道' ? d.Location_ID : d.Parent_ID || d.daoId || d.daoName,
             )
             .filter(Boolean),
         ),
@@ -312,7 +306,7 @@ class MapView extends BaseChart {
     this.zoomBehavior = d3
       .zoom()
       .scaleExtent([this.options.minZoom, this.options.maxZoom])
-      .on('zoom', event => {
+      .on('zoom', (event) => {
         this.mapLayer.attr('transform', event.transform);
         // 根据缩放级别调整边界线粗细，放大时线条变细
         this.boundaryLayer
@@ -326,8 +320,8 @@ class MapView extends BaseChart {
   highlight(ids = []) {
     const idSet = new Set(ids || []);
     this.points
-      ?.classed('is-highlighted', d => idSet.has(d.Location_ID))
-      .classed('is-dimmed', d => idSet.size > 0 && !idSet.has(d.Location_ID));
+      ?.classed('is-highlighted', (d) => idSet.has(d.Location_ID))
+      .classed('is-dimmed', (d) => idSet.size > 0 && !idSet.has(d.Location_ID));
   }
 
   clearHighlight() {

@@ -245,7 +245,15 @@
 
 ### 阶段 5：样式美化、叙事增强、质量保障与发布
 
-- [ ] 按 `docs/STYLE_GUIDE_CSS.md` 完成样式分层：实现 `css/variables.css`（设计令牌）、`reset.css`、`base.css`、`layout.css`、`style.css`，以及各组件和图表样式文件（`css/components/*.css`, `css/charts/*.css`），实现仪表盘式布局和基础响应式适配。
-- [ ] 完成 `index.html` 的最终结构：语义化地组织 Header（项目标题与简要说明）、主区域（地图、直方图、散点图、网络图、侧边栏）、Footer（数据来源、制作信息等），并引入所有 CSS/JS 资源（D3 CDN、`js/main.js` 等）。
-- [ ] 提炼并嵌入叙事与任务引导：在侧边栏或顶部添加简短引导文案，将本文件中列出的 6 个探索性问题转化为“操作提示”（例如“在直方图中框选户均>8人区域，观察地图上的空间分布”）。
-- [ ] 根据 `docs/STYLE_GUIDE_JS.md` 和 `.eslintrc.json` 运行并修正 `npm run lint` 和 `npm run format` 的所有问题，确保 JS/CSS/HTML 符合统一编码规范；必要时微调 ESLint/Prettier 配置以适配项目实际需求。
+- [x] 按 `docs/STYLE_GUIDE_CSS.md` 完成样式分层：实现 `css/variables.css`（设计令牌）、`reset.css`、`base.css`、`layout.css`、`style.css`，以及各组件和图表样式文件（`css/components/*.css`, `css/charts/*.css`），实现仪表盘式布局和基础响应式适配。
+- [x] 完成 `index.html` 的最终结构：语义化地组织 Header（项目标题与简要说明）、主区域（地图、直方图、散点图、网络图、侧边栏）、Footer（数据来源、制作信息等），并引入所有 CSS/JS 资源（D3 CDN、`js/main.js` 等）。
+- [x] 提炼并嵌入叙事与任务引导：在侧边栏或顶部添加简短引导文案，将本文件中列出的 6 个探索性问题转化为“操作提示”（例如“在直方图中框选户均>8人区域，观察地图上的空间分布”）。
+- [x] 根据 `docs/STYLE_GUIDE_JS.md` 和 `.eslintrc.json` 运行并修正 `npm run lint` 和 `npm run format` 的所有问题，确保 JS/CSS/HTML 符合统一编码规范；必要时微调 ESLint/Prettier 配置以适配项目实际需求。
+
+> 阶段 5 实施记录：
+> - 根据 CSS 样式规范补全 `css/variables.css` 设计令牌（颜色、字体、间距、圆角、阴影、断点等），并在 `layout.css`、`base.css`、组件与图表样式中统一使用，形成分层清晰的样式体系。
+> - 重构 `layout.css` 实现移动优先的仪表盘布局：小屏纵向堆叠，中等屏幕启用 Grid，1024px+ 左侧固定侧栏 + 中部主视图，1280px+ 加入右侧关联视图栏，满足基本响应式需求。
+> - 使用卡片化视觉风格优化地图、直方图、散点图和网络图容器（`card.css`），统一边框、阴影与标题排版，让四个视图在仪表盘中更易对比阅读。
+> - 在 `index.html` 中完善 Header/Sidebar/Main/Aside/Footer 结构，引入跳转主内容的 `skip-link`，并为侧边栏提供无 JS 情况下的降级说明；顶部简介文案说明项目目标与多视图联动方式。
+> - 在 `js/main.js` 中通过侧边栏的探索提示，将 6 个任务抽象转化为操作指引（任务 1–6），分别对应人口密度、户均规模异常、地理聚集、物产共现、物产类型与规模以及人口与物产丰富度关系。
+> - 运行 `npm run lint` 与 `npm run format`，修复和统一 JS/CSS/HTML 的代码风格，确保通过 ESLint 和 Prettier 校验，便于后续维护与协作。

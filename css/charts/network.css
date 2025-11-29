@@ -6,7 +6,9 @@
 
 .network-link {
   stroke: rgba(52, 73, 94, 0.4);
-  transition: stroke 140ms ease, stroke-opacity 140ms ease;
+  transition:
+    stroke 140ms ease,
+    stroke-opacity 140ms ease;
 }
 
 .network-link.is-dimmed {

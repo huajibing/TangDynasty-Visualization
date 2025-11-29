@@ -24,9 +24,9 @@ const theme = {
 };
 
 const productTypes = {
-  '农产品': readCssVar('--color-product-agriculture', '#27ae60'),
-  '纺织品': readCssVar('--color-product-textile', '#9b59b6'),
-  '药材': readCssVar('--color-product-medicine', '#1abc9c'),
+  农产品: readCssVar('--color-product-agriculture', '#27ae60'),
+  纺织品: readCssVar('--color-product-textile', '#9b59b6'),
+  药材: readCssVar('--color-product-medicine', '#1abc9c'),
   '矿产/金属': readCssVar('--color-product-mineral', '#95a5a6'),
   '畜产品/土特产': readCssVar('--color-product-livestock', '#e67e22'),
   '其他/待分类': readCssVar('--color-product-other', '#34495e'),
@@ -50,7 +50,7 @@ const administrativeLevels = {
   都: readCssVar('--color-info', '#3498db'),
   府: theme.secondary,
   州: theme.accent,
-  '都护府': readCssVar('--color-warning', '#f39c12'),
+  都护府: readCssVar('--color-warning', '#f39c12'),
 };
 
 export const COLORS = {

@@ -17,7 +17,9 @@ export class Legend {
     if (!this.container) return;
 
     this.container.innerHTML = '';
-    const validSections = (sections || []).filter(section => Array.isArray(section?.items) && section.items.length > 0);
+    const validSections = (sections || []).filter(
+      (section) => Array.isArray(section?.items) && section.items.length > 0,
+    );
 
     if (validSections.length === 0) {
       const placeholder = document.createElement('div');
@@ -27,7 +29,7 @@ export class Legend {
       return;
     }
 
-    validSections.forEach(section => {
+    validSections.forEach((section) => {
       const sectionEl = document.createElement('div');
       sectionEl.className = 'legend__section';
 
@@ -41,12 +43,13 @@ export class Legend {
       const list = document.createElement('div');
       list.className = 'legend';
 
-      section.items.forEach(item => {
+      section.items.forEach((item) => {
         const row = document.createElement('div');
         row.className = 'legend__item';
 
         const marker = document.createElement('span');
-        marker.className = `legend__marker ${item.shape ? `legend__marker--${item.shape}` : ''}`.trim();
+        marker.className =
+          `legend__marker ${item.shape ? `legend__marker--${item.shape}` : ''}`.trim();
         marker.style.backgroundColor = item.color || 'currentColor';
         if (item.stroke) {
           marker.style.borderColor = item.stroke;

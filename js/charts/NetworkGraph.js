@@ -24,8 +24,8 @@ class NetworkGraph extends BaseChart {
 
     this._prepareData();
 
-    const nodeCounts = this.nodes.map(node => node.count);
-    const linkCounts = this.links.map(link => link.count);
+    const nodeCounts = this.nodes.map((node) => node.count);
+    const linkCounts = this.links.map((link) => link.count);
 
     const nodeExtent = nodeCounts.length > 0 ? d3.extent(nodeCounts) : [1, 1];
     if (nodeExtent[0] === nodeExtent[1]) {
@@ -76,9 +76,9 @@ class NetworkGraph extends BaseChart {
 
     this.nodes = Array.from(productIndex.entries())
       .map(([name, ids]) => ({ id: name, name, count: ids.length }))
-      .filter(node => node.count >= 2);
+      .filter((node) => node.count >= 2);
 
-    const nodeSet = new Set(this.nodes.map(node => node.id));
+    const nodeSet = new Set(this.nodes.map((node) => node.id));
 
     this.links = Array.from(cooccurrence.entries())
       .filter(([, count]) => count >= minCount)
@@ -86,13 +86,13 @@ class NetworkGraph extends BaseChart {
         const [source, target] = key.split('|');
         return { source, target, count };
       })
-      .filter(link => nodeSet.has(link.source) && nodeSet.has(link.target));
+      .filter((link) => nodeSet.has(link.source) && nodeSet.has(link.target));
 
     if (this.options.maxNodes && this.nodes.length > this.options.maxNodes) {
       this.nodes = this.nodes.sort((a, b) => b.count - a.count).slice(0, this.options.maxNodes);
-      const allowed = new Set(this.nodes.map(node => node.id));
+      const allowed = new Set(this.nodes.map((node) => node.id));
       this.links = this.links.filter(
-        link => allowed.has(link.source) && allowed.has(link.target),
+        (link) => allowed.has(link.source) && allowed.has(link.target),
       );
     }
   }
@@ -100,12 +100,12 @@ class NetworkGraph extends BaseChart {
   _buildProductIndexFromData() {
     const index = new Map();
 
-    this.data.forEach(item => {
+    this.data.forEach((item) => {
       if (!item?.Products) return;
       Object.values(item.Products)
         .filter(Array.isArray)
         .flat()
-        .forEach(product => {
+        .forEach((product) => {
           const list = index.get(product) || [];
           list.push(item.Location_ID);
           index.set(product, list);
@@ -118,12 +118,12 @@ class NetworkGraph extends BaseChart {
   _buildCooccurrenceFromData(productIndex) {
     const coMap = new Map();
 
-    this.data.forEach(item => {
+    this.data.forEach((item) => {
       if (!item?.Products) return;
       const products = Object.values(item.Products)
         .filter(Array.isArray)
         .flat()
-        .filter(product => productIndex.has(product));
+        .filter((product) => productIndex.has(product));
 
       for (let i = 0; i < products.length; i += 1) {
         for (let j = i + 1; j < products.length; j += 1) {
@@ -139,31 +139,31 @@ class NetworkGraph extends BaseChart {
   _renderLinks() {
     this.linkElements = this.chartGroup
       .selectAll('.network-link')
-      .data(this.links, d => `${d.source}-${d.target}`)
+      .data(this.links, (d) => `${d.source}-${d.target}`)
       .join('line')
       .attr('class', 'network-link')
-      .attr('stroke-width', d => this.linkWidthScale(d.count))
+      .attr('stroke-width', (d) => this.linkWidthScale(d.count))
       .attr('stroke', 'rgba(52, 73, 94, 0.35)');
   }
 
   _renderNodes() {
     this.nodeElements = this.chartGroup
       .selectAll('.network-node')
-      .data(this.nodes, d => d.id)
+      .data(this.nodes, (d) => d.id)
       .join(
-        enter => {
+        (enter) => {
           const group = enter.append('g').attr('class', 'network-node');
           group.append('circle');
           group.append('text');
           return group;
         },
-        update => update,
-        exit => exit.remove(),
+        (update) => update,
+        (exit) => exit.remove(),
       );
 
     this.nodeElements
       .select('circle')
-      .attr('r', d => this.sizeScale(d.count))
+      .attr('r', (d) => this.sizeScale(d.count))
       .attr('fill', COLORS.theme.primary)
       .attr('stroke', '#fff')
       .attr('stroke-width', 1.2);
@@ -172,8 +172,8 @@ class NetworkGraph extends BaseChart {
       .select('text')
       .attr('class', 'network-label')
       .attr('text-anchor', 'middle')
-      .attr('dy', d => this.sizeScale(d.count) + 12)
-      .text(d => d.name);
+      .attr('dy', (d) => this.sizeScale(d.count) + 12)
+      .text((d) => d.name);
 
     this.nodeElements
       .on('mouseenter', (event, node) => {
@@ -206,7 +206,7 @@ class NetworkGraph extends BaseChart {
         'link',
         d3
           .forceLink(this.links)
-          .id(d => d.id)
+          .id((d) => d.id)
           .distance(() => 40)
           .strength(this.options.linkStrength),
       )
@@ -214,19 +214,19 @@ class NetworkGraph extends BaseChart {
       .force('center', d3.forceCenter(this.width / 2, this.height / 2))
       .force(
         'collision',
-        d3.forceCollide().radius(node => this.sizeScale(node.count) + 6),
+        d3.forceCollide().radius((node) => this.sizeScale(node.count) + 6),
       )
       .on('tick', () => this._tick());
   }
 
   _tick() {
     this.linkElements
-      ?.attr('x1', d => (typeof d.source === 'object' ? d.source.x : 0))
-      .attr('y1', d => (typeof d.source === 'object' ? d.source.y : 0))
-      .attr('x2', d => (typeof d.target === 'object' ? d.target.x : 0))
-      .attr('y2', d => (typeof d.target === 'object' ? d.target.y : 0));
+      ?.attr('x1', (d) => (typeof d.source === 'object' ? d.source.x : 0))
+      .attr('y1', (d) => (typeof d.source === 'object' ? d.source.y : 0))
+      .attr('x2', (d) => (typeof d.target === 'object' ? d.target.x : 0))
+      .attr('y2', (d) => (typeof d.target === 'object' ? d.target.y : 0));
 
-    this.nodeElements?.attr('transform', d => `translate(${d.x},${d.y})`);
+    this.nodeElements?.attr('transform', (d) => `translate(${d.x},${d.y})`);
   }
 
   _dragStarted(event, node) {
@@ -248,17 +248,17 @@ class NetworkGraph extends BaseChart {
 
   _highlightConnected(node) {
     const connected = new Set([node.id]);
-    this.links.forEach(link => {
+    this.links.forEach((link) => {
       const sourceId = link.source.id || link.source;
       const targetId = link.target.id || link.target;
       if (sourceId === node.id) connected.add(targetId);
       if (targetId === node.id) connected.add(sourceId);
     });
 
-    this.nodeElements.classed('is-dimmed', datum => !connected.has(datum.id));
+    this.nodeElements.classed('is-dimmed', (datum) => !connected.has(datum.id));
     this.linkElements.classed(
       'is-dimmed',
-      link => link.source.id !== node.id && link.target.id !== node.id,
+      (link) => link.source.id !== node.id && link.target.id !== node.id,
     );
   }
 
@@ -281,15 +281,12 @@ class NetworkGraph extends BaseChart {
 
   highlight(productNames = []) {
     const nameSet = new Set(productNames || []);
-    this.nodeElements?.classed('is-highlighted', node => nameSet.has(node.name));
-    this.linkElements?.classed(
-      'is-highlighted',
-      link => {
-        const sourceId = link.source.id || link.source;
-        const targetId = link.target.id || link.target;
-        return nameSet.has(sourceId) || nameSet.has(targetId);
-      },
-    );
+    this.nodeElements?.classed('is-highlighted', (node) => nameSet.has(node.name));
+    this.linkElements?.classed('is-highlighted', (link) => {
+      const sourceId = link.source.id || link.source;
+      const targetId = link.target.id || link.target;
+      return nameSet.has(sourceId) || nameSet.has(targetId);
+    });
   }
 
   clearHighlight() {

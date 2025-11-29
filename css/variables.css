@@ -4,7 +4,8 @@
  */
 
 :root {
-  /* 主题色（唐风配色） */
+  /* ===== 主题色（唐风配色） ===== */
+
   --color-primary: #c0392b; /* 朱红 */
   --color-primary-light: #e74c3c;
   --color-primary-dark: #922b21;
@@ -50,9 +51,15 @@
 
   /* 布局尺寸 */
   --header-height: 72px;
+  --footer-height: 48px;
   --sidebar-width: 320px;
   --aside-width: 360px;
+
+  /* 层级 */
+  --z-dropdown: 100;
   --z-tooltip: 200;
+  --z-modal: 300;
+  --z-notification: 400;
 
   /* 间距系统 */
   --spacing-xs: 4px;
@@ -68,12 +75,42 @@
     'Microsoft YaHei', sans-serif;
   --font-family-serif: 'Songti SC', 'STSong', 'SimSun', serif;
   --font-family-mono: 'SF Mono', 'Fira Code', Consolas, monospace;
+
   --font-size-xs: 12px;
   --font-size-sm: 14px;
   --font-size-md: 16px;
   --font-size-lg: 20px;
   --font-size-xl: 24px;
+  --font-size-2xl: 32px;
+
   --font-weight-normal: 400;
   --font-weight-medium: 500;
   --font-weight-bold: 600;
+
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+
+  /* 圆角 */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --radius-full: 9999px;
+
+  /* 阴影 */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+
+  /* 过渡 */
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
+  --transition-slow: 350ms ease;
+
+  /* 响应式断点 */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
 }

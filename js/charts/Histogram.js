@@ -19,8 +19,8 @@ class Histogram extends BaseChart {
 
   _setupScales() {
     this.valueData = this.data
-      .map(item => ({ id: item.Location_ID, value: item[this.options.field] }))
-      .filter(item => Number.isFinite(item.value));
+      .map((item) => ({ id: item.Location_ID, value: item[this.options.field] }))
+      .filter((item) => Number.isFinite(item.value));
 
     if (this.valueData.length === 0) {
       this.bins = [];
@@ -29,10 +29,10 @@ class Histogram extends BaseChart {
       return;
     }
 
-    const extent = d3.extent(this.valueData, d => d.value);
+    const extent = d3.extent(this.valueData, (d) => d.value);
     const binGenerator = d3
       .bin()
-      .value(d => d.value)
+      .value((d) => d.value)
       .domain(extent)
       .thresholds(this.options.bins);
 
@@ -46,7 +46,7 @@ class Histogram extends BaseChart {
 
     this.yScale = d3
       .scaleLinear()
-      .domain([0, d3.max(this.bins, bin => bin.length) || 1])
+      .domain([0, d3.max(this.bins, (bin) => bin.length) || 1])
       .range([this.height, 0])
       .nice();
   }
@@ -123,34 +123,34 @@ class Histogram extends BaseChart {
 
     this.bars = this.chartGroup
       .selectAll('.bar')
-      .data(this.bins, bin => `${bin.x0}-${bin.x1}`)
+      .data(this.bins, (bin) => `${bin.x0}-${bin.x1}`)
       .join(
-        enter =>
+        (enter) =>
           enter
             .append('rect')
             .attr('class', 'bar')
-            .attr('x', bin => this.xScale(bin.x0) + 1)
+            .attr('x', (bin) => this.xScale(bin.x0) + 1)
             .attr('y', this.height)
             .attr('width', barWidth)
             .attr('height', 0)
-            .call(enterSelection =>
+            .call((enterSelection) =>
               enterSelection
                 .transition()
                 .duration(this.options.animationDuration)
-                .attr('y', bin => this.yScale(bin.length))
-                .attr('height', bin => this.height - this.yScale(bin.length)),
+                .attr('y', (bin) => this.yScale(bin.length))
+                .attr('height', (bin) => this.height - this.yScale(bin.length)),
             ),
-        update =>
-          update.call(updateSelection =>
+        (update) =>
+          update.call((updateSelection) =>
             updateSelection
               .transition()
               .duration(this.options.animationDuration)
-              .attr('x', bin => this.xScale(bin.x0) + 1)
-              .attr('y', bin => this.yScale(bin.length))
+              .attr('x', (bin) => this.xScale(bin.x0) + 1)
+              .attr('y', (bin) => this.yScale(bin.length))
               .attr('width', barWidth)
-              .attr('height', bin => this.height - this.yScale(bin.length)),
+              .attr('height', (bin) => this.height - this.yScale(bin.length)),
           ),
-        exit => exit.remove(),
+        (exit) => exit.remove(),
       );
 
     this.bars
@@ -158,7 +158,7 @@ class Histogram extends BaseChart {
         d3.select(event.currentTarget).classed('is-hovered', true);
         Tooltip.show(event, this._buildTooltip(bin));
       })
-      .on('mouseleave', event => {
+      .on('mouseleave', (event) => {
         d3.select(event.currentTarget).classed('is-hovered', false);
         Tooltip.hide();
       });
@@ -173,8 +173,8 @@ class Histogram extends BaseChart {
         [0, 0],
         [this.width, this.height],
       ])
-      .on('brush', event => this._handleBrush(event))
-      .on('end', event => this._handleBrushEnd(event));
+      .on('brush', (event) => this._handleBrush(event))
+      .on('end', (event) => this._handleBrushEnd(event));
 
     this.brushBehavior = brush;
     this.brushGroup = this.chartGroup
@@ -191,7 +191,7 @@ class Histogram extends BaseChart {
       return;
     }
     const [x0, x1] = event.selection.map(this.xScale.invert);
-    this.bars.classed('is-selected', bin => bin.x0 >= x0 && bin.x1 <= x1);
+    this.bars.classed('is-selected', (bin) => bin.x0 >= x0 && bin.x1 <= x1);
   }
 
   _handleBrushEnd(event) {
@@ -203,18 +203,15 @@ class Histogram extends BaseChart {
 
     const [x0, x1] = event.selection.map(this.xScale.invert);
     const selectedIds = this.valueData
-      .filter(item => item.value >= x0 && item.value <= x1)
-      .map(item => item.id);
+      .filter((item) => item.value >= x0 && item.value <= x1)
+      .map((item) => item.id);
 
     this._emitSelection(selectedIds, [x0, x1]);
   }
 
   _emitSelection(ids, range) {
     this.options.onBrush?.(ids, range);
-    eventBus.emit(
-      EVENTS.HOUSEHOLD_RANGE_CHANGE,
-      range ? { ids, range } : null,
-    );
+    eventBus.emit(EVENTS.HOUSEHOLD_RANGE_CHANGE, range ? { ids, range } : null);
   }
 
   _buildTooltip(bin) {
@@ -234,7 +231,7 @@ class Histogram extends BaseChart {
     const idSet = new Set(ids || []);
     this.bars.classed(
       'is-highlighted',
-      bin => bin.some(item => idSet.has(item.id)) && idSet.size > 0,
+      (bin) => bin.some((item) => idSet.has(item.id)) && idSet.size > 0,
     );
   }
 

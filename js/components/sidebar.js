@@ -2,7 +2,12 @@
 
 import { FilterPanel } from './filter.js';
 import { Legend } from './legend.js';
-import { formatHouseholdSize, formatHouseholds, formatPopulation, Format } from '../utils/format.js';
+import {
+  formatHouseholdSize,
+  formatHouseholds,
+  formatPopulation,
+  Format,
+} from '../utils/format.js';
 
 function resolveContainer(target) {
   if (!target) return null;
@@ -49,7 +54,7 @@ export class Sidebar {
     this.filterPanel = new FilterPanel(filterContainer, {
       daoOptions: payload.daoOptions || [],
       productTypeOptions: payload.productTypes || [],
-      onChange: filters => this.options.onFilterChange?.(filters),
+      onChange: (filters) => this.options.onFilterChange?.(filters),
       onReset: () => this.options.onResetFilters?.(),
     });
     this.filterPanel.render(payload.filters);
@@ -85,7 +90,9 @@ export class Sidebar {
     const merged = { ...defaults, ...(stats || {}) };
 
     if (this.metricRefs.totalLocations) {
-      this.metricRefs.totalLocations.textContent = Format.number(merged.totalLocations, { fallback: '0' });
+      this.metricRefs.totalLocations.textContent = Format.number(merged.totalLocations, {
+        fallback: '0',
+      });
     }
     if (this.metricRefs.totalPopulation) {
       this.metricRefs.totalPopulation.textContent = formatPopulation(merged.totalPopulation);
@@ -94,13 +101,18 @@ export class Sidebar {
       this.metricRefs.totalHouseholds.textContent = formatHouseholds(merged.totalHouseholds);
     }
     if (this.metricRefs.averageHouseholdSize) {
-      this.metricRefs.averageHouseholdSize.textContent = formatHouseholdSize(merged.averageHouseholdSize);
+      this.metricRefs.averageHouseholdSize.textContent = formatHouseholdSize(
+        merged.averageHouseholdSize,
+      );
     }
     if (this.metricRefs.averageProductRichness) {
-      this.metricRefs.averageProductRichness.textContent = Format.number(merged.averageProductRichness, {
-        maximumFractionDigits: 1,
-        fallback: '-',
-      });
+      this.metricRefs.averageProductRichness.textContent = Format.number(
+        merged.averageProductRichness,
+        {
+          maximumFractionDigits: 1,
+          fallback: '-',
+        },
+      );
     }
   }
 
@@ -146,7 +158,7 @@ export class Sidebar {
       { key: 'averageProductRichness', label: '平均物产种类' },
     ];
 
-    metrics.forEach(metric => {
+    metrics.forEach((metric) => {
       const item = document.createElement('div');
       item.className = 'sidebar__metric';
 
@@ -189,7 +201,7 @@ export class Sidebar {
     const list = document.createElement('ul');
     list.className = 'sidebar__tip-list';
 
-    validTips.forEach(tip => {
+    validTips.forEach((tip) => {
       const item = document.createElement('li');
       item.textContent = tip;
       list.appendChild(item);

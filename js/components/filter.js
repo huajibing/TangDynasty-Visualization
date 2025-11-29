@@ -42,17 +42,13 @@ export class FilterPanel {
     this._suspend = true;
     const { daoIds = [], productTypes = [] } = filters;
 
-    this.container
-      ?.querySelectorAll('input[data-filter-type="dao"]')
-      ?.forEach(input => {
-        input.checked = daoIds.includes(input.value);
-      });
+    this.container?.querySelectorAll('input[data-filter-type="dao"]')?.forEach((input) => {
+      input.checked = daoIds.includes(input.value);
+    });
 
-    this.container
-      ?.querySelectorAll('input[data-filter-type="product"]')
-      ?.forEach(input => {
-        input.checked = productTypes.includes(input.value);
-      });
+    this.container?.querySelectorAll('input[data-filter-type="product"]')?.forEach((input) => {
+      input.checked = productTypes.includes(input.value);
+    });
 
     this._suspend = false;
   }
@@ -60,11 +56,11 @@ export class FilterPanel {
   getFilters() {
     const daoIds = Array.from(
       this.container?.querySelectorAll('input[data-filter-type="dao"]:checked') || [],
-    ).map(input => input.value);
+    ).map((input) => input.value);
 
     const productTypes = Array.from(
       this.container?.querySelectorAll('input[data-filter-type="product"]:checked') || [],
-    ).map(input => input.value);
+    ).map((input) => input.value);
 
     return { daoIds, productTypes };
   }
@@ -91,7 +87,7 @@ export class FilterPanel {
     const list = document.createElement('div');
     list.className = 'filter__options';
 
-    daoOptions.forEach(option => {
+    daoOptions.forEach((option) => {
       const item = document.createElement('label');
       item.className = 'filter__option';
       item.title = option.name || option.id;
@@ -137,7 +133,7 @@ export class FilterPanel {
     const list = document.createElement('div');
     list.className = 'filter__options';
 
-    productTypeOptions.forEach(type => {
+    productTypeOptions.forEach((type) => {
       const item = document.createElement('label');
       item.className = 'filter__option';
       item.title = type;
@@ -196,7 +192,7 @@ export class FilterPanel {
   }
 
   _cleanup() {
-    this._unsubscribers.forEach(fn => {
+    this._unsubscribers.forEach((fn) => {
       try {
         fn();
       } catch (error) {

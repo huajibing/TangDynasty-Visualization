@@ -43,7 +43,7 @@ export class AppState {
     const previous = this._state;
     this._state = nextState;
 
-    changedKeys.forEach(key => {
+    changedKeys.forEach((key) => {
       this._notify(key, this._state[key], previous[key]);
     });
 
@@ -79,12 +79,8 @@ export class AppState {
     merged.selectedLocationIds = Array.isArray(merged.selectedLocationIds)
       ? merged.selectedLocationIds
       : [];
-    merged.highlightedIds = Array.isArray(merged.highlightedIds)
-      ? merged.highlightedIds
-      : [];
-    merged.filters.daoIds = Array.isArray(merged.filters.daoIds)
-      ? merged.filters.daoIds
-      : [];
+    merged.highlightedIds = Array.isArray(merged.highlightedIds) ? merged.highlightedIds : [];
+    merged.filters.daoIds = Array.isArray(merged.filters.daoIds) ? merged.filters.daoIds : [];
     merged.filters.productTypes = Array.isArray(merged.filters.productTypes)
       ? merged.filters.productTypes
       : [];
@@ -93,7 +89,7 @@ export class AppState {
   }
 
   _diffKeys(prev, next) {
-    return Object.keys(next).filter(key => !this._isEqual(prev[key], next[key]));
+    return Object.keys(next).filter((key) => !this._isEqual(prev[key], next[key]));
   }
 
   _isEqual(a, b) {
@@ -122,7 +118,7 @@ export class AppState {
   _notify(key, next, prev) {
     const listeners = this._listeners.get(key);
     if (!listeners) return;
-    listeners.forEach(listener => {
+    listeners.forEach((listener) => {
       try {
         listener(next, prev);
       } catch (error) {

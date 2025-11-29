@@ -1,13 +1,31 @@
 /* 卡片容器基础样式 */
 
 .card {
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  padding: var(--spacing-md);
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
 }
 
 .card__title {
-  margin-bottom: var(--spacing-sm);
+  margin: 0 0 var(--spacing-sm) 0;
   font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+}
+
+.card__body {
+  padding: var(--spacing-md);
+}
+
+.card--map,
+.card--network {
+  padding: var(--spacing-md);
+}
+
+.card--row,
+.card--histogram,
+.card--scatter {
+  padding: var(--spacing-md);
 }

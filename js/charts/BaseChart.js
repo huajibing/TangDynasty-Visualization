@@ -9,9 +9,10 @@ class BaseChart {
     }
 
     this.selector = selector;
-    this.container = selector && typeof selector === 'object' && typeof selector.node === 'function'
-      ? selector
-      : d3.select(selector);
+    this.container =
+      selector && typeof selector === 'object' && typeof selector.node === 'function'
+        ? selector
+        : d3.select(selector);
     this.data = data || [];
     this.options = this._mergeOptions(options);
 

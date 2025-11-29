@@ -99,7 +99,7 @@ function initSidebar(context) {
   const legendSections = buildLegendSections(daoOptions);
 
   const sidebar = new Sidebar('.dashboard__sidebar', {
-    onFilterChange: filters => {
+    onFilterChange: (filters) => {
       const nextFilters = { ...context.state.get('filters'), ...filters };
       context.state.update({ filters: nextFilters });
     },
@@ -117,9 +117,12 @@ function initSidebar(context) {
     filters: context.state.get('filters'),
     stats: summarizeData(context.data),
     tips: [
-      '在直方图中框选户均人口区间，地图与散点图会同步高亮对应地点。',
-      '点击地图或散点图节点可锁定单个地点，再叠加物产筛选观察差异。',
-      '在网络图点击物产节点，查看相关地点在地图中的分布范围。',
+      '任务 1：在地图上观察不同颜色与圆点大小，识别人口高度集中的州府与稀疏地区。',
+      '任务 2：在直方图中框选户均人口 > 8 人的区间，查看这些异常地区在地图上的空间分布。',
+      '任务 3：在筛选器中切换不同道或物产类别，对比各区域的地理聚集性与经济特征。',
+      '任务 4：在网络图中点击某种物产（如「麝香」），观察相关地点在地图与散点图中的分布。',
+      '任务 5：在散点图中关注同一物产类别下，不同人口规模地区的物产丰富度差异。',
+      '任务 6：清空筛选后，结合散点图与地图，整体判断人口规模与物产种类之间是否存在正相关。',
     ],
   });
 
@@ -129,13 +132,11 @@ function initSidebar(context) {
 function bindEventBridges(context) {
   const { state } = context;
 
-  eventBus.on(EVENTS.LOCATION_SELECT, location => handleLocationSelect(context, location));
-  eventBus.on(EVENTS.HOUSEHOLD_RANGE_CHANGE, payload =>
-    handleHouseholdRange(context, payload),
-  );
-  eventBus.on(EVENTS.PRODUCT_SELECT, product => handleProductSelect(context, product));
+  eventBus.on(EVENTS.LOCATION_SELECT, (location) => handleLocationSelect(context, location));
+  eventBus.on(EVENTS.HOUSEHOLD_RANGE_CHANGE, (payload) => handleHouseholdRange(context, payload));
+  eventBus.on(EVENTS.PRODUCT_SELECT, (product) => handleProductSelect(context, product));
 
-  state.subscribe('filters', filters => {
+  state.subscribe('filters', (filters) => {
     // eslint-disable-next-line no-console
     console.debug('[App] filters updated', filters);
     applyFiltersAndRender(context, filters);
@@ -143,7 +144,7 @@ function bindEventBridges(context) {
 
   state.subscribe('highlightedIds', () => syncHighlights(context));
   state.subscribe('selectedLocationIds', () => syncHighlights(context));
-  state.subscribe('selectedProduct', product => {
+  state.subscribe('selectedProduct', (product) => {
     context.charts.network?.highlight(product ? [product] : []);
     syncHighlights(context);
   });
@@ -163,7 +164,7 @@ function handleLocationSelect(context, location) {
 
 function handleHouseholdRange(context, payload) {
   const range = payload?.range || null;
-  const ids = (payload?.ids || []).filter(id => getVisibleIdSet(context).has(id));
+  const ids = (payload?.ids || []).filter((id) => getVisibleIdSet(context).has(id));
   const nextFilters = { ...context.state.get('filters'), householdRange: range };
 
   context.state.update({
@@ -187,21 +188,23 @@ function applyFiltersAndRender(context, filters = {}) {
   updateChartsData(context, filtered);
   context.sidebar?.updateStats(summarizeData(filtered));
   context.sidebar?.updateFilters(filters);
-  const visibleIdSet = new Set(filtered.map(item => item.Location_ID));
+  const visibleIdSet = new Set(filtered.map((item) => item.Location_ID));
   const prevSelected = context.state.get('selectedLocationIds') || [];
   const prevHighlighted = context.state.get('highlightedIds') || [];
-  const selectedIds = prevSelected.filter(id => visibleIdSet.has(id));
-  const highlightedIds = prevHighlighted.filter(id => visibleIdSet.has(id));
+  const selectedIds = prevSelected.filter((id) => visibleIdSet.has(id));
+  const highlightedIds = prevHighlighted.filter((id) => visibleIdSet.has(id));
 
-  if (selectedIds.length !== prevSelected.length || highlightedIds.length !== prevHighlighted.length) {
+  if (
+    selectedIds.length !== prevSelected.length ||
+    highlightedIds.length !== prevHighlighted.length
+  ) {
     context.state.update({
       selectedLocationIds: selectedIds,
       highlightedIds,
     });
   }
 
-  const statusMessage =
-    filtered.length === 0 ? '当前筛选条件下暂无匹配地点' : '';
+  const statusMessage = filtered.length === 0 ? '当前筛选条件下暂无匹配地点' : '';
   context.sidebar?.setStatus(statusMessage);
   if (filtered.length === 0) {
     context.charts.histogram?.clearBrush?.();
@@ -256,7 +259,7 @@ function computeActiveHighlightIds(context) {
     ids = idsWithinRange(context.filteredData, filters.householdRange);
   }
 
-  const combined = [...new Set([...ids, ...selectedIds])].filter(id => visibleIds.has(id));
+  const combined = [...new Set([...ids, ...selectedIds])].filter((id) => visibleIds.has(id));
   return combined;
 }
 
@@ -264,14 +267,14 @@ function filterData(data, filters = {}) {
   const daoSet = new Set(filters.daoIds || []);
   const productTypeSet = new Set(filters.productTypes || []);
 
-  return (data || []).filter(item => {
+  return (data || []).filter((item) => {
     if (daoSet.size > 0) {
       const daoId = getDaoId(item);
       if (!daoId || !daoSet.has(daoId)) return false;
     }
 
     if (productTypeSet.size > 0) {
-      const hasType = Array.from(productTypeSet).some(type => {
+      const hasType = Array.from(productTypeSet).some((type) => {
         const list = item?.Products?.[type];
         return Array.isArray(list) && list.length > 0;
       });
@@ -290,7 +293,7 @@ function getDaoId(item) {
 
 function buildDaoOptions(indices) {
   const list = indices?.locationsByLevel?.get('道') || [];
-  return list.map(dao => ({
+  return list.map((dao) => ({
     id: dao.Location_ID,
     name: dao.Location_Name,
     count: indices?.locationsByDao?.get(dao.Location_ID)?.length || 0,
@@ -300,7 +303,7 @@ function buildDaoOptions(indices) {
 function buildLegendSections(daoOptions = []) {
   const daoItems =
     daoOptions.length > 0
-      ? daoOptions.map(dao => ({
+      ? daoOptions.map((dao) => ({
           label: dao.name || dao.id,
           color: getDaoColor(dao.id),
         }))
@@ -312,7 +315,7 @@ function buildLegendSections(daoOptions = []) {
   return [
     {
       title: '物产类别',
-      items: PRODUCT_TYPE_KEYS.map(type => ({
+      items: PRODUCT_TYPE_KEYS.map((type) => ({
         label: type,
         color: getProductTypeColor(type),
       })),
@@ -345,7 +348,7 @@ function summarizeData(data = []) {
   let productRichnessSum = 0;
   let productRichnessCount = 0;
 
-  data.forEach(item => {
+  data.forEach((item) => {
     if (Number.isFinite(item.Population)) {
       summary.totalPopulation += item.Population;
     }
@@ -372,7 +375,7 @@ function summarizeData(data = []) {
 }
 
 function getVisibleIdSet(context) {
-  return new Set((context.filteredData || context.data || []).map(item => item.Location_ID));
+  return new Set((context.filteredData || context.data || []).map((item) => item.Location_ID));
 }
 
 function idsWithinRange(data = [], range = null) {
@@ -380,17 +383,19 @@ function idsWithinRange(data = [], range = null) {
   const [min, max] = range;
   return data
     .filter(
-      item =>
-        Number.isFinite(item.householdSize) && item.householdSize >= min && item.householdSize <= max,
+      (item) =>
+        Number.isFinite(item.householdSize) &&
+        item.householdSize >= min &&
+        item.householdSize <= max,
     )
-    .map(item => item.Location_ID);
+    .map((item) => item.Location_ID);
 }
 
 function getProductHighlightIds(context, productName) {
   if (!productName) return [];
   const visibleIds = getVisibleIdSet(context);
   const related = DataQuery.getByProduct(productName) || [];
-  return related.map(item => item.Location_ID).filter(id => visibleIds.has(id));
+  return related.map((item) => item.Location_ID).filter((id) => visibleIds.has(id));
 }
 
 if (document.readyState === 'loading') {

@@ -37,7 +37,11 @@ function normalizeExtent(extent, { positive = false, fallback = [0, 1] } = {}) {
   return [min, max];
 }
 
-export function createLinearScale(domain, range = DEFAULT_RANGE, { nice = true, clamp = false } = {}) {
+export function createLinearScale(
+  domain,
+  range = DEFAULT_RANGE,
+  { nice = true, clamp = false } = {},
+) {
   const d3Ref = ensureD3();
   const safeDomain = normalizeExtent(domain);
   const scale = d3Ref.scaleLinear().domain(safeDomain).range(range);
@@ -84,13 +88,13 @@ export function createPopulationRadiusScale(domain, range = DEFAULT_RADIUS_RANGE
 export function createProductTypeColorScale(domain = PRODUCT_TYPE_KEYS) {
   const d3Ref = ensureD3();
   const safeDomain = Array.isArray(domain) && domain.length > 0 ? domain : PRODUCT_TYPE_KEYS;
-  const colors = safeDomain.map(key => COLORS.productTypes[key] || COLORS.theme.secondary);
+  const colors = safeDomain.map((key) => COLORS.productTypes[key] || COLORS.theme.secondary);
   return d3Ref.scaleOrdinal().domain(safeDomain).range(colors);
 }
 
 export function createDaoColorScale(domain = Object.keys(COLORS.daos)) {
   const d3Ref = ensureD3();
   const safeDomain = Array.isArray(domain) && domain.length > 0 ? domain : Object.keys(COLORS.daos);
-  const colors = safeDomain.map(key => COLORS.daos[key] || COLORS.theme.primary);
+  const colors = safeDomain.map((key) => COLORS.daos[key] || COLORS.theme.primary);
   return d3Ref.scaleOrdinal().domain(safeDomain).range(colors);
 }

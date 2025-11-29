@@ -27,9 +27,9 @@ const DataProcessor = {
   mergeData(rawData) {
     const locationList = rawData?.locations?.locations || [];
     const productList = rawData?.products?.population_products || [];
-    const productMap = new Map(productList.map(item => [item.Location_ID, item]));
+    const productMap = new Map(productList.map((item) => [item.Location_ID, item]));
 
-    return locationList.map(loc => {
+    return locationList.map((loc) => {
       const productEntry = productMap.get(loc.Location_ID);
       const merged = {
         ...loc,
@@ -47,14 +47,14 @@ const DataProcessor = {
   },
 
   computeDerivedFields(data) {
-    const locationMap = new Map(data.map(item => [item.Location_ID, item]));
+    const locationMap = new Map(data.map((item) => [item.Location_ID, item]));
     const daoNameById = new Map(
       data
-        .filter(item => item.Administrative_Level === '道')
-        .map(item => [item.Location_ID, item.Location_Name])
+        .filter((item) => item.Administrative_Level === '道')
+        .map((item) => [item.Location_ID, item.Location_Name]),
     );
 
-    return data.map(item => {
+    return data.map((item) => {
       const householdSize = this.computeHouseholdSize(item);
       const productRichness = this.countProducts(item.Products);
       const dominantProductType = this.getDominantType(item.Products);
@@ -85,7 +85,7 @@ const DataProcessor = {
       productTypeCount: new Map(),
     };
 
-    data.forEach(item => {
+    data.forEach((item) => {
       if (Number.isFinite(item.Population)) {
         stats.totalPopulation += item.Population;
         this.updateExtent(stats.populationExtent, item.Population);
@@ -117,7 +117,7 @@ const DataProcessor = {
           const typeTotal = stats.productTypeCount.get(type) || 0;
           stats.productTypeCount.set(type, typeTotal + items.length);
 
-          items.forEach(product => {
+          items.forEach((product) => {
             const current = stats.productFrequency.get(product) || 0;
             stats.productFrequency.set(product, current + 1);
           });
@@ -142,7 +142,7 @@ const DataProcessor = {
       productCooccurrence: new Map(),
     };
 
-    data.forEach(item => {
+    data.forEach((item) => {
       indices.locationById.set(item.Location_ID, item);
 
       const levelList = indices.locationsByLevel.get(item.Administrative_Level) || [];
@@ -157,11 +157,9 @@ const DataProcessor = {
       }
 
       if (!item.Products) return;
-      const allProducts = Object.values(item.Products)
-        .filter(Array.isArray)
-        .flat();
+      const allProducts = Object.values(item.Products).filter(Array.isArray).flat();
 
-      allProducts.forEach(product => {
+      allProducts.forEach((product) => {
         const locations = indices.productIndex.get(product) || [];
         locations.push(item.Location_ID);
         indices.productIndex.set(product, locations);
@@ -181,9 +179,9 @@ const DataProcessor = {
 
   normalizeProducts(products) {
     const emptyProducts = {
-      '农产品': [],
-      '纺织品': [],
-      '药材': [],
+      农产品: [],
+      纺织品: [],
+      药材: [],
       '矿产/金属': [],
       '畜产品/土特产': [],
       '其他/待分类': [],

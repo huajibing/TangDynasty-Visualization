@@ -19,7 +19,7 @@ class EventBus {
 
   once(event, callback) {
     if (!event || typeof callback !== 'function') return () => {};
-    const wrapper = payload => {
+    const wrapper = (payload) => {
       callback(payload);
       this.off(event, wrapper);
     };
@@ -45,7 +45,7 @@ class EventBus {
     const listeners = this.events.get(event);
     if (!listeners || listeners.size === 0) return;
 
-    listeners.forEach(listener => {
+    listeners.forEach((listener) => {
       try {
         listener(payload);
       } catch (error) {

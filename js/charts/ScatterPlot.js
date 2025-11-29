@@ -28,11 +28,11 @@ class ScatterPlot extends BaseChart {
     const { xField, yField } = this.options;
 
     this.validData = this.data.filter(
-      d => Number.isFinite(d[xField]) && Number.isFinite(d[yField]),
+      (d) => Number.isFinite(d[xField]) && Number.isFinite(d[yField]),
     );
 
-    const xValues = this.validData.map(d => d[xField]);
-    const yValues = this.validData.map(d => d[yField]);
+    const xValues = this.validData.map((d) => d[xField]);
+    const yValues = this.validData.map((d) => d[yField]);
 
     const xExtent = xValues.length > 0 ? d3.extent(xValues) : [1, 10];
     const yExtent = yValues.length > 0 ? d3.extent(yValues) : [0, 10];
@@ -119,34 +119,34 @@ class ScatterPlot extends BaseChart {
 
     this.points = this.chartGroup
       .selectAll('.scatter-point')
-      .data(this.validData, d => d.Location_ID)
+      .data(this.validData, (d) => d.Location_ID)
       .join(
-        enter =>
+        (enter) =>
           enter
             .append('circle')
             .attr('class', 'scatter-point')
-            .attr('cx', d => this.xScale(d[xField]))
-            .attr('cy', d => this.yScale(d[yField]))
+            .attr('cx', (d) => this.xScale(d[xField]))
+            .attr('cy', (d) => this.yScale(d[yField]))
             .attr('r', 0)
-            .attr('fill', d => this.colorScale(d[colorField]))
+            .attr('fill', (d) => this.colorScale(d[colorField]))
             .attr('opacity', 0.9)
-            .call(enterSelection =>
+            .call((enterSelection) =>
               enterSelection
                 .transition()
                 .duration(this.options.animationDuration)
                 .attr('r', pointRadius),
             ),
-        update =>
-          update.call(updateSelection =>
+        (update) =>
+          update.call((updateSelection) =>
             updateSelection
               .transition()
               .duration(this.options.animationDuration)
-              .attr('cx', d => this.xScale(d[xField]))
-              .attr('cy', d => this.yScale(d[yField]))
-              .attr('fill', d => this.colorScale(d[colorField])),
+              .attr('cx', (d) => this.xScale(d[xField]))
+              .attr('cy', (d) => this.yScale(d[yField]))
+              .attr('fill', (d) => this.colorScale(d[colorField])),
           ),
-        exit =>
-          exit.call(exitSelection =>
+        (exit) =>
+          exit.call((exitSelection) =>
             exitSelection
               .transition()
               .duration(this.options.animationDuration)
@@ -165,7 +165,7 @@ class ScatterPlot extends BaseChart {
         eventBus.emit(EVENTS.LOCATION_HOVER, d);
         this.options.onHover?.(d);
       })
-      .on('mouseleave', event => {
+      .on('mouseleave', (event) => {
         d3.select(event.currentTarget).classed('is-hovered', false).attr('r', pointRadius);
         Tooltip.hide();
         eventBus.emit(EVENTS.LOCATION_HOVER, null);
@@ -196,22 +196,22 @@ class ScatterPlot extends BaseChart {
 
     legendItems
       .selectAll('rect')
-      .data(d => [d])
+      .data((d) => [d])
       .join('rect')
       .attr('width', 12)
       .attr('height', 12)
       .attr('rx', 2)
       .attr('ry', 2)
-      .attr('fill', d => this.colorScale(d));
+      .attr('fill', (d) => this.colorScale(d));
 
     legendItems
       .selectAll('text')
-      .data(d => [d])
+      .data((d) => [d])
       .join('text')
       .attr('x', 18)
       .attr('y', 10)
       .attr('class', 'scatter-legend__label')
-      .text(d => d);
+      .text((d) => d);
   }
 
   _formatTooltip(datum) {
@@ -226,8 +226,8 @@ class ScatterPlot extends BaseChart {
   highlight(ids = []) {
     const idSet = new Set(ids || []);
     this.points
-      ?.classed('is-highlighted', d => idSet.has(d.Location_ID))
-      .classed('is-dimmed', d => idSet.size > 0 && !idSet.has(d.Location_ID));
+      ?.classed('is-highlighted', (d) => idSet.has(d.Location_ID))
+      .classed('is-dimmed', (d) => idSet.size > 0 && !idSet.has(d.Location_ID));
   }
 
   clearHighlight() {

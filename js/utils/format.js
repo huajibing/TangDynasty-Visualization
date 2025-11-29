@@ -20,13 +20,18 @@ function escapeHtml(value) {
     .replace(/'/g, '&#39;');
 }
 
-export function formatNumber(value, { minimumFractionDigits, maximumFractionDigits, fallback } = {}) {
+export function formatNumber(
+  value,
+  { minimumFractionDigits, maximumFractionDigits, fallback } = {},
+) {
   if (!isValidNumber(value)) return fallback ?? DEFAULT_FALLBACK;
 
   const hasFraction = minimumFractionDigits !== undefined || maximumFractionDigits !== undefined;
   const formatter = new Intl.NumberFormat('zh-CN', {
     minimumFractionDigits,
-    maximumFractionDigits: hasFraction ? maximumFractionDigits ?? minimumFractionDigits : undefined,
+    maximumFractionDigits: hasFraction
+      ? (maximumFractionDigits ?? minimumFractionDigits)
+      : undefined,
   });
 
   return formatter.format(value);
@@ -53,7 +58,10 @@ export function formatPopulation(value, options = {}) {
     return formatWan(value, '万人', { digits: options.digits ?? 1, fallback });
   }
 
-  const formatted = formatNumber(value, { maximumFractionDigits: options.maxDecimals ?? 0, fallback });
+  const formatted = formatNumber(value, {
+    maximumFractionDigits: options.maxDecimals ?? 0,
+    fallback,
+  });
   return `${formatted}人`;
 }
 
@@ -65,7 +73,10 @@ export function formatHouseholds(value, options = {}) {
     return formatWan(value, '万户', { digits: options.digits ?? 1, fallback });
   }
 
-  const formatted = formatNumber(value, { maximumFractionDigits: options.maxDecimals ?? 0, fallback });
+  const formatted = formatNumber(value, {
+    maximumFractionDigits: options.maxDecimals ?? 0,
+    fallback,
+  });
   return `${formatted}户`;
 }
 
@@ -83,8 +94,8 @@ export function formatHouseholdSize(value, options = {}) {
 export function buildTooltipContent(title, rows = []) {
   const header = title ? `<div class="tooltip__title">${escapeHtml(title)}</div>` : '';
   const contentRows = rows
-    .filter(row => row && row.value !== undefined && row.value !== null && row.value !== '')
-    .map(row => {
+    .filter((row) => row && row.value !== undefined && row.value !== null && row.value !== '')
+    .map((row) => {
       return `
         <div class="tooltip__row">
           <span class="tooltip__label">${escapeHtml(row.label)}</span>
