@@ -297,7 +297,6 @@ function buildDaoOptions(indices) {
   }));
 }
 
-function buildLegendSections() {
 function buildLegendSections(daoOptions = []) {
   const daoItems =
     daoOptions.length > 0
