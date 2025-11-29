@@ -67,6 +67,18 @@ class NetworkGraph extends BaseChart {
     this._bindBackgroundClick();
   }
 
+  /**
+   * 面板尺寸变化时的自适应处理：
+   * 仅根据最新容器尺寸更新 SVG 与视口居中，不重新构建数据。
+   */
+  resize() {
+    // 更新内部宽高与 SVG 尺寸
+    this._setupDimensions();
+    this._updateSvgSize();
+    // 基于当前节点位置重新计算合适的缩放与居中
+    this._centerAfterSimulation();
+  }
+
   _ensureLayers() {
     // graphLayer 作为缩放/平移的根节点，内部再分别挂载连线与节点层
     this.graphLayer = this.chartGroup

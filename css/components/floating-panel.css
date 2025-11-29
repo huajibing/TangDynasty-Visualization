@@ -260,8 +260,8 @@
 .floating-panel--network {
   bottom: 60px;
   right: 80px;
-  width: 400px;
-  height: 400px;
+  width: clamp(320px, 32vw, 640px);
+  height: clamp(280px, 40vh, 640px);
 }
 
 /* ===== 悬浮底部栏 ===== */
@@ -418,14 +418,12 @@
   }
 
   .floating-panel--histogram,
-  .floating-panel--scatter,
-  .floating-panel--network {
+  .floating-panel--scatter {
     width: 340px;
     height: 280px;
   }
 
   .floating-panel--network {
     right: 70px;
-    height: 340px;
   }
 }
