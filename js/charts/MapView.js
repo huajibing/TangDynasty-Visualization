@@ -32,6 +32,7 @@ class MapView extends BaseChart {
       minZoom: 0.85,
       maxZoom: 8,
       pointOpacity: 0.88,
+      boundaryStrokeWidth: 1,
     };
   }
 
@@ -86,16 +87,24 @@ class MapView extends BaseChart {
       return;
     }
 
+    // 只渲染多边形类型的 features
+    const polygonFeatures = features.filter(f => {
+      const type = f?.geometry?.type;
+      return type === 'Polygon' || type === 'MultiPolygon';
+    });
+
     const paths = this.boundaryLayer
       .selectAll('.map__boundary')
-      .data(features, d => d?.properties?.code || d?.id || d?.properties?.name || Math.random())
+      .data(polygonFeatures, d => d?.properties?.code || d?.id || d?.properties?.name || Math.random())
       .join('path')
       .attr('class', 'map__boundary')
-      .attr('d', feature => this.pathGenerator(feature));
+      .attr('d', d => this.pathGenerator(d))
+      .style('stroke-width', `${this.options.boundaryStrokeWidth}px`);
 
     // 当边界计算结果异常时，提供调试提示
     const hasVisibleBoundary = paths.size() > 0;
     if (!hasVisibleBoundary) {
+      // eslint-disable-next-line no-console
       console.warn('[MapView] 边界未渲染，geoData 可能格式异常');
     }
   }
@@ -209,15 +218,30 @@ class MapView extends BaseChart {
     const featureCollection = this.options.geoData;
 
     if (featureCollection?.features?.length) {
-      const padding = 12;
-      const extent = [
-        [padding, padding],
-        [Math.max(padding, this.width - padding), Math.max(padding, this.height - padding)],
-      ];
-      projection.fitExtent(extent, featureCollection);
-      return projection;
+      // 只使用多边形类型的 features
+      const polygonFeatures = featureCollection.features.filter(f => {
+        const type = f?.geometry?.type;
+        return type === 'Polygon' || type === 'MultiPolygon';
+      });
+
+      if (polygonFeatures.length > 0) {
+        const filteredCollection = {
+          type: 'FeatureCollection',
+          features: polygonFeatures,
+        };
+
+        const padding = 12;
+        const extent = [
+          [padding, padding],
+          [Math.max(padding, this.width - padding), Math.max(padding, this.height - padding)],
+        ];
+
+        projection.fitExtent(extent, filteredCollection);
+        return projection;
+      }
     }
 
+    // 回退到手动设置的投影参数
     projection
       .center(this.options.projectionCenter)
       .scale(Math.min(this.width, this.height) * this.options.projectionScale)
@@ -283,11 +307,17 @@ class MapView extends BaseChart {
       this.svg.on('.zoom', null);
     }
 
+    const baseStrokeWidth = this.options.boundaryStrokeWidth;
+
     this.zoomBehavior = d3
       .zoom()
       .scaleExtent([this.options.minZoom, this.options.maxZoom])
       .on('zoom', event => {
         this.mapLayer.attr('transform', event.transform);
+        // 根据缩放级别调整边界线粗细，放大时线条变细
+        this.boundaryLayer
+          .selectAll('.map__boundary')
+          .style('stroke-width', `${baseStrokeWidth / event.transform.k}px`);
       });
 
     this.svg.call(this.zoomBehavior);
