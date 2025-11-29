@@ -3,16 +3,19 @@
 .chart--map {
   position: relative;
   min-height: 360px;
+  background: radial-gradient(circle at 30% 20%, #f9f3e6 0%, #f5f0e1 55%, #f1ecde 100%);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
 }
 
 .map__boundary {
-  fill: var(--color-bg-secondary);
-  stroke: var(--color-border);
-  stroke-width: 1;
+  fill: #efe5d4;
+  stroke: #b79d6a;
+  stroke-width: 0.9;
 }
 
 .map__boundary:hover {
-  fill: var(--color-bg-tertiary);
+  fill: #e6d9c2;
 }
 
 .location-point {
