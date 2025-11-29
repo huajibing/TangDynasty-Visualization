@@ -9,9 +9,9 @@
 }
 
 .map__boundary {
-  fill: #efe5d4;
-  stroke: #b79d6a;
-  stroke-width: 0.9;
+  fill: none;
+  stroke: #8b5a2b;
+  stroke-width: 1.5;
 }
 
 .map__boundary:hover {

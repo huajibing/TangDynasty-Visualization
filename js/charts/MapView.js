@@ -86,12 +86,18 @@ class MapView extends BaseChart {
       return;
     }
 
-    this.boundaryLayer
+    const paths = this.boundaryLayer
       .selectAll('.map__boundary')
       .data(features, d => d?.properties?.code || d?.id || d?.properties?.name || Math.random())
       .join('path')
       .attr('class', 'map__boundary')
       .attr('d', feature => this.pathGenerator(feature));
+
+    // 当边界计算结果异常时，提供调试提示
+    const hasVisibleBoundary = paths.size() > 0;
+    if (!hasVisibleBoundary) {
+      console.warn('[MapView] 边界未渲染，geoData 可能格式异常');
+    }
   }
 
   _renderPoints() {
@@ -200,17 +206,15 @@ class MapView extends BaseChart {
 
   _createProjection() {
     const projection = d3.geoMercator();
-    const features = this.options.geoData;
+    const featureCollection = this.options.geoData;
 
-    if (features?.features?.length) {
+    if (featureCollection?.features?.length) {
       const padding = 12;
-      projection.fitExtent(
-        [
-          [padding, padding],
-          [this.width - padding, this.height - padding],
-        ],
-        features,
-      );
+      const extent = [
+        [padding, padding],
+        [Math.max(padding, this.width - padding), Math.max(padding, this.height - padding)],
+      ];
+      projection.fitExtent(extent, featureCollection);
       return projection;
     }
 
