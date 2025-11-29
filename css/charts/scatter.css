@@ -27,3 +27,13 @@
   fill: var(--color-text-secondary);
   font-size: var(--font-size-xs);
 }
+
+.scatter-legend__bg {
+  fill: rgba(253, 246, 227, 0.88);
+  stroke: rgba(213, 208, 193, 0.6);
+}
+
+:root[data-theme='dark'] .scatter-legend__bg {
+  fill: rgba(9, 7, 18, 0.8);
+  stroke: rgba(246, 244, 255, 0.3);
+}

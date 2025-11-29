@@ -1,7 +1,7 @@
 /* 卡片容器基础样式 */
 
 .card {
-  background: var(--color-bg-primary);
+  background: var(--color-surface-elevated);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);

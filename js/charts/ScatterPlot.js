@@ -199,13 +199,13 @@ class ScatterPlot extends BaseChart {
     if (!this.colorScale) return;
     const items = this.colorScale.domain();
 
-    // 图例放在图表右上角，半透明背景
+    // 图例放在图表左上角，避免遮挡主要散点区域
     const legend = this.chartGroup
       .selectAll('.scatter-legend')
       .data([null])
       .join('g')
       .attr('class', 'scatter-legend')
-      .attr('transform', `translate(${this.width - 90}, 4)`);
+      .attr('transform', 'translate(8, 8)');
 
     // 添加半透明背景
     const itemCount = items.length;
@@ -216,12 +216,10 @@ class ScatterPlot extends BaseChart {
       .attr('class', 'scatter-legend__bg')
       .attr('x', -6)
       .attr('y', -4)
-      .attr('width', 96)
+      .attr('width', 112)
       .attr('height', itemCount * 18 + 8)
-      .attr('rx', 4)
-      .attr('fill', 'rgba(253, 246, 227, 0.85)')
-      .attr('stroke', 'rgba(213, 208, 193, 0.5)')
-      .attr('stroke-width', 0.5);
+      .attr('rx', 6)
+      .attr('stroke-width', 0.6);
 
     const legendItems = legend
       .selectAll('.scatter-legend__item')

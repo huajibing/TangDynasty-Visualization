@@ -44,7 +44,11 @@
   padding: 6px 12px;
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
-  background: linear-gradient(145deg, #ffffff 0%, #faf8f3 100%);
+  background: linear-gradient(
+    145deg,
+    var(--color-surface-elevated) 0%,
+    var(--color-surface-muted) 100%
+  );
   border: 1px solid var(--color-border-light);
   border-radius: 20px;
   cursor: pointer;
@@ -53,7 +57,11 @@
 }
 
 .filter__option:hover {
-  background: linear-gradient(145deg, #fdfcf9 0%, #f5f0e1 100%);
+  background: linear-gradient(
+    145deg,
+    var(--color-surface-muted) 0%,
+    var(--color-bg-secondary) 100%
+  );
   border-color: var(--color-border);
   color: var(--color-text-primary);
 }
@@ -106,7 +114,11 @@
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   color: var(--color-text-secondary);
-  background: linear-gradient(145deg, #ffffff 0%, #faf8f3 100%);
+  background: linear-gradient(
+    145deg,
+    var(--color-surface-elevated) 0%,
+    var(--color-surface-muted) 100%
+  );
   border: 1px solid var(--color-border);
   border-radius: 6px;
   cursor: pointer;
@@ -119,7 +131,11 @@
 }
 
 .filter__reset:hover {
-  background: linear-gradient(145deg, #fdfcf9 0%, #f5f0e1 100%);
+  background: linear-gradient(
+    145deg,
+    var(--color-surface-muted) 0%,
+    var(--color-bg-secondary) 100%
+  );
   border-color: var(--color-text-secondary);
   color: var(--color-text-primary);
   transform: translateY(-1px);

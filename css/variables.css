@@ -1,11 +1,15 @@
 /*
  * 设计令牌（Design Tokens）
  * 仅定义颜色、间距、字体等基础变量，具体样式在其他文件中实现。
+ *
+ * 这里同时为浅色 / 深色主题预留变量，以便在不改动组件结构的前提下
+ * 切换整体视觉风格。
  */
 
-:root {
-  /* ===== 主题色（唐风配色） ===== */
+/* ===== 默认（浅色）主题 —— 唐风纸本质感，适配 Apple 风格的毛玻璃与圆角 ===== */
 
+:root {
+  /* 主题色（唐风配色） */
   --color-primary: #c0392b; /* 朱红 */
   --color-primary-light: #e74c3c;
   --color-primary-dark: #922b21;
@@ -22,6 +26,12 @@
   --color-text-muted: #bdc3c7;
   --color-border: #d5d0c1;
   --color-border-light: #e8e4d9;
+
+  /* 表面与毛玻璃层（结合 Apple 设计层级） */
+  --color-surface-base: rgba(253, 246, 227, 0.82);
+  --color-surface-elevated: rgba(255, 255, 255, 0.9);
+  --color-surface-muted: rgba(250, 244, 230, 0.88);
+  --color-surface-strong: rgba(253, 246, 227, 0.94);
 
   /* 语义色 */
   --color-success: #27ae60;
@@ -69,10 +79,10 @@
   --spacing-xl: 32px;
   --spacing-2xl: 48px;
 
-  /* 字体系统 */
+  /* 字体系统（Apple 优先） */
   --font-family-base:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
-    'Microsoft YaHei', sans-serif;
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
   --font-family-serif: 'Songti SC', 'STSong', 'SimSun', serif;
   --font-family-mono: 'SF Mono', 'Fira Code', Consolas, monospace;
 
@@ -91,17 +101,18 @@
   --line-height-normal: 1.5;
   --line-height-relaxed: 1.75;
 
-  /* 圆角 */
-  --radius-sm: 2px;
-  --radius-md: 4px;
-  --radius-lg: 8px;
+  /* 圆角（连续圆角风格） */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 18px;
   --radius-full: 9999px;
 
-  /* 阴影 */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
-  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+  /* 阴影（层级暗示） */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 14px 30px rgba(0, 0, 0, 0.12);
+  --shadow-xl: 0 24px 60px rgba(0, 0, 0, 0.16);
 
   /* 过渡 */
   --transition-fast: 150ms ease;
@@ -113,4 +124,38 @@
   --breakpoint-md: 768px;
   --breakpoint-lg: 1024px;
   --breakpoint-xl: 1280px;
+}
+
+/* ===== 深色主题 —— 唐夜绢本风格，保持同一视觉语义但反转明暗 ===== */
+
+:root[data-theme='dark'] {
+  /* 主题色保留唐风，但增强在暗底下的发光感 */
+  --color-primary: #f15b46;
+  --color-primary-light: #ff8c6b;
+  --color-primary-dark: #b33834;
+  --color-primary-soft: rgba(241, 91, 70, 0.88);
+  --color-secondary: #f0b35a;
+  --color-accent: #ffd66b;
+
+  /* 背景与文字（绢本深墨色） */
+  --color-bg-primary: #05040b;
+  --color-bg-secondary: #0b0913;
+  --color-bg-tertiary: #151225;
+  --color-text-primary: #f6f4ff;
+  --color-text-secondary: #c3bfdc;
+  --color-text-muted: #8b86aa;
+  --color-border: rgba(255, 255, 255, 0.16);
+  --color-border-light: rgba(255, 255, 255, 0.08);
+
+  /* 表面与毛玻璃层（更强的透光感） */
+  --color-surface-base: rgba(9, 7, 18, 0.7);
+  --color-surface-elevated: rgba(16, 13, 28, 0.8);
+  --color-surface-muted: rgba(19, 15, 33, 0.78);
+  --color-surface-strong: rgba(22, 18, 38, 0.9);
+
+  /* 语义色在深色下略提亮 */
+  --color-success: #33d17a;
+  --color-warning: #ffcf6b;
+  --color-error: #ff6b6b;
+  --color-info: #5fa8ff;
 }

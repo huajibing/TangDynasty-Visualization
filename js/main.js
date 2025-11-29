@@ -18,12 +18,22 @@ import {
   getAdministrativeLevelColor,
   getDaoColor,
   getProductTypeColor,
+  refreshColorsFromCss,
 } from './utils/colors.js';
 import eventBus, { EVENTS } from './utils/eventBus.js';
+import { initTheme, bindThemeToggle, THEME_EVENT_NAME } from './theme.js';
+
+// 优先初始化主题，确保 CSS 变量与 data-theme 就位
+initTheme();
+// 主题就绪后立刻从 CSS 同步 JS 色板，避免初次渲染与 CSS 不一致
+refreshColorsFromCss();
 
 async function bootstrap() {
   // eslint-disable-next-line no-console
   console.log('Tang visualization app bootstrap (phase 4)', appConfig);
+
+  // 绑定主题切换按钮（如果存在）
+  bindThemeToggle('.theme-toggle');
 
   try {
     const rawData = await DataLoader.loadAll(appConfig.dataPath);
@@ -75,6 +85,7 @@ function initApp(processed, rawData) {
   context.charts = mountCharts(context);
   context.sidebar = initSidebar(context);
   context.panelManager = initPanelManager(context);
+  initThemeBridge(context);
   bindEventBridges(context);
   applyFiltersAndRender(context, state.get('filters'));
 
@@ -86,6 +97,26 @@ function initApp(processed, rawData) {
 
   // 暴露给浏览器控制台，便于后续快速检查
   window.__tangData = { rawData, ...processed };
+}
+
+function initThemeBridge(context) {
+  if (typeof window === 'undefined') return;
+
+  // 当主题变化时，同步 JS 色板并刷新图表与图例
+  window.addEventListener(THEME_EVENT_NAME, () => {
+    refreshColorsFromCss();
+
+    const data = context.filteredData || context.data || [];
+    const daoOptions = buildDaoOptions(context.indices);
+    const legendSections = buildLegendSections(daoOptions);
+
+    context.sidebar?.updateLegend(legendSections);
+
+    context.charts.map?.update(data);
+    context.charts.histogram?.update(data);
+    context.charts.scatter?.update(data);
+    context.charts.network?.update(data);
+  });
 }
 
 function mountCharts({ data, geoData, indices }) {

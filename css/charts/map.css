@@ -24,6 +24,26 @@
   );
 }
 
+/* 深色模式下的地图底图与边界样式 */
+
+:root[data-theme='dark'] .chart--map {
+  background: radial-gradient(
+    ellipse 130% 120% at 50% 20%,
+    #1a1326 0%,
+    #0c0716 40%,
+    #05040b 80%
+  );
+}
+
+:root[data-theme='dark'] .map-backdrop .chart--map {
+  background: radial-gradient(
+    ellipse 130% 120% at 50% 20%,
+    #241632 0%,
+    #11091f 40%,
+    #05040b 85%
+  );
+}
+
 @media (max-width: 1024px) {
   .chart--map {
     height: 420px;
@@ -42,8 +62,16 @@
   stroke-width: 1.5;
 }
 
+:root[data-theme='dark'] .map__boundary {
+  stroke: rgba(252, 245, 230, 0.25);
+}
+
 .map__boundary:hover {
   fill: rgba(230, 217, 194, 0.4);
+}
+
+:root[data-theme='dark'] .map__boundary:hover {
+  fill: rgba(249, 241, 214, 0.08);
 }
 
 .location-point {
@@ -65,6 +93,10 @@
 .location-point.is-selected {
   stroke: var(--color-accent);
   stroke-width: 1.6;
+}
+
+:root[data-theme='dark'] .location-point {
+  stroke: rgba(5, 4, 11, 0.92);
 }
 
 .location-point.is-dimmed {
