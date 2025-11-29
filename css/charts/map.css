@@ -2,10 +2,18 @@
 
 .chart--map {
   position: relative;
-  min-height: 360px;
+  height: 520px;
+  min-height: 520px;
   background: radial-gradient(circle at 30% 20%, #f9f3e6 0%, #f5f0e1 55%, #f1ecde 100%);
   border: 1px solid var(--color-border);
   border-radius: 8px;
+}
+
+@media (max-width: 1024px) {
+  .chart--map {
+    height: 420px;
+    min-height: 420px;
+  }
 }
 
 .map__boundary {
