@@ -76,10 +76,6 @@
   gap: var(--spacing-md);
 }
 
-.card--map .chart {
-  height: 100%;
-}
-
 /* 中等及以上视口：切换为 Grid 布局，区域堆叠展示 */
 
 @media (min-width: 768px) {

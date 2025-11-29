@@ -7,34 +7,70 @@
 .network-link {
   stroke: rgba(52, 73, 94, 0.4);
   transition:
-    stroke 140ms ease,
-    stroke-opacity 140ms ease;
+    stroke 180ms ease,
+    stroke-width 180ms ease,
+    stroke-opacity 180ms ease;
 }
 
 .network-link.is-dimmed {
-  stroke-opacity: 0.2;
+  stroke-opacity: 0.08;
 }
 
 .network-link.is-highlighted {
-  stroke: var(--color-secondary);
-  stroke-opacity: 0.85;
+  stroke: var(--color-primary);
+  stroke-opacity: 1;
 }
 
 .network-node {
   cursor: grab;
-  transition: opacity 140ms ease;
+  transition: opacity 180ms ease;
+}
+
+.network-node circle {
+  transition:
+    r 180ms ease,
+    fill 180ms ease,
+    stroke 180ms ease,
+    stroke-width 180ms ease,
+    filter 180ms ease;
 }
 
 .network-node.is-dimmed {
-  opacity: 0.35;
+  opacity: 0.15;
 }
 
+/* 选中节点 - 高亮颜色 + 光晕 (尺寸变化由 JS 处理) */
 .network-node.is-highlighted circle {
   fill: var(--color-accent);
+  stroke: var(--color-primary);
+  stroke-width: 3px;
+  filter: drop-shadow(0 0 8px var(--color-accent)) drop-shadow(0 0 3px var(--color-primary));
+}
+
+.network-node.is-highlighted .network-label {
+  fill: var(--color-primary);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-sm);
+}
+
+/* 相连节点 - 略微突出 */
+.network-node.is-connected circle {
+  fill: var(--color-secondary);
+  stroke: var(--color-primary-light);
+  stroke-width: 2px;
+}
+
+.network-node.is-connected .network-label {
+  fill: var(--color-text-primary);
+  font-weight: var(--font-weight-medium);
 }
 
 .network-label {
   fill: var(--color-text-primary);
   font-size: var(--font-size-xs);
   pointer-events: none;
+  transition:
+    fill 180ms ease,
+    font-weight 180ms ease,
+    font-size 180ms ease;
 }

@@ -29,3 +29,10 @@
 .card--scatter {
   padding: var(--spacing-md);
 }
+
+/* 确保 grid/flex 布局中的图表卡片不会被压缩 */
+.card--histogram,
+.card--scatter {
+  min-height: 320px; /* 260px 图表高度 + padding + 标题 */
+  flex-shrink: 0;
+}

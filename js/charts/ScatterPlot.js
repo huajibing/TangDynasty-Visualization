@@ -160,6 +160,7 @@ class ScatterPlot extends BaseChart {
               .duration(this.options.animationDuration)
               .attr('cx', (d) => this.xScale(d[xField]))
               .attr('cy', (d) => this.yScale(d[yField]))
+              .attr('r', pointRadius)
               .attr('fill', (d) => this.colorScale(d[colorField])),
           ),
         (exit) =>

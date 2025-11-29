@@ -10,9 +10,10 @@ class NetworkGraph extends BaseChart {
     return {
       ...super.defaultOptions,
       minCooccurrence: 2,
-      // 略微缩短连线距离并减弱斥力，让多个连通分量更紧凑
-      linkStrength: 0.4,
-      chargeStrength: -80,
+      linkDistance: 65,
+      linkStrength: 0.35,
+      chargeStrength: -100,
+      centerStrength: 0.08,
       maxNodes: 120,
       zoomMinScale: 0.5,
       zoomMaxScale: 3,
@@ -208,16 +209,24 @@ class NetworkGraph extends BaseChart {
 
     this.nodeElements
       .on('mouseenter', (event, node) => {
-        this._highlightConnected(node);
+        // 如果没有选中节点，才显示悬浮高亮效果
+        if (!this.currentSelectedProduct) {
+          this._highlightConnected(node);
+        }
         Tooltip.show(event, this._formatTooltip(node));
         this.options.onHover?.(node);
       })
       .on('mouseleave', () => {
-        this._clearHighlight();
+        // 如果有选中节点，恢复选中状态；否则清除高亮
+        if (this.currentSelectedProduct) {
+          this.highlight([this.currentSelectedProduct]);
+        } else {
+          this._clearHighlight();
+        }
         Tooltip.hide();
       })
       .on('click', (event, node) => {
-        // 阻止冒泡到背景点击，避免立刻触发“失焦”
+        // 阻止冒泡到背景点击，避免立刻触发"失焦"
         event.stopPropagation();
         const nextName = this.currentSelectedProduct === node.name ? null : node.name;
         eventBus.emit(EVENTS.PRODUCT_SELECT, nextName);
@@ -238,6 +247,8 @@ class NetworkGraph extends BaseChart {
       this.simulation.stop();
     }
 
+    const { linkDistance, linkStrength, chargeStrength, centerStrength } = this.options;
+
     this.simulation = d3
       .forceSimulation(this.nodes)
       .force(
@@ -245,17 +256,17 @@ class NetworkGraph extends BaseChart {
         d3
           .forceLink(this.links)
           .id((d) => d.id)
-          .distance(() => 40)
-          .strength(this.options.linkStrength),
+          .distance(linkDistance)
+          .strength(linkStrength),
       )
-      .force('charge', d3.forceManyBody().strength(this.options.chargeStrength))
+      .force('charge', d3.forceManyBody().strength(chargeStrength))
       .force('center', d3.forceCenter(this.width / 2, this.height / 2))
-      // 额外增加 X/Y 吸引力，避免互不相连的子图漂得太远
-      .force('x', d3.forceX(this.width / 2).strength(0.03))
-      .force('y', d3.forceY(this.height / 2).strength(0.03))
+      // X/Y 吸引力：让不同连通分量向中心聚拢，避免过于分散
+      .force('x', d3.forceX(this.width / 2).strength(centerStrength))
+      .force('y', d3.forceY(this.height / 2).strength(centerStrength))
       .force(
         'collision',
-        d3.forceCollide().radius((node) => this.sizeScale(node.count) + 6),
+        d3.forceCollide().radius((node) => this.sizeScale(node.count) + 4),
       )
       .on('tick', () => this._tick());
   }
@@ -296,16 +307,56 @@ class NetworkGraph extends BaseChart {
       if (targetId === node.id) connected.add(sourceId);
     });
 
-    this.nodeElements.classed('is-dimmed', (datum) => !connected.has(datum.id));
-    this.linkElements.classed(
-      'is-dimmed',
-      (link) => link.source.id !== node.id && link.target.id !== node.id,
-    );
+    this.nodeElements
+      .classed('is-highlighted', (datum) => datum.id === node.id)
+      .classed('is-connected', (datum) => connected.has(datum.id) && datum.id !== node.id)
+      .classed('is-dimmed', (datum) => !connected.has(datum.id));
+
+    // 动态调整节点圆的半径
+    this.nodeElements.select('circle')
+      .transition()
+      .duration(180)
+      .attr('r', (datum) => {
+        const baseR = this.sizeScale(datum.count);
+        if (datum.id === node.id) return baseR * 1.5;
+        if (connected.has(datum.id)) return baseR * 1.15;
+        return baseR;
+      });
+
+    this.linkElements
+      .classed('is-highlighted', (link) => link.source.id === node.id || link.target.id === node.id)
+      .classed('is-dimmed', (link) => link.source.id !== node.id && link.target.id !== node.id);
+
+    // 动态调整边的宽度
+    this.linkElements
+      .transition()
+      .duration(180)
+      .attr('stroke-width', (link) => {
+        const baseWidth = this.linkWidthScale(link.count);
+        if (link.source.id === node.id || link.target.id === node.id) return baseWidth * 2;
+        return baseWidth;
+      });
   }
 
   _clearHighlight() {
-    this.nodeElements?.classed('is-dimmed', false).classed('is-highlighted', false);
-    this.linkElements?.classed('is-dimmed', false);
+    this.nodeElements
+      ?.classed('is-dimmed', false)
+      .classed('is-highlighted', false)
+      .classed('is-connected', false);
+
+    // 恢复节点原始半径
+    this.nodeElements?.select('circle')
+      .transition()
+      .duration(180)
+      .attr('r', (node) => this.sizeScale(node.count));
+
+    this.linkElements?.classed('is-dimmed', false).classed('is-highlighted', false);
+
+    // 恢复边的原始宽度
+    this.linkElements
+      ?.transition()
+      .duration(180)
+      .attr('stroke-width', (link) => this.linkWidthScale(link.count));
   }
 
   _formatTooltip(node) {
@@ -326,12 +377,61 @@ class NetworkGraph extends BaseChart {
       : null;
 
     const nameSet = new Set(productNames || []);
-    this.nodeElements?.classed('is-highlighted', (node) => nameSet.has(node.name));
-    this.linkElements?.classed('is-highlighted', (link) => {
-      const sourceId = link.source.id || link.source;
-      const targetId = link.target.id || link.target;
-      return nameSet.has(sourceId) || nameSet.has(targetId);
-    });
+    const hasSelection = nameSet.size > 0;
+
+    // 找出所有与选中节点相连的节点
+    const connectedNodes = new Set(nameSet);
+    if (hasSelection) {
+      this.links.forEach((link) => {
+        const sourceId = link.source.id || link.source;
+        const targetId = link.target.id || link.target;
+        if (nameSet.has(sourceId)) connectedNodes.add(targetId);
+        if (nameSet.has(targetId)) connectedNodes.add(sourceId);
+      });
+    }
+
+    // 设置节点状态
+    this.nodeElements
+      ?.classed('is-highlighted', (node) => nameSet.has(node.name))
+      .classed('is-connected', (node) => hasSelection && connectedNodes.has(node.id) && !nameSet.has(node.name))
+      .classed('is-dimmed', (node) => hasSelection && !connectedNodes.has(node.id));
+
+    // 动态调整节点圆的半径以实现放大效果
+    this.nodeElements?.select('circle')
+      .transition()
+      .duration(180)
+      .attr('r', (node) => {
+        const baseR = this.sizeScale(node.count);
+        if (nameSet.has(node.name)) return baseR * 1.5; // 选中节点放大 1.5 倍
+        if (hasSelection && connectedNodes.has(node.id)) return baseR * 1.15; // 相连节点略微放大
+        return baseR;
+      });
+
+    // 设置边状态
+    this.linkElements
+      ?.classed('is-highlighted', (link) => {
+        const sourceId = link.source.id || link.source;
+        const targetId = link.target.id || link.target;
+        return nameSet.has(sourceId) || nameSet.has(targetId);
+      })
+      .classed('is-dimmed', (link) => {
+        if (!hasSelection) return false;
+        const sourceId = link.source.id || link.source;
+        const targetId = link.target.id || link.target;
+        return !nameSet.has(sourceId) && !nameSet.has(targetId);
+      });
+
+    // 动态调整高亮边的宽度
+    this.linkElements
+      ?.transition()
+      .duration(180)
+      .attr('stroke-width', (link) => {
+        const baseWidth = this.linkWidthScale(link.count);
+        const sourceId = link.source.id || link.source;
+        const targetId = link.target.id || link.target;
+        if (nameSet.has(sourceId) || nameSet.has(targetId)) return baseWidth * 2;
+        return baseWidth;
+      });
   }
 
   clearHighlight() {
