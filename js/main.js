@@ -1,4 +1,4 @@
-// 应用入口：初始化数据管线并挂载核心四个视图，建立基础联动。
+// 应用入口：初始化数据管线、全局状态与四个视图，完成联动交互。
 
 import { appConfig } from './config.js';
 import MapView from './charts/MapView.js';
@@ -8,113 +8,390 @@ import NetworkGraph from './charts/NetworkGraph.js';
 import DataLoader from './data/dataLoader.js';
 import DataProcessor from './data/dataProcessor.js';
 import DataQuery from './data/dataQuery.js';
+import { AppState } from './state.js';
+import { Sidebar } from './components/sidebar.js';
+import {
+  COLORS,
+  PRODUCT_TYPE_KEYS,
+  getAdministrativeLevelColor,
+  getDaoColor,
+  getProductTypeColor,
+} from './utils/colors.js';
 import eventBus, { EVENTS } from './utils/eventBus.js';
 
 async function bootstrap() {
   // eslint-disable-next-line no-console
-  console.log('Tang visualization app bootstrap (phase 3)', appConfig);
+  console.log('Tang visualization app bootstrap (phase 4)', appConfig);
 
   try {
     const rawData = await DataLoader.loadAll(appConfig.dataPath);
     const processed = DataProcessor.process(rawData);
     DataQuery.init(processed);
 
-    const { data, statistics, indices } = processed;
-
     // 基础数据检查输出，便于验证数据管线是否正常
     // eslint-disable-next-line no-console
     console.groupCollapsed('[DataPipeline] 加载校验');
     // eslint-disable-next-line no-console
-    console.log('地点数量:', data.length);
+    console.log('地点数量:', processed.data.length);
     // eslint-disable-next-line no-console
-    console.log('人口总数:', statistics?.totalPopulation ?? 0);
+    console.log('人口总数:', processed.statistics?.totalPopulation ?? 0);
     // eslint-disable-next-line no-console
-    console.log('户数总数:', statistics?.totalHouseholds ?? 0);
+    console.log('户数总数:', processed.statistics?.totalHouseholds ?? 0);
     // eslint-disable-next-line no-console
-    console.log('物产种类数:', statistics?.productFrequency?.size ?? 0);
+    console.log('物产种类数:', processed.statistics?.productFrequency?.size ?? 0);
     // eslint-disable-next-line no-console
-    console.log('物产类别数:', statistics?.productTypeCount?.size ?? 0);
+    console.log('物产类别数:', processed.statistics?.productTypeCount?.size ?? 0);
     // eslint-disable-next-line no-console
     console.log('GeoJSON features:', rawData.geoData?.features?.length ?? 0);
     // eslint-disable-next-line no-console
     console.groupEnd();
 
-    mountCharts({ data, geoData: rawData.geoData, indices });
-
-    // 暴露给浏览器控制台，便于后续快速检查
-    window.__tangData = { rawData, ...processed };
+    initApp(processed, rawData);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Data pipeline initialization failed', error);
   }
 }
 
+function initApp(processed, rawData) {
+  const state = new AppState({
+    filters: { daoIds: [], productTypes: [], householdRange: null },
+  });
+
+  const context = {
+    data: processed.data,
+    filteredData: processed.data,
+    geoData: rawData.geoData,
+    indices: processed.indices,
+    statistics: processed.statistics,
+    state,
+    charts: {},
+    sidebar: null,
+  };
+
+  context.charts = mountCharts(context);
+  context.sidebar = initSidebar(context);
+  bindEventBridges(context);
+  applyFiltersAndRender(context, state.get('filters'));
+
+  // 暴露给浏览器控制台，便于后续快速检查
+  window.__tangData = { rawData, ...processed };
+}
+
 function mountCharts({ data, geoData, indices }) {
-  const mapView = new MapView('#map-container', data, {
-    geoData,
-    colorMode: 'dao',
+  return {
+    map: new MapView('#map-container', data, {
+      geoData,
+      colorMode: 'dao',
+    }),
+    histogram: new Histogram('#histogram-container', data),
+    scatter: new ScatterPlot('#scatter-container', data),
+    network: new NetworkGraph('#network-container', data, {
+      cooccurrence: indices?.productCooccurrence,
+      productIndex: indices?.productIndex,
+      minCooccurrence: 2,
+    }),
+  };
+}
+
+function initSidebar(context) {
+  const daoOptions = buildDaoOptions(context.indices);
+  const legendSections = buildLegendSections(daoOptions);
+
+  const sidebar = new Sidebar('.dashboard__sidebar', {
+    onFilterChange: filters => {
+      const nextFilters = { ...context.state.get('filters'), ...filters };
+      context.state.update({ filters: nextFilters });
+    },
+    onResetFilters: () => {
+      const nextFilters = { ...context.state.get('filters'), daoIds: [], productTypes: [] };
+      context.state.update({ filters: nextFilters });
+      context.charts.histogram?.clearBrush?.();
+    },
   });
 
-  const histogram = new Histogram('#histogram-container', data);
-
-  const scatterPlot = new ScatterPlot('#scatter-container', data);
-
-  const networkGraph = new NetworkGraph('#network-container', data, {
-    cooccurrence: indices?.productCooccurrence,
-    productIndex: indices?.productIndex,
-    minCooccurrence: 2,
+  sidebar.render({
+    daoOptions,
+    productTypes: PRODUCT_TYPE_KEYS,
+    legendSections,
+    filters: context.state.get('filters'),
+    stats: summarizeData(context.data),
+    tips: [
+      '在直方图中框选户均人口区间，地图与散点图会同步高亮对应地点。',
+      '点击地图或散点图节点可锁定单个地点，再叠加物产筛选观察差异。',
+      '在网络图点击物产节点，查看相关地点在地图中的分布范围。',
+    ],
   });
 
-  // 事件联动：地点选中或 Brush 选择驱动各视图高亮
-  eventBus.on(EVENTS.LOCATION_SELECT, location => {
-    const ids = location ? [location.Location_ID] : [];
-    if (ids.length === 0) {
-      mapView.clearHighlight();
-      histogram.clearHighlight();
-      scatterPlot.clearHighlight();
-      networkGraph.clearHighlight();
-      return;
+  return sidebar;
+}
+
+function bindEventBridges(context) {
+  const { state } = context;
+
+  eventBus.on(EVENTS.LOCATION_SELECT, location => handleLocationSelect(context, location));
+  eventBus.on(EVENTS.HOUSEHOLD_RANGE_CHANGE, payload =>
+    handleHouseholdRange(context, payload),
+  );
+  eventBus.on(EVENTS.PRODUCT_SELECT, product => handleProductSelect(context, product));
+
+  state.subscribe('filters', filters => {
+    // eslint-disable-next-line no-console
+    console.debug('[App] filters updated', filters);
+    applyFiltersAndRender(context, filters);
+  });
+
+  state.subscribe('highlightedIds', () => syncHighlights(context));
+  state.subscribe('selectedLocationIds', () => syncHighlights(context));
+  state.subscribe('selectedProduct', product => {
+    context.charts.network?.highlight(product ? [product] : []);
+    syncHighlights(context);
+  });
+}
+
+function handleLocationSelect(context, location) {
+  const id = location?.Location_ID || null;
+  const daoId = location ? getDaoId(location) : null;
+  const ids = id ? [id] : [];
+
+  context.state.update({
+    selectedDaoId: daoId,
+    selectedLocationIds: ids,
+    highlightedIds: ids,
+  });
+}
+
+function handleHouseholdRange(context, payload) {
+  const range = payload?.range || null;
+  const ids = (payload?.ids || []).filter(id => getVisibleIdSet(context).has(id));
+  const nextFilters = { ...context.state.get('filters'), householdRange: range };
+
+  context.state.update({
+    filters: nextFilters,
+    highlightedIds: ids,
+  });
+}
+
+function handleProductSelect(context, productName) {
+  const ids = getProductHighlightIds(context, productName);
+  context.state.update({
+    selectedProduct: productName || null,
+    highlightedIds: ids,
+  });
+}
+
+function applyFiltersAndRender(context, filters = {}) {
+  const filtered = filterData(context.data, filters);
+  context.filteredData = filtered;
+
+  updateChartsData(context, filtered);
+  context.sidebar?.updateStats(summarizeData(filtered));
+  context.sidebar?.updateFilters(filters);
+  const visibleIdSet = new Set(filtered.map(item => item.Location_ID));
+  const prevSelected = context.state.get('selectedLocationIds') || [];
+  const prevHighlighted = context.state.get('highlightedIds') || [];
+  const selectedIds = prevSelected.filter(id => visibleIdSet.has(id));
+  const highlightedIds = prevHighlighted.filter(id => visibleIdSet.has(id));
+
+  if (selectedIds.length !== prevSelected.length || highlightedIds.length !== prevHighlighted.length) {
+    context.state.update({
+      selectedLocationIds: selectedIds,
+      highlightedIds,
+    });
+  }
+
+  const statusMessage =
+    filtered.length === 0 ? '当前筛选条件下暂无匹配地点' : '';
+  context.sidebar?.setStatus(statusMessage);
+  if (filtered.length === 0) {
+    context.charts.histogram?.clearBrush?.();
+  }
+
+  syncHighlights(context);
+}
+
+function updateChartsData(context, data) {
+  context.charts.map?.update(data);
+  context.charts.histogram?.update(data);
+  context.charts.scatter?.update(data);
+  context.charts.network?.update(data, {
+    productIndex: null,
+    cooccurrence: null,
+  });
+}
+
+function syncHighlights(context) {
+  const charts = context.charts;
+  const highlightIds = computeActiveHighlightIds(context);
+  const selectedProduct = context.state.get('selectedProduct');
+
+  if (selectedProduct) {
+    charts.network?.highlight([selectedProduct]);
+  } else {
+    charts.network?.clearHighlight();
+  }
+
+  if (!highlightIds.length) {
+    charts.map?.clearHighlight();
+    charts.histogram?.clearHighlight();
+    charts.scatter?.clearHighlight();
+    return;
+  }
+
+  charts.map?.highlight(highlightIds);
+  charts.histogram?.highlight(highlightIds);
+  charts.scatter?.highlight(highlightIds);
+}
+
+function computeActiveHighlightIds(context) {
+  const filters = context.state.get('filters') || {};
+  const visibleIds = getVisibleIdSet(context);
+  const selectedIds = context.state.get('selectedLocationIds') || [];
+
+  let ids = context.state.get('highlightedIds') || [];
+
+  if (context.state.get('selectedProduct')) {
+    ids = getProductHighlightIds(context, context.state.get('selectedProduct'));
+  } else if (filters.householdRange) {
+    ids = idsWithinRange(context.filteredData, filters.householdRange);
+  }
+
+  const combined = [...new Set([...ids, ...selectedIds])].filter(id => visibleIds.has(id));
+  return combined;
+}
+
+function filterData(data, filters = {}) {
+  const daoSet = new Set(filters.daoIds || []);
+  const productTypeSet = new Set(filters.productTypes || []);
+
+  return (data || []).filter(item => {
+    if (daoSet.size > 0) {
+      const daoId = getDaoId(item);
+      if (!daoId || !daoSet.has(daoId)) return false;
     }
 
-    mapView.highlight(ids);
-    histogram.highlight(ids);
-    scatterPlot.highlight(ids);
+    if (productTypeSet.size > 0) {
+      const hasType = Array.from(productTypeSet).some(type => {
+        const list = item?.Products?.[type];
+        return Array.isArray(list) && list.length > 0;
+      });
+      if (!hasType) return false;
+    }
 
-    if (location?.Products) {
-      const products = Object.values(location.Products)
-        .filter(Array.isArray)
-        .flat();
-      networkGraph.highlight(products);
-    } else {
-      networkGraph.clearHighlight();
+    return true;
+  });
+}
+
+function getDaoId(item) {
+  if (!item) return null;
+  if (item.Administrative_Level === '道') return item.Location_ID;
+  return item.Parent_ID || null;
+}
+
+function buildDaoOptions(indices) {
+  const list = indices?.locationsByLevel?.get('道') || [];
+  return list.map(dao => ({
+    id: dao.Location_ID,
+    name: dao.Location_Name,
+    count: indices?.locationsByDao?.get(dao.Location_ID)?.length || 0,
+  }));
+}
+
+function buildLegendSections() {
+function buildLegendSections(daoOptions = []) {
+  const daoItems =
+    daoOptions.length > 0
+      ? daoOptions.map(dao => ({
+          label: dao.name || dao.id,
+          color: getDaoColor(dao.id),
+        }))
+      : Object.entries(COLORS.daos || {}).map(([daoId, color]) => ({
+          label: daoId,
+          color: color || getDaoColor(daoId),
+        }));
+
+  return [
+    {
+      title: '物产类别',
+      items: PRODUCT_TYPE_KEYS.map(type => ({
+        label: type,
+        color: getProductTypeColor(type),
+      })),
+    },
+    {
+      title: '行政层级',
+      items: Object.entries(COLORS.administrativeLevels || {}).map(([level, color]) => ({
+        label: level,
+        color: color || getAdministrativeLevelColor(level),
+      })),
+    },
+    {
+      title: '十道配色',
+      items: daoItems,
+    },
+  ];
+}
+
+function summarizeData(data = []) {
+  const summary = {
+    totalLocations: data.length,
+    totalPopulation: 0,
+    totalHouseholds: 0,
+    averageHouseholdSize: null,
+    averageProductRichness: null,
+  };
+
+  let householdSizeCount = 0;
+  let householdSizeSum = 0;
+  let productRichnessSum = 0;
+  let productRichnessCount = 0;
+
+  data.forEach(item => {
+    if (Number.isFinite(item.Population)) {
+      summary.totalPopulation += item.Population;
+    }
+    if (Number.isFinite(item.Households)) {
+      summary.totalHouseholds += item.Households;
+    }
+    if (Number.isFinite(item.householdSize)) {
+      householdSizeSum += item.householdSize;
+      householdSizeCount += 1;
+    }
+    if (Number.isFinite(item.productRichness)) {
+      productRichnessSum += item.productRichness;
+      productRichnessCount += 1;
     }
   });
 
-  eventBus.on(EVENTS.HOUSEHOLD_RANGE_CHANGE, payload => {
-    const ids = payload?.ids || [];
-    if (ids.length === 0) {
-      mapView.clearHighlight();
-      scatterPlot.clearHighlight();
-      return;
-    }
-    mapView.highlight(ids);
-    scatterPlot.highlight(ids);
-  });
+  summary.averageHouseholdSize =
+    householdSizeCount > 0 ? householdSizeSum / householdSizeCount : null;
 
-  eventBus.on(EVENTS.PRODUCT_SELECT, productName => {
-    if (!productName) {
-      networkGraph.clearHighlight();
-      mapView.clearHighlight();
-      scatterPlot.clearHighlight();
-      return;
-    }
+  summary.averageProductRichness =
+    productRichnessCount > 0 ? productRichnessSum / productRichnessCount : null;
 
-    const related = DataQuery.getByProduct(productName);
-    const ids = related.map(item => item.Location_ID);
-    mapView.highlight(ids);
-    scatterPlot.highlight(ids);
-    networkGraph.highlight([productName]);
-  });
+  return summary;
+}
+
+function getVisibleIdSet(context) {
+  return new Set((context.filteredData || context.data || []).map(item => item.Location_ID));
+}
+
+function idsWithinRange(data = [], range = null) {
+  if (!range || range.length < 2) return [];
+  const [min, max] = range;
+  return data
+    .filter(
+      item =>
+        Number.isFinite(item.householdSize) && item.householdSize >= min && item.householdSize <= max,
+    )
+    .map(item => item.Location_ID);
+}
+
+function getProductHighlightIds(context, productName) {
+  if (!productName) return [];
+  const visibleIds = getVisibleIdSet(context);
+  const related = DataQuery.getByProduct(productName) || [];
+  return related.map(item => item.Location_ID).filter(id => visibleIds.has(id));
 }
 
 if (document.readyState === 'loading') {

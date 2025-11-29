@@ -15,3 +15,48 @@
 .filter__label {
   font-size: var(--font-size-sm);
 }
+
+.filter__options {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filter__option {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+}
+
+.filter__option input {
+  margin: 0;
+}
+
+.filter__chip {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.filter__actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.filter__reset {
+  padding: 6px 10px;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border, #dcdcdc);
+  background: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.filter__reset:hover {
+  color: var(--color-text-primary);
+  border-color: var(--color-text-secondary);
+}

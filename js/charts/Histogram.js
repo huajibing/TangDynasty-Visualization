@@ -176,6 +176,7 @@ class Histogram extends BaseChart {
       .on('brush', event => this._handleBrush(event))
       .on('end', event => this._handleBrushEnd(event));
 
+    this.brushBehavior = brush;
     this.brushGroup = this.chartGroup
       .selectAll('.brush')
       .data([null])
@@ -239,6 +240,13 @@ class Histogram extends BaseChart {
 
   clearHighlight() {
     this.bars?.classed('is-highlighted', false).classed('is-selected', false);
+  }
+
+  clearBrush() {
+    if (this.brushGroup && this.brushBehavior) {
+      this.brushGroup.call(this.brushBehavior.move, null);
+    }
+    this.clearHighlight();
   }
 }
 

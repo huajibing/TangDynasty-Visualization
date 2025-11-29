@@ -99,6 +99,20 @@ class MapView extends BaseChart {
       d => Number.isFinite(d.Latitude) && Number.isFinite(d.Longitude),
     );
 
+    this.chartGroup.selectAll('.chart__empty').remove();
+    if (validData.length === 0) {
+      this.chartGroup
+        .selectAll('.chart__empty')
+        .data([null])
+        .join('text')
+        .attr('class', 'chart__empty')
+        .attr('x', this.width / 2)
+        .attr('y', this.height / 2)
+        .attr('text-anchor', 'middle')
+        .text('暂无坐标数据');
+      return;
+    }
+
     this.points = this.pointLayer
       .selectAll('.location-point')
       .data(validData, d => d.Location_ID)

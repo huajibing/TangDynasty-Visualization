@@ -231,11 +231,17 @@
 
 ### 阶段 4：全局状态管理、联动交互与 UI 组件
 
-- [ ] 在 `js/state.js` 定义 `AppState`（或等价模块）：集中存储当前选中的道、选中地点 ID 集合、物产筛选条件、户均人口区间等状态，提供 `getState()`、`update(partial)`、订阅变更回调等接口，内部可以结合 `eventBus` 做通知。
-- [ ] 在 `js/components/tooltip.js`、`legend.js`、`filter.js`、`sidebar.js` 中实现 UI 组件：Tooltip 负责统一的悬浮信息框，Legend 显示颜色/符号含义，Filter/Sidebar 提供按道和物产类别的筛选器，以及全局统计（总人口、总地点数等）。
-- [ ] 在 `js/main.js` 中完成应用初始化：加载原始数据 -> 调用 `DataProcessor` 得到处理后数据和索引 -> 初始化 `AppState` 与 `eventBus` -> 实例化地图和各图表组件，并通过构造参数传入状态和数据查询函数。
-- [ ] 建立视图间联动协议：直方图 Brush 更新 `AppState.householdRange` 并触发地图和散点图的高亮刷新；地图点击地点更新 `AppState.selectedLocationIds` 并在散点图中突出显示对应点；网络图节点点击更新 `AppState.selectedProduct` 并在地图上高亮相关地点。
-- [ ] 为所有交互路径增加健壮性处理：当筛选结果为空、地点缺少坐标、数据置信度过低等情况时，图表给出友好提示或淡化显示，并避免控制台错误；对复杂交互增加简单的调试日志（可后期移除）。
+- [x] 在 `js/state.js` 定义 `AppState`（或等价模块）：集中存储当前选中的道、选中地点 ID 集合、物产筛选条件、户均人口区间等状态，提供 `getState()`、`update(partial)`、订阅变更回调等接口，内部可以结合 `eventBus` 做通知。
+- [x] 在 `js/components/tooltip.js`、`legend.js`、`filter.js`、`sidebar.js` 中实现 UI 组件：Tooltip 负责统一的悬浮信息框，Legend 显示颜色/符号含义，Filter/Sidebar 提供按道和物产类别的筛选器，以及全局统计（总人口、总地点数等）。
+- [x] 在 `js/main.js` 中完成应用初始化：加载原始数据 -> 调用 `DataProcessor` 得到处理后数据和索引 -> 初始化 `AppState` 与 `eventBus` -> 实例化地图和各图表组件，并通过构造参数传入状态和数据查询函数。
+- [x] 建立视图间联动协议：直方图 Brush 更新 `AppState.householdRange` 并触发地图和散点图的高亮刷新；地图点击地点更新 `AppState.selectedLocationIds` 并在散点图中突出显示对应点；网络图节点点击更新 `AppState.selectedProduct` 并在地图上高亮相关地点。
+- [x] 为所有交互路径增加健壮性处理：当筛选结果为空、地点缺少坐标、数据置信度过低等情况时，图表给出友好提示或淡化显示，并避免控制台错误；对复杂交互增加简单的调试日志（可后期移除）。
+
+> 阶段 4 实施记录：
+> - 在 `AppState` 中增加默认状态、深拷贝获取、变更对比与订阅机制，支持 filters/选中/高亮的安全合并与通知。
+> - 完成侧栏组件：`Sidebar` 汇总全局统计/提示并托管 `FilterPanel` 与 `Legend`，筛选支持按道与物产类别清空/同步；Legend 渲染物产、行政级别与十道配色。
+> - 应用入口重构：集中初始化数据与状态，挂载图表与侧栏，桥接事件总线，基于 `AppState` 驱动跨视图联动、筛选过滤与高亮同步。
+> - 交互健壮性：筛选为空时侧栏提示并清除刷选，高亮仅落在可见数据上，地图在缺少坐标时显示占位文本，重要过滤变更输出调试日志。
 
 ### 阶段 5：样式美化、叙事增强、质量保障与发布
 
