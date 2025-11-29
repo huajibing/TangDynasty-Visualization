@@ -17,7 +17,8 @@ class ScatterPlot extends BaseChart {
       ...base,
       margin: {
         ...base.margin,
-        left: 48,
+        left: 60,
+        right: 16,
         bottom: 52,
       },
       xField: 'Population',
@@ -126,7 +127,7 @@ class ScatterPlot extends BaseChart {
       .attr('class', 'axis-label y-label')
       .attr('transform', 'rotate(-90)')
       .attr('x', -this.height / 2)
-      .attr('y', -40)
+      .attr('y', -45)
       .attr('text-anchor', 'middle')
       .text(this.options.yLabel);
   }
@@ -198,26 +199,43 @@ class ScatterPlot extends BaseChart {
     if (!this.colorScale) return;
     const items = this.colorScale.domain();
 
+    // 图例放在图表右上角，半透明背景
     const legend = this.chartGroup
       .selectAll('.scatter-legend')
       .data([null])
       .join('g')
       .attr('class', 'scatter-legend')
-      .attr('transform', `translate(${this.width - 140}, 8)`);
+      .attr('transform', `translate(${this.width - 90}, 4)`);
+
+    // 添加半透明背景
+    const itemCount = items.length;
+    legend
+      .selectAll('.scatter-legend__bg')
+      .data([null])
+      .join('rect')
+      .attr('class', 'scatter-legend__bg')
+      .attr('x', -6)
+      .attr('y', -4)
+      .attr('width', 96)
+      .attr('height', itemCount * 18 + 8)
+      .attr('rx', 4)
+      .attr('fill', 'rgba(253, 246, 227, 0.85)')
+      .attr('stroke', 'rgba(213, 208, 193, 0.5)')
+      .attr('stroke-width', 0.5);
 
     const legendItems = legend
       .selectAll('.scatter-legend__item')
       .data(items)
       .join('g')
       .attr('class', 'scatter-legend__item')
-      .attr('transform', (_, index) => `translate(0, ${index * 20})`);
+      .attr('transform', (_, index) => `translate(0, ${index * 18})`);
 
     legendItems
       .selectAll('rect')
       .data((d) => [d])
       .join('rect')
-      .attr('width', 12)
-      .attr('height', 12)
+      .attr('width', 10)
+      .attr('height', 10)
       .attr('rx', 2)
       .attr('ry', 2)
       .attr('fill', (d) => this.colorScale(d));
@@ -226,9 +244,10 @@ class ScatterPlot extends BaseChart {
       .selectAll('text')
       .data((d) => [d])
       .join('text')
-      .attr('x', 18)
-      .attr('y', 10)
+      .attr('x', 14)
+      .attr('y', 9)
       .attr('class', 'scatter-legend__label')
+      .style('font-size', '11px')
       .text((d) => d);
   }
 

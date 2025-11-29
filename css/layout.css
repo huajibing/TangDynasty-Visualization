@@ -1,150 +1,39 @@
-/* 仪表盘主布局与基础响应式适配 */
+/* 布局样式：全屏地图底图 + 悬浮面板模式 */
 
+/* 旧的 dashboard 布局类保留但简化，避免影响其他可能的引用 */
 .dashboard {
-  display: flex;
-  flex-direction: column;
+  display: block;
   min-height: 100vh;
-  gap: var(--spacing-md);
-  padding: var(--spacing-md);
   background: var(--color-bg-secondary);
 }
 
-.dashboard__header {
-  grid-area: header;
-}
-
-.dashboard__sidebar {
-  grid-area: sidebar;
-}
-
-.dashboard__main {
-  grid-area: main;
-}
-
-.dashboard__aside {
-  grid-area: aside;
-}
-
-.dashboard__footer {
-  grid-area: footer;
-}
-
-.dashboard__header {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: var(--spacing-xs);
-  padding: var(--spacing-md) var(--spacing-lg);
-  background: var(--color-bg-primary);
-  border: 1px solid var(--color-border-light);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-}
-
-.dashboard__main {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
-}
-
+.dashboard__header,
 .dashboard__sidebar,
-.dashboard__aside {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
-}
-
+.dashboard__main,
+.dashboard__aside,
 .dashboard__footer {
-  padding: var(--spacing-sm) var(--spacing-md);
-  color: var(--color-text-secondary);
-  font-size: var(--font-size-sm);
+  display: block;
 }
 
-.footer__text {
-  margin: 0;
+/* 旧布局区域隐藏（如果有残留使用） */
+.dashboard__header,
+.dashboard__footer {
+  display: none;
 }
 
-/* 卡片与图表基础尺寸（布局层仅约束尺寸与间距） */
-
+/* 卡片与图表基础尺寸 */
 .chart {
   width: 100%;
 }
 
+/* 直方图/散点图并排容器（在悬浮面板模式下不再使用，但保留兼容） */
 .card--row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: var(--spacing-md);
 }
 
-/* 中等及以上视口：切换为 Grid 布局，区域堆叠展示 */
-
-@media (min-width: 768px) {
-  .dashboard {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto auto auto auto auto;
-    grid-template-areas:
-      'header'
-      'sidebar'
-      'main'
-      'aside'
-      'footer';
-  }
-}
-
-/* 大屏：左侧侧边栏 + 主区域，中间以上分布 */
-
-@media (min-width: 1024px) {
-  .dashboard {
-    grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
-    grid-template-rows: var(--header-height) minmax(0, 1fr) auto;
-    grid-template-areas:
-      'header header'
-      'sidebar main'
-      'sidebar footer';
-    /* 固定整体高度，避免侧边栏内容增长时整列不断被撑高 */
-    height: 100vh;
-    max-height: 100vh;
-    overflow: hidden;
-  }
-
-  .dashboard__main,
-  .dashboard__sidebar,
-  .dashboard__aside {
-    /* 允许在 Grid 中收缩，由内部滚动承载超出内容 */
-    min-height: 0;
-    overflow: auto;
-  }
-
-  .dashboard__aside {
-    grid-column: 1 / -1;
-  }
-}
-
-/* 超大屏：加入右侧关联视图区，构成三列仪表盘布局 */
-
-@media (min-width: 1280px) {
-  .dashboard {
-    grid-template-columns: var(--sidebar-width) minmax(0, 1fr) var(--aside-width);
-    grid-template-rows: var(--header-height) minmax(0, 1fr) auto;
-    grid-template-areas:
-      'header header header'
-      'sidebar main aside'
-      'sidebar footer aside';
-    /* 与中等大屏保持一致：整体高度锁定在视口内，由列内滚动承载超出内容 */
-    height: 100vh;
-    max-height: 100vh;
-    overflow: hidden;
-  }
-
-  .dashboard__main,
-  .dashboard__sidebar,
-  .dashboard__aside {
-    min-height: 0;
-    overflow: auto;
-  }
-
-  .dashboard__aside {
-    grid-column: auto;
-  }
+/* 页脚文本 */
+.footer__text {
+  margin: 0;
 }

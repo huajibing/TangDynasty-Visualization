@@ -9,10 +9,30 @@
   border-radius: 8px;
 }
 
+/* 全屏底图模式（在 .map-backdrop 容器内） */
+.map-backdrop .chart--map {
+  height: 100vh;
+  min-height: 100vh;
+  border: none;
+  border-radius: 0;
+  background: radial-gradient(
+    ellipse 120% 100% at 50% 30%,
+    #f9f5eb 0%,
+    #f5f0e1 40%,
+    #ebe6d7 70%,
+    #e0dac8 100%
+  );
+}
+
 @media (max-width: 1024px) {
   .chart--map {
     height: 420px;
     min-height: 420px;
+  }
+
+  .map-backdrop .chart--map {
+    height: 100vh;
+    min-height: 100vh;
   }
 }
 
@@ -23,7 +43,7 @@
 }
 
 .map__boundary:hover {
-  fill: #e6d9c2;
+  fill: rgba(230, 217, 194, 0.4);
 }
 
 .location-point {

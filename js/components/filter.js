@@ -85,7 +85,7 @@ export class FilterPanel {
     group.appendChild(title);
 
     const list = document.createElement('div');
-    list.className = 'filter__options';
+    list.className = 'filter__options filter__options--dao';
 
     daoOptions.forEach((option) => {
       const item = document.createElement('label');
@@ -131,7 +131,7 @@ export class FilterPanel {
     group.appendChild(title);
 
     const list = document.createElement('div');
-    list.className = 'filter__options';
+    list.className = 'filter__options filter__options--product';
 
     productTypeOptions.forEach((type) => {
       const item = document.createElement('label');

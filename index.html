@@ -11,63 +11,88 @@
   <body>
     <a href="#main" class="skip-link">跳到主要内容</a>
 
-    <div class="dashboard" id="app">
-      <header class="dashboard__header">
+    <div class="app-container" id="app">
+      <!-- 全屏地图底图层 -->
+      <div class="map-backdrop" id="main">
+        <div id="map-container" class="chart chart--map" aria-label="唐代地理分布地图"></div>
+      </div>
+
+      <!-- 顶部标题栏（悬浮） -->
+      <header class="floating-header">
         <h1 class="app-title">盛世霓裳——唐代人口与物产地理分布可视分析</h1>
-        <p class="app-subtitle">
-          基于《新唐书·地理志》，通过地图、直方图、散点图与网络图联动，探索盛唐时期的人口格局与物产结构。
-        </p>
       </header>
 
-      <aside class="dashboard__sidebar" aria-label="筛选与说明">
-        <section class="sidebar sidebar--intro">
-          <h2 class="sidebar__title">探索指引</h2>
-          <p class="sidebar__text">
-            如果页面未能正常加载交互组件，请确认浏览器已开启
-            JavaScript。正常情况下，这里将展示数据总览、筛选器、图例 与探索提示。
-          </p>
-        </section>
+      <!-- 悬浮面板切换按钮组 -->
+      <nav class="panel-toggles" aria-label="面板切换">
+        <button class="panel-toggle" data-panel="sidebar" aria-expanded="true" title="探索指引">
+          <span class="panel-toggle__icon">☰</span>
+          <span class="panel-toggle__label">指引</span>
+        </button>
+        <button class="panel-toggle" data-panel="histogram" aria-expanded="false" title="户均人口分布">
+          <span class="panel-toggle__icon">📊</span>
+          <span class="panel-toggle__label">直方图</span>
+        </button>
+        <button class="panel-toggle" data-panel="scatter" aria-expanded="false" title="人口与物产丰富度">
+          <span class="panel-toggle__icon">⊙</span>
+          <span class="panel-toggle__label">散点图</span>
+        </button>
+        <button class="panel-toggle" data-panel="network" aria-expanded="false" title="物产共现网络">
+          <span class="panel-toggle__icon">◎</span>
+          <span class="panel-toggle__label">网络图</span>
+        </button>
+      </nav>
+
+      <!-- 左侧侧边栏面板 -->
+      <aside class="floating-panel floating-panel--sidebar is-open" data-panel-id="sidebar" aria-label="筛选与说明">
+        <div class="floating-panel__header">
+          <h2 class="floating-panel__title">探索指引</h2>
+          <button class="floating-panel__close" aria-label="收起面板">×</button>
+        </div>
+        <div class="floating-panel__body">
+          <section class="sidebar sidebar--intro">
+            <p class="sidebar__text">
+              如果页面未能正常加载交互组件，请确认浏览器已开启
+              JavaScript。正常情况下，这里将展示数据总览、筛选器、图例与探索提示。
+            </p>
+          </section>
+        </div>
       </aside>
 
-      <main class="dashboard__main" id="main">
-        <section class="card card--map" aria-labelledby="map-title">
-          <h2 class="card__title" id="map-title">唐代地理分布地图</h2>
-          <div id="map-container" class="chart chart--map" aria-label="地图视图"></div>
-        </section>
+      <!-- 直方图面板 -->
+      <div class="floating-panel floating-panel--histogram" data-panel-id="histogram" aria-labelledby="histogram-title">
+        <div class="floating-panel__header">
+          <h2 class="floating-panel__title" id="histogram-title">户均人口分布</h2>
+          <button class="floating-panel__close" aria-label="收起面板">×</button>
+        </div>
+        <div class="floating-panel__body">
+          <div id="histogram-container" class="chart chart--histogram" aria-label="户均人口直方图"></div>
+        </div>
+      </div>
 
-        <section class="card card--row" aria-label="人口与物产统计">
-          <div class="card card--histogram" aria-labelledby="histogram-title">
-            <h2 class="card__title" id="histogram-title">户均人口分布</h2>
-            <div
-              id="histogram-container"
-              class="chart chart--histogram"
-              aria-label="户均人口直方图"
-            ></div>
-          </div>
+      <!-- 散点图面板 -->
+      <div class="floating-panel floating-panel--scatter" data-panel-id="scatter" aria-labelledby="scatter-title">
+        <div class="floating-panel__header">
+          <h2 class="floating-panel__title" id="scatter-title">人口与物产丰富度</h2>
+          <button class="floating-panel__close" aria-label="收起面板">×</button>
+        </div>
+        <div class="floating-panel__body">
+          <div id="scatter-container" class="chart chart--scatter" aria-label="人口与物产散点图"></div>
+        </div>
+      </div>
 
-          <div class="card card--scatter" aria-labelledby="scatter-title">
-            <h2 class="card__title" id="scatter-title">人口与物产丰富度</h2>
-            <div
-              id="scatter-container"
-              class="chart chart--scatter"
-              aria-label="人口与物产散点图"
-            ></div>
-          </div>
-        </section>
-      </main>
+      <!-- 网络图面板 -->
+      <div class="floating-panel floating-panel--network" data-panel-id="network" aria-labelledby="network-title">
+        <div class="floating-panel__header">
+          <h2 class="floating-panel__title" id="network-title">物产共现网络</h2>
+          <button class="floating-panel__close" aria-label="收起面板">×</button>
+        </div>
+        <div class="floating-panel__body">
+          <div id="network-container" class="chart chart--network" aria-label="物产共现网络图"></div>
+        </div>
+      </div>
 
-      <aside class="dashboard__aside" aria-label="物产关系视图">
-        <section class="card card--network" aria-labelledby="network-title">
-          <h2 class="card__title" id="network-title">物产共现网络</h2>
-          <div
-            id="network-container"
-            class="chart chart--network"
-            aria-label="物产共现网络图"
-          ></div>
-        </section>
-      </aside>
-
-      <footer class="dashboard__footer">
+      <!-- 底部信息（悬浮） -->
+      <footer class="floating-footer">
         <p class="footer__text">
           数据来源：整理自《新唐书·地理志》等史料 · 本站仅用于教学与可视化实验。
         </p>

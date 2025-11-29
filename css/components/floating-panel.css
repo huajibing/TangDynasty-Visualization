@@ -1,0 +1,369 @@
+/* 悬浮面板组件样式 */
+
+/* ===== 应用容器 ===== */
+.app-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ===== 地图底图层 ===== */
+.map-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.map-backdrop .chart--map {
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  border: none;
+  border-radius: 0;
+}
+
+/* ===== 悬浮标题栏 ===== */
+.floating-header {
+  position: fixed;
+  top: var(--spacing-md);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: var(--z-dropdown);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  background: rgba(253, 246, 227, 0.92);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  max-width: 90%;
+  text-align: center;
+}
+
+.floating-header .app-title {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  white-space: nowrap;
+}
+
+/* ===== 面板切换按钮组 ===== */
+.panel-toggles {
+  position: fixed;
+  top: 50%;
+  right: var(--spacing-md);
+  transform: translateY(-50%);
+  z-index: var(--z-dropdown);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.panel-toggle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  padding: var(--spacing-xs);
+  background: rgba(253, 246, 227, 0.92);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.panel-toggle:hover {
+  background: var(--color-bg-primary);
+  box-shadow: var(--shadow-md);
+  transform: scale(1.05);
+}
+
+.panel-toggle[aria-expanded='true'] {
+  background: var(--color-primary);
+  border-color: var(--color-primary-dark);
+  color: #fff;
+}
+
+.panel-toggle__icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.panel-toggle__label {
+  font-size: 10px;
+  margin-top: 2px;
+  white-space: nowrap;
+}
+
+/* ===== 悬浮面板基础样式 ===== */
+.floating-panel {
+  position: fixed;
+  z-index: var(--z-dropdown);
+  background: rgba(253, 246, 227, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.95);
+  transition:
+    opacity var(--transition-normal),
+    visibility var(--transition-normal),
+    transform var(--transition-normal);
+  /* 允许调整大小 */
+  resize: both;
+  overflow: hidden;
+  min-width: 280px;
+  min-height: 200px;
+}
+
+.floating-panel.is-open {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+}
+
+.floating-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-bottom: 1px solid var(--color-border-light);
+  cursor: move;
+  user-select: none;
+}
+
+.floating-panel__title {
+  margin: 0;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+}
+
+.floating-panel__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  font-size: 18px;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.floating-panel__close:hover {
+  background: var(--color-bg-tertiary);
+  border-color: var(--color-border);
+  color: var(--color-text-primary);
+}
+
+.floating-panel__body {
+  flex: 1;
+  overflow: auto;
+  padding: var(--spacing-md);
+}
+
+/* ===== 各面板特定位置与尺寸 ===== */
+
+/* 侧边栏面板：左侧 */
+.floating-panel--sidebar {
+  top: 80px;
+  left: var(--spacing-md);
+  width: 320px;
+  max-height: calc(100vh - 160px);
+}
+
+/* 直方图面板：左下 */
+.floating-panel--histogram {
+  bottom: 60px;
+  left: var(--spacing-md);
+  width: 400px;
+  height: 320px;
+}
+
+/* 散点图面板：中下 */
+.floating-panel--scatter {
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%) scale(0.95);
+  width: 400px;
+  height: 320px;
+}
+
+.floating-panel--scatter.is-open {
+  transform: translateX(-50%) scale(1);
+}
+
+/* 网络图面板：右下 */
+.floating-panel--network {
+  bottom: 60px;
+  right: 80px;
+  width: 400px;
+  height: 400px;
+}
+
+/* ===== 悬浮底部栏 ===== */
+.floating-footer {
+  position: fixed;
+  bottom: var(--spacing-md);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: var(--z-dropdown);
+  padding: var(--spacing-xs) var(--spacing-md);
+  background: rgba(253, 246, 227, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.floating-footer .footer__text {
+  margin: 0;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+/* ===== 图表容器在悬浮面板内的样式调整 ===== */
+.floating-panel__body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: auto;
+}
+
+/* ===== Resize Handle 指示器 ===== */
+.floating-panel::after {
+  content: '';
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  width: 12px;
+  height: 12px;
+  background:
+    linear-gradient(135deg, transparent 50%, var(--color-border) 50%, var(--color-border) 60%, transparent 60%),
+    linear-gradient(135deg, transparent 65%, var(--color-border) 65%, var(--color-border) 75%, transparent 75%),
+    linear-gradient(135deg, transparent 80%, var(--color-border) 80%);
+  cursor: se-resize;
+  opacity: 0.6;
+  transition: opacity var(--transition-fast);
+  pointer-events: none;
+}
+
+.floating-panel:hover::after {
+  opacity: 1;
+}
+
+.floating-panel .chart--histogram,
+.floating-panel .chart--scatter,
+.floating-panel .chart--network {
+  flex: 1;
+  height: auto;
+  min-height: 200px;
+  border: none;
+  background: transparent;
+}
+
+/* ===== 响应式适配 ===== */
+
+/* 小屏幕：面板全宽 */
+@media (max-width: 768px) {
+  .floating-header {
+    top: var(--spacing-sm);
+    padding: var(--spacing-xs) var(--spacing-md);
+  }
+
+  .floating-header .app-title {
+    font-size: var(--font-size-md);
+  }
+
+  .panel-toggles {
+    top: auto;
+    bottom: 60px;
+    right: var(--spacing-sm);
+    flex-direction: row;
+    transform: none;
+  }
+
+  .panel-toggle {
+    width: 48px;
+    height: 48px;
+  }
+
+  .panel-toggle__label {
+    display: none;
+  }
+
+  .floating-panel--sidebar,
+  .floating-panel--histogram,
+  .floating-panel--scatter,
+  .floating-panel--network {
+    left: var(--spacing-sm);
+    right: var(--spacing-sm);
+    width: auto;
+    max-width: none;
+  }
+
+  .floating-panel--sidebar {
+    top: 60px;
+    max-height: calc(100vh - 180px);
+  }
+
+  .floating-panel--histogram,
+  .floating-panel--scatter,
+  .floating-panel--network {
+    bottom: 120px;
+    height: 280px;
+  }
+
+  .floating-panel--scatter {
+    transform: translateX(0) scale(0.95);
+    left: var(--spacing-sm);
+  }
+
+  .floating-panel--scatter.is-open {
+    transform: translateX(0) scale(1);
+  }
+
+  .floating-footer {
+    bottom: var(--spacing-sm);
+    left: var(--spacing-sm);
+    right: var(--spacing-sm);
+    transform: none;
+    text-align: center;
+  }
+}
+
+/* 中等屏幕调整 */
+@media (min-width: 769px) and (max-width: 1280px) {
+  .floating-panel--sidebar {
+    width: 280px;
+  }
+
+  .floating-panel--histogram,
+  .floating-panel--scatter,
+  .floating-panel--network {
+    width: 340px;
+    height: 280px;
+  }
+
+  .floating-panel--network {
+    right: 70px;
+    height: 340px;
+  }
+}

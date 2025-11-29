@@ -10,6 +10,7 @@ import DataProcessor from './data/dataProcessor.js';
 import DataQuery from './data/dataQuery.js';
 import { AppState } from './state.js';
 import { Sidebar } from './components/sidebar.js';
+import { PanelManager } from './components/panelManager.js';
 import {
   COLORS,
   PRODUCT_TYPE_KEYS,
@@ -67,10 +68,12 @@ function initApp(processed, rawData) {
     state,
     charts: {},
     sidebar: null,
+    panelManager: null,
   };
 
   context.charts = mountCharts(context);
   context.sidebar = initSidebar(context);
+  context.panelManager = initPanelManager(context);
   bindEventBridges(context);
   applyFiltersAndRender(context, state.get('filters'));
 
@@ -105,11 +108,49 @@ function mountCharts({ data, geoData, indices }) {
   };
 }
 
+function initPanelManager(context) {
+  // 防抖函数，避免 resize 过于频繁
+  const debounce = (fn, delay) => {
+    let timer = null;
+    return (...args) => {
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(() => fn(...args), delay);
+    };
+  };
+
+  const handleResize = debounce((panelId) => {
+    if (panelId === 'histogram') {
+      context.charts.histogram?.resize?.();
+      context.charts.histogram?.update?.(context.filteredData);
+    } else if (panelId === 'scatter') {
+      context.charts.scatter?.resize?.();
+      context.charts.scatter?.update?.(context.filteredData);
+    } else if (panelId === 'network') {
+      context.charts.network?.resize?.();
+    }
+  }, 100);
+
+  const panelManager = new PanelManager({
+    onPanelChange: (panelId, isOpen) => {
+      // 面板打开时，触发对应图表的 resize 以适应新尺寸
+      if (isOpen) {
+        window.requestAnimationFrame(() => handleResize(panelId));
+      }
+    },
+    onPanelResize: (panelId) => {
+      // 面板大小改变时，更新对应图表
+      handleResize(panelId);
+    },
+  });
+
+  return panelManager;
+}
+
 function initSidebar(context) {
   const daoOptions = buildDaoOptions(context.indices);
   const legendSections = buildLegendSections(daoOptions);
 
-  const sidebar = new Sidebar('.dashboard__sidebar', {
+  const sidebar = new Sidebar('.floating-panel--sidebar .floating-panel__body', {
     onFilterChange: (filters) => {
       const nextFilters = { ...context.state.get('filters'), ...filters };
       context.state.update({ filters: nextFilters });

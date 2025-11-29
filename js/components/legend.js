@@ -31,7 +31,16 @@ export class Legend {
 
     validSections.forEach((section) => {
       const sectionEl = document.createElement('div');
-      sectionEl.className = 'legend__section';
+      // 根据标题添加 modifier 类名
+      let sectionModifier = '';
+      if (section.title?.includes('十道')) {
+        sectionModifier = 'legend__section--dao';
+      } else if (section.title?.includes('物产')) {
+        sectionModifier = 'legend__section--product';
+      } else if (section.title?.includes('行政')) {
+        sectionModifier = 'legend__section--level';
+      }
+      sectionEl.className = `legend__section ${sectionModifier}`.trim();
 
       if (section.title) {
         const title = document.createElement('div');
@@ -41,7 +50,7 @@ export class Legend {
       }
 
       const list = document.createElement('div');
-      list.className = 'legend';
+      list.className = 'legend__items';
 
       section.items.forEach((item) => {
         const row = document.createElement('div');

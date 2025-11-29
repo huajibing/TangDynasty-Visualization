@@ -11,6 +11,7 @@
 @import 'components/filter.css';
 @import 'components/sidebar.css';
 @import 'components/card.css';
+@import 'components/floating-panel.css';
 
 /* 图表样式 */
 @import 'charts/map.css';
