@@ -247,6 +247,5 @@
 
 - [ ] 按 `docs/STYLE_GUIDE_CSS.md` 完成样式分层：实现 `css/variables.css`（设计令牌）、`reset.css`、`base.css`、`layout.css`、`style.css`，以及各组件和图表样式文件（`css/components/*.css`, `css/charts/*.css`），实现仪表盘式布局和基础响应式适配。
 - [ ] 完成 `index.html` 的最终结构：语义化地组织 Header（项目标题与简要说明）、主区域（地图、直方图、散点图、网络图、侧边栏）、Footer（数据来源、制作信息等），并引入所有 CSS/JS 资源（D3 CDN、`js/main.js` 等）。
-- [ ] 提炼并嵌入叙事与任务引导：在侧边栏或顶部添加简短引导文案，将本文件中列出的 6 个探索性问题转化为“操作提示”（例如“在直方图中框选户均>8人区域，观察地图上的空间分布”），同时在 `README.md` 更新使用说明与关键截图。
+- [ ] 提炼并嵌入叙事与任务引导：在侧边栏或顶部添加简短引导文案，将本文件中列出的 6 个探索性问题转化为“操作提示”（例如“在直方图中框选户均>8人区域，观察地图上的空间分布”）。
 - [ ] 根据 `docs/STYLE_GUIDE_JS.md` 和 `.eslintrc.json` 运行并修正 `npm run lint` 和 `npm run format` 的所有问题，确保 JS/CSS/HTML 符合统一编码规范；必要时微调 ESLint/Prettier 配置以适配项目实际需求。
-- [ ] 按 `docs/GIT_WORKFLOW.md` 准备首个可用版本：在若干 `feature/*` 分支完成上述阶段后合并到 `develop`，从 `develop` 创建 `release/v1.0.0` 进行最终测试，通过后合并到 `main` 并配置静态托管（GitHub Pages 或实验室服务器），形成可访问的在线版本。
