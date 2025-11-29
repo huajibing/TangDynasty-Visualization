@@ -10,10 +10,12 @@ class NetworkGraph extends BaseChart {
     return {
       ...super.defaultOptions,
       minCooccurrence: 2,
-      nodeRadius: 8,
-      linkStrength: 0.35,
-      chargeStrength: -160,
+      // 略微缩短连线距离并减弱斥力，让多个连通分量更紧凑
+      linkStrength: 0.4,
+      chargeStrength: -80,
       maxNodes: 120,
+      zoomMinScale: 0.5,
+      zoomMaxScale: 3,
     };
   }
 
@@ -56,9 +58,33 @@ class NetworkGraph extends BaseChart {
       return;
     }
 
+    this._ensureLayers();
     this._renderLinks();
     this._renderNodes();
     this._setupSimulation();
+    this._setupZoom();
+    this._bindBackgroundClick();
+  }
+
+  _ensureLayers() {
+    // graphLayer 作为缩放/平移的根节点，内部再分别挂载连线与节点层
+    this.graphLayer = this.chartGroup
+      .selectAll('.network-graph-layer')
+      .data([null])
+      .join('g')
+      .attr('class', 'network-graph-layer');
+
+    this.linkLayer = this.graphLayer
+      .selectAll('.network-links-layer')
+      .data([null])
+      .join('g')
+      .attr('class', 'network-links-layer');
+
+    this.nodeLayer = this.graphLayer
+      .selectAll('.network-nodes-layer')
+      .data([null])
+      .join('g')
+      .attr('class', 'network-nodes-layer');
   }
 
   _prepareData() {
@@ -137,17 +163,19 @@ class NetworkGraph extends BaseChart {
   }
 
   _renderLinks() {
-    this.linkElements = this.chartGroup
+    this.linkElements = this.linkLayer
       .selectAll('.network-link')
       .data(this.links, (d) => `${d.source}-${d.target}`)
       .join('line')
       .attr('class', 'network-link')
       .attr('stroke-width', (d) => this.linkWidthScale(d.count))
-      .attr('stroke', 'rgba(52, 73, 94, 0.35)');
+      .attr('stroke', 'rgba(52, 73, 94, 0.35)')
+      // 连线仅作为视觉背景，不参与交互命中，避免影响节点拖拽
+      .attr('pointer-events', 'none');
   }
 
   _renderNodes() {
-    this.nodeElements = this.chartGroup
+    this.nodeElements = this.nodeLayer
       .selectAll('.network-node')
       .data(this.nodes, (d) => d.id)
       .join(
@@ -161,12 +189,15 @@ class NetworkGraph extends BaseChart {
         (exit) => exit.remove(),
       );
 
-    this.nodeElements
+    const circles = this.nodeElements
       .select('circle')
       .attr('r', (d) => this.sizeScale(d.count))
       .attr('fill', COLORS.theme.primary)
       .attr('stroke', '#fff')
       .attr('stroke-width', 1.2);
+
+    // 提升圆形的命中区域，便于拖拽与点击
+    circles.attr('vector-effect', 'non-scaling-stroke');
 
     this.nodeElements
       .select('text')
@@ -185,8 +216,11 @@ class NetworkGraph extends BaseChart {
         this._clearHighlight();
         Tooltip.hide();
       })
-      .on('click', (_event, node) => {
-        eventBus.emit(EVENTS.PRODUCT_SELECT, node.name);
+      .on('click', (event, node) => {
+        // 阻止冒泡到背景点击，避免立刻触发“失焦”
+        event.stopPropagation();
+        const nextName = this.currentSelectedProduct === node.name ? null : node.name;
+        eventBus.emit(EVENTS.PRODUCT_SELECT, nextName);
         this.options.onClick?.(node);
       });
 
@@ -200,6 +234,10 @@ class NetworkGraph extends BaseChart {
   }
 
   _setupSimulation() {
+    if (this.simulation) {
+      this.simulation.stop();
+    }
+
     this.simulation = d3
       .forceSimulation(this.nodes)
       .force(
@@ -212,6 +250,9 @@ class NetworkGraph extends BaseChart {
       )
       .force('charge', d3.forceManyBody().strength(this.options.chargeStrength))
       .force('center', d3.forceCenter(this.width / 2, this.height / 2))
+      // 额外增加 X/Y 吸引力，避免互不相连的子图漂得太远
+      .force('x', d3.forceX(this.width / 2).strength(0.03))
+      .force('y', d3.forceY(this.height / 2).strength(0.03))
       .force(
         'collision',
         d3.forceCollide().radius((node) => this.sizeScale(node.count) + 6),
@@ -280,6 +321,10 @@ class NetworkGraph extends BaseChart {
   }
 
   highlight(productNames = []) {
+    this.currentSelectedProduct = Array.isArray(productNames) && productNames.length > 0
+      ? productNames[0]
+      : null;
+
     const nameSet = new Set(productNames || []);
     this.nodeElements?.classed('is-highlighted', (node) => nameSet.has(node.name));
     this.linkElements?.classed('is-highlighted', (link) => {
@@ -290,12 +335,102 @@ class NetworkGraph extends BaseChart {
   }
 
   clearHighlight() {
+    this.currentSelectedProduct = null;
     this._clearHighlight();
+  }
+
+  _setupZoom() {
+    if (!this.svg || !this.graphLayer) return;
+
+    const minScale = this.options.zoomMinScale || 0.5;
+    const maxScale = this.options.zoomMaxScale || 3;
+
+    if (!this.zoomBehavior) {
+      this.zoomBehavior = d3
+        .zoom()
+        .scaleExtent([minScale, maxScale])
+        .on('zoom', (event) => {
+          this.graphLayer.attr('transform', event.transform);
+          this.currentTransform = event.transform;
+          // 有源事件说明是用户交互，后续不要自动居中了
+          if (event.sourceEvent) {
+            this.hasUserTransform = true;
+          }
+        });
+
+      this.svg.call(this.zoomBehavior);
+    }
+
+    const transform = this.currentTransform || d3.zoomIdentity;
+    this.svg.call(this.zoomBehavior.transform, transform);
+  }
+
+  _centerAfterSimulation() {
+    if (!this.nodes || this.nodes.length === 0) return;
+    if (!this.svg || !this.zoomBehavior) return;
+    // 如果用户已经手动平移/缩放，就不再强制居中，避免打断交互
+    if (this.hasUserTransform) return;
+
+    let minX = Infinity;
+    let maxX = -Infinity;
+    let minY = Infinity;
+    let maxY = -Infinity;
+
+    this.nodes.forEach((node) => {
+      if (!Number.isFinite(node.x) || !Number.isFinite(node.y)) return;
+      minX = Math.min(minX, node.x);
+      maxX = Math.max(maxX, node.x);
+      minY = Math.min(minY, node.y);
+      maxY = Math.max(maxY, node.y);
+    });
+
+    if (!Number.isFinite(minX) || !Number.isFinite(maxX) || minX === maxX) return;
+
+    const width = maxX - minX || 1;
+    const height = maxY - minY || 1;
+    const paddingFactor = 1.4;
+
+    const scale = Math.min(
+      this.width / (width * paddingFactor),
+      this.height / (height * paddingFactor),
+      this.options.zoomMaxScale || 3,
+    );
+
+    const centerX = minX + width / 2;
+    const centerY = minY + height / 2;
+
+    const transform = d3.zoomIdentity
+      .translate(this.width / 2, this.height / 2)
+      .scale(scale)
+      .translate(-centerX, -centerY);
+
+    this.currentTransform = transform;
+
+    this.svg
+      .transition()
+      .duration(400)
+      .call(this.zoomBehavior.transform, transform);
+  }
+
+  _bindBackgroundClick() {
+    if (!this.svg) return;
+    // 点击网络图背景区域时清除当前物产聚焦
+    this.svg.on('click.network-clear', (event) => {
+      const target = event.target;
+      if (target && typeof target.closest === 'function') {
+        if (target.closest('.network-node')) return;
+      }
+      eventBus.emit(EVENTS.PRODUCT_SELECT, null);
+    });
   }
 
   destroy() {
     if (this.simulation) {
       this.simulation.stop();
+    }
+    if (this.svg && this.zoomBehavior) {
+      this.svg.on('.zoom', null);
+      this.svg.on('click.network-clear', null);
     }
     super.destroy();
   }

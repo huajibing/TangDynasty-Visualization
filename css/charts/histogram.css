@@ -1,6 +1,7 @@
 /* 户均人口直方图样式 */
 
 .chart--histogram {
+  height: 260px;
   min-height: 260px;
 }
 

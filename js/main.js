@@ -74,6 +74,12 @@ function initApp(processed, rawData) {
   bindEventBridges(context);
   applyFiltersAndRender(context, state.get('filters'));
 
+  // 确保散点图在初次布局稳定后完成一次基于最终尺寸的渲染，
+  // 避免个别浏览器在首帧尚未完成布局时计算到异常尺寸而导致空白。
+  window.requestAnimationFrame(() => {
+    context.charts.scatter?.update(context.filteredData);
+  });
+
   // 暴露给浏览器控制台，便于后续快速检查
   window.__tangData = { rawData, ...processed };
 }
@@ -84,8 +90,13 @@ function mountCharts({ data, geoData, indices }) {
       geoData,
       colorMode: 'dao',
     }),
-    histogram: new Histogram('#histogram-container', data),
-    scatter: new ScatterPlot('#scatter-container', data),
+    histogram: new Histogram('#histogram-container', data, {
+      // 延迟首帧绘制，统一交给后续 update 流程，避免首次计算到异常尺寸
+      autoRender: false,
+    }),
+    scatter: new ScatterPlot('#scatter-container', data, {
+      autoRender: false,
+    }),
     network: new NetworkGraph('#network-container', data, {
       cooccurrence: indices?.productCooccurrence,
       productIndex: indices?.productIndex,

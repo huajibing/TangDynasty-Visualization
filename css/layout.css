@@ -106,6 +106,18 @@
       'header header'
       'sidebar main'
       'sidebar footer';
+    /* 固定整体高度，避免侧边栏内容增长时整列不断被撑高 */
+    height: 100vh;
+    max-height: 100vh;
+    overflow: hidden;
+  }
+
+  .dashboard__main,
+  .dashboard__sidebar,
+  .dashboard__aside {
+    /* 允许在 Grid 中收缩，由内部滚动承载超出内容 */
+    min-height: 0;
+    overflow: auto;
   }
 
   .dashboard__aside {
@@ -123,6 +135,17 @@
       'header header header'
       'sidebar main aside'
       'sidebar footer aside';
+    /* 与中等大屏保持一致：整体高度锁定在视口内，由列内滚动承载超出内容 */
+    height: 100vh;
+    max-height: 100vh;
+    overflow: hidden;
+  }
+
+  .dashboard__main,
+  .dashboard__sidebar,
+  .dashboard__aside {
+    min-height: 0;
+    overflow: auto;
   }
 
   .dashboard__aside {

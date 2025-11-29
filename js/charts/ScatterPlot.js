@@ -12,8 +12,14 @@ import eventBus, { EVENTS } from '../utils/eventBus.js';
 
 class ScatterPlot extends BaseChart {
   get defaultOptions() {
+    const base = super.defaultOptions;
     return {
-      ...super.defaultOptions,
+      ...base,
+      margin: {
+        ...base.margin,
+        left: 48,
+        bottom: 52,
+      },
       xField: 'Population',
       yField: 'productRichness',
       colorField: 'dominantProductType',
@@ -25,10 +31,15 @@ class ScatterPlot extends BaseChart {
   }
 
   _setupScales() {
-    const { xField, yField } = this.options;
+    const { xField, yField, colorField } = this.options;
 
-    this.validData = this.data.filter(
-      (d) => Number.isFinite(d[xField]) && Number.isFinite(d[yField]),
+    // 仅保留人口、物产丰富度都为有效数值，且存在主导物产类别的点，
+    // 避免出现「空白分类」图例项。
+    this.validData = (this.data || []).filter(
+      (d) =>
+        Number.isFinite(d[xField]) &&
+        Number.isFinite(d[yField]) &&
+        d[colorField],
     );
 
     const xValues = this.validData.map((d) => d[xField]);
@@ -47,8 +58,12 @@ class ScatterPlot extends BaseChart {
       [this.height, 0],
       { nice: true },
     );
-
-    this.colorScale = createProductTypeColorScale();
+    // 仅使用当前数据中实际出现的物产类别构建颜色比例尺，
+    // 防止 legend 中出现「空白」项。
+    const presentTypes = Array.from(
+      new Set(this.validData.map((d) => d[colorField])),
+    );
+    this.colorScale = createProductTypeColorScale(presentTypes);
   }
 
   render() {
@@ -92,13 +107,15 @@ class ScatterPlot extends BaseChart {
       .attr('class', 'axis y-axis')
       .call(yAxis);
 
+    const bottomOffset = (this.options.margin?.bottom ?? 30) - 8;
+
     this.chartGroup
       .selectAll('.x-label')
       .data([null])
       .join('text')
       .attr('class', 'axis-label x-label')
       .attr('x', this.width / 2)
-      .attr('y', this.height + 36)
+      .attr('y', this.height + bottomOffset)
       .attr('text-anchor', 'middle')
       .text(this.options.xLabel);
 

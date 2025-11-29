@@ -1,6 +1,7 @@
 /* 人口 vs 物产丰富度散点图样式 */
 
 .chart--scatter {
+  height: 260px;
   min-height: 260px;
 }
 

@@ -7,8 +7,14 @@ import eventBus, { EVENTS } from '../utils/eventBus.js';
 
 class Histogram extends BaseChart {
   get defaultOptions() {
+    const base = super.defaultOptions;
     return {
-      ...super.defaultOptions,
+      ...base,
+      margin: {
+        ...base.margin,
+        left: 48,
+        bottom: 52,
+      },
       field: 'householdSize',
       bins: 12,
       brushEnabled: true,
@@ -78,6 +84,8 @@ class Histogram extends BaseChart {
     const xAxis = d3.axisBottom(this.xScale).ticks(this.options.bins);
     const yAxis = d3.axisLeft(this.yScale).ticks(6).tickFormat(d3.format('d'));
 
+    const bottomOffset = (this.options.margin?.bottom ?? 30) - 8;
+
     this.chartGroup
       .selectAll('.x-axis')
       .data([null])
@@ -99,7 +107,7 @@ class Histogram extends BaseChart {
       .join('text')
       .attr('class', 'axis-label x-label')
       .attr('x', this.width / 2)
-      .attr('y', this.height + 36)
+      .attr('y', this.height + bottomOffset)
       .attr('text-anchor', 'middle')
       .text(this.options.xLabel);
 
