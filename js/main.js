@@ -11,6 +11,7 @@ import DataQuery from './data/dataQuery.js';
 import { AppState } from './state.js';
 import { Sidebar } from './components/sidebar.js';
 import { PanelManager } from './components/panelManager.js';
+import { DataTable } from './components/DataTable.js';
 import {
   COLORS,
   PRODUCT_TYPE_KEYS,
@@ -88,6 +89,12 @@ function initApp(processed, rawData) {
 }
 
 function mountCharts({ data, geoData, indices }) {
+  const datatable = new DataTable('#datatable-container', {
+    pageSize: 50,
+  });
+  datatable.render();
+  datatable.update(data);
+
   return {
     map: new MapView('#map-container', data, {
       geoData,
@@ -105,6 +112,7 @@ function mountCharts({ data, geoData, indices }) {
       productIndex: indices?.productIndex,
       minCooccurrence: 2,
     }),
+    datatable,
   };
 }
 
@@ -273,6 +281,7 @@ function updateChartsData(context, data) {
     productIndex: null,
     cooccurrence: null,
   });
+  context.charts.datatable?.update(data);
 }
 
 function syncHighlights(context) {
@@ -290,12 +299,14 @@ function syncHighlights(context) {
     charts.map?.clearHighlight();
     charts.histogram?.clearHighlight();
     charts.scatter?.clearHighlight();
+    charts.datatable?.highlight([]);
     return;
   }
 
   charts.map?.highlight(highlightIds);
   charts.histogram?.highlight(highlightIds);
   charts.scatter?.highlight(highlightIds);
+  charts.datatable?.highlight(highlightIds);
 }
 
 function computeActiveHighlightIds(context) {

@@ -28,6 +28,10 @@
           <span class="panel-toggle__icon">☰</span>
           <span class="panel-toggle__label">指引</span>
         </button>
+        <button class="panel-toggle" data-panel="datatable" aria-expanded="false" title="数据表">
+          <span class="panel-toggle__icon">▤</span>
+          <span class="panel-toggle__label">数据表</span>
+        </button>
         <button class="panel-toggle" data-panel="histogram" aria-expanded="false" title="户均人口分布">
           <span class="panel-toggle__icon">📊</span>
           <span class="panel-toggle__label">直方图</span>
@@ -88,6 +92,17 @@
         </div>
         <div class="floating-panel__body">
           <div id="network-container" class="chart chart--network" aria-label="物产共现网络图"></div>
+        </div>
+      </div>
+
+      <!-- 数据表面板 -->
+      <div class="floating-panel floating-panel--datatable" data-panel-id="datatable" aria-labelledby="datatable-title">
+        <div class="floating-panel__header">
+          <h2 class="floating-panel__title" id="datatable-title">州府数据表</h2>
+          <button class="floating-panel__close" aria-label="收起面板">×</button>
+        </div>
+        <div class="floating-panel__body">
+          <div id="datatable-container" class="datatable-container" aria-label="州府数据表"></div>
         </div>
       </div>
 

@@ -1,0 +1,261 @@
+/* 数据表组件样式 */
+
+/* ===== 数据表面板定位 ===== */
+.floating-panel--datatable {
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%) scale(0.95);
+  width: 800px;
+  max-width: calc(100vw - 100px);
+  height: 500px;
+  max-height: calc(100vh - 160px);
+}
+
+.floating-panel--datatable.is-open {
+  transform: translateX(-50%) scale(1);
+}
+
+/* ===== 数据表容器 ===== */
+.datatable-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* ===== 工具栏 ===== */
+.datatable__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  padding: var(--spacing-sm) 0;
+  border-bottom: 1px solid var(--color-border-light);
+  flex-shrink: 0;
+}
+
+.datatable__search {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  flex: 1;
+  max-width: 280px;
+}
+
+.datatable__search-input {
+  flex: 1;
+  padding: 6px 12px;
+  font-size: var(--font-size-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: #fff;
+  transition: all var(--transition-fast);
+}
+
+.datatable__search-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(192, 57, 43, 0.15);
+}
+
+.datatable__info {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+/* ===== 表格包装器 ===== */
+.datatable__wrapper {
+  flex: 1;
+  overflow: auto;
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  background: #fff;
+}
+
+/* ===== 表格样式 ===== */
+.datatable__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-sm);
+}
+
+/* 表头 */
+.datatable__table thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.datatable__table th {
+  padding: 10px 12px;
+  text-align: left;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  background: linear-gradient(180deg, #f8f6f1 0%, #f0ece3 100%);
+  border-bottom: 2px solid var(--color-border);
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition: background var(--transition-fast);
+}
+
+.datatable__table th:hover {
+  background: linear-gradient(180deg, #f0ece3 0%, #e8e4d9 100%);
+}
+
+/* 排序指示器 */
+.datatable__sort-icon {
+  display: inline-block;
+  margin-left: 4px;
+  opacity: 0.3;
+  transition: opacity var(--transition-fast);
+}
+
+.datatable__table th:hover .datatable__sort-icon {
+  opacity: 0.6;
+}
+
+.datatable__table th.is-sorted .datatable__sort-icon {
+  opacity: 1;
+  color: var(--color-primary);
+}
+
+.datatable__table th.is-sorted {
+  color: var(--color-primary);
+}
+
+/* 表体 */
+.datatable__table tbody tr {
+  transition: background var(--transition-fast);
+}
+
+.datatable__table tbody tr:nth-child(even) {
+  background: rgba(245, 240, 225, 0.3);
+}
+
+.datatable__table tbody tr:hover {
+  background: rgba(192, 57, 43, 0.08);
+}
+
+.datatable__table tbody tr.is-selected {
+  background: rgba(192, 57, 43, 0.15);
+}
+
+.datatable__table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--color-border-light);
+  color: var(--color-text-primary);
+}
+
+/* 数值列右对齐 */
+.datatable__table td.is-numeric {
+  text-align: right;
+  font-family: var(--font-family-mono);
+}
+
+/* 地名列 */
+.datatable__table td.is-name {
+  font-weight: var(--font-weight-medium);
+}
+
+/* 道标签 */
+.datatable__dao-tag {
+  display: inline-block;
+  padding: 2px 8px;
+  font-size: 11px;
+  border-radius: 10px;
+  color: #fff;
+  white-space: nowrap;
+}
+
+/* 空状态 */
+.datatable__empty {
+  padding: var(--spacing-xl);
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+/* ===== 分页器 ===== */
+.datatable__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  padding: var(--spacing-sm) 0;
+  border-top: 1px solid var(--color-border-light);
+  flex-shrink: 0;
+}
+
+.datatable__page-info {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.datatable__page-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.datatable__page-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.datatable__page-btn:hover:not(:disabled) {
+  background: var(--color-bg-secondary);
+  border-color: var(--color-text-secondary);
+  color: var(--color-text-primary);
+}
+
+.datatable__page-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.datatable__page-btn.is-active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+
+/* ===== 响应式 ===== */
+@media (max-width: 768px) {
+  .floating-panel--datatable {
+    top: 60px;
+    left: var(--spacing-sm);
+    right: var(--spacing-sm);
+    width: auto;
+    max-width: none;
+    transform: scale(0.95);
+    height: calc(100vh - 140px);
+  }
+
+  .floating-panel--datatable.is-open {
+    transform: scale(1);
+  }
+
+  .datatable__toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .datatable__search {
+    max-width: none;
+  }
+
+  .datatable__table th,
+  .datatable__table td {
+    padding: 6px 8px;
+  }
+}

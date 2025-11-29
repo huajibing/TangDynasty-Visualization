@@ -12,6 +12,7 @@
 @import 'components/sidebar.css';
 @import 'components/card.css';
 @import 'components/floating-panel.css';
+@import 'components/datatable.css';
 
 /* 图表样式 */
 @import 'charts/map.css';
