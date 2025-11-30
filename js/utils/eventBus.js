@@ -72,6 +72,8 @@ export const EVENTS = {
   PRODUCT_SELECT: 'productSelected',
   DAO_SELECT: 'daoSelected',
   HOUSEHOLD_RANGE_CHANGE: 'householdRangeChanged',
+  HISTOGRAM_BIN_HOVER: 'histogram:binHover',
+  PRODUCT_HOVER: 'product:hover',
 };
 
 export const eventBus = new EventBus();

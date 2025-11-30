@@ -7,8 +7,25 @@ import {
   createProductRichnessScale,
   createProductTypeColorScale,
 } from '../utils/scales.js';
-import { formatPopulation, Format } from '../utils/format.js';
+import { formatHouseholdSize, formatPopulation, Format } from '../utils/format.js';
 import eventBus, { EVENTS } from '../utils/eventBus.js';
+
+const MODE_CONFIG = {
+  population: {
+    key: 'population',
+    xField: 'Population',
+    xLabel: '人口数量',
+    logScale: true,
+    formatter: formatPopulation,
+  },
+  household: {
+    key: 'household',
+    xField: 'householdSize',
+    xLabel: '户均人口',
+    logScale: false,
+    formatter: formatHouseholdSize,
+  },
+};
 
 class ScatterPlot extends BaseChart {
   get defaultOptions() {
@@ -28,11 +45,15 @@ class ScatterPlot extends BaseChart {
       yLabel: '物产种类数',
       logScale: true,
       pointRadius: 5,
+      mode: 'population', // population | household
     };
   }
 
   _setupScales() {
-    const { xField, yField, colorField } = this.options;
+    const mode = this._getModeConfig();
+    this.currentMode = mode;
+    const xField = mode.xField;
+    const { yField, colorField } = this.options;
 
     // 仅保留人口、物产丰富度都为有效数值，且存在主导物产类别的点，
     // 避免出现「空白分类」图例项。
@@ -50,7 +71,7 @@ class ScatterPlot extends BaseChart {
     const yExtent = yValues.length > 0 ? d3.extent(yValues) : [0, 10];
 
     this.xScale = createPopulationScale(xExtent, [0, this.width], {
-      log: this.options.logScale,
+      log: mode.logScale,
       nice: true,
     });
 
@@ -88,7 +109,7 @@ class ScatterPlot extends BaseChart {
   }
 
   _renderAxes() {
-    const xAxis = this.options.logScale
+    const xAxis = this.currentMode?.logScale
       ? d3.axisBottom(this.xScale).ticks(6, '~s')
       : d3.axisBottom(this.xScale).ticks(6);
     const yAxis = d3.axisLeft(this.yScale).ticks(6).tickFormat(d3.format('d'));
@@ -118,7 +139,7 @@ class ScatterPlot extends BaseChart {
       .attr('x', this.width / 2)
       .attr('y', this.height + bottomOffset)
       .attr('text-anchor', 'middle')
-      .text(this.options.xLabel);
+      .text(this.currentMode?.xLabel || this.options.xLabel);
 
     this.chartGroup
       .selectAll('.y-label')
@@ -133,7 +154,8 @@ class ScatterPlot extends BaseChart {
   }
 
   _renderPoints() {
-    const { xField, yField, colorField, pointRadius } = this.options;
+    const { yField, colorField, pointRadius } = this.options;
+    const xField = this.currentMode?.xField || this.options.xField;
 
     this.points = this.chartGroup
       .selectAll('.scatter-point')
@@ -189,8 +211,9 @@ class ScatterPlot extends BaseChart {
         Tooltip.hide();
         eventBus.emit(EVENTS.LOCATION_HOVER, null);
       })
-      .on('click', (_event, d) => {
-        eventBus.emit(EVENTS.LOCATION_SELECT, d);
+      .on('click', (event, d) => {
+        const append = Boolean(event?.metaKey || event?.ctrlKey);
+        eventBus.emit(EVENTS.LOCATION_SELECT, { location: d, append });
         this.options.onClick?.(d);
       });
   }
@@ -250,12 +273,21 @@ class ScatterPlot extends BaseChart {
   }
 
   _formatTooltip(datum) {
+    const xField = this.currentMode?.xField || this.options.xField;
+    const xLabel = this.currentMode?.xLabel || this.options.xLabel;
+    const xFormatter = this.currentMode?.formatter || formatPopulation;
+
     return Format.tooltip(datum.Location_Name, [
-      { label: this.options.xLabel, value: formatPopulation(datum[this.options.xField]) },
+      { label: xLabel, value: xFormatter(datum[xField]) },
       { label: this.options.yLabel, value: Format.number(datum[this.options.yField]) },
       { label: '主导物产', value: datum.dominantProductType || '-' },
       { label: '所属道', value: datum.daoName || '-' },
     ]);
+  }
+
+  _getModeConfig() {
+    const modeKey = this.options.mode && MODE_CONFIG[this.options.mode] ? this.options.mode : 'population';
+    return MODE_CONFIG[modeKey] || MODE_CONFIG.population;
   }
 
   highlight(ids = []) {

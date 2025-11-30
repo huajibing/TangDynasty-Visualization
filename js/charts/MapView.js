@@ -184,17 +184,32 @@ class MapView extends BaseChart {
       })
       .on('click', (event, d) => {
         event.stopPropagation();
-        this._handleSelection(d);
+        this._handleSelection(event, d);
       });
   }
 
-  _handleSelection(location) {
-    const isSame = this.selectedId === location?.Location_ID;
-    this.selectedId = isSame ? null : location?.Location_ID || null;
+  _handleSelection(event, location) {
+    const append = Boolean(event?.metaKey || event?.ctrlKey);
+    const id = location?.Location_ID || null;
+    const prev = Array.isArray(this.selectedIds) ? this.selectedIds : [];
+    let nextSelected = [];
 
-    this.points.classed('is-selected', (d) => d.Location_ID === this.selectedId);
+    if (!id) {
+      nextSelected = [];
+    } else if (append) {
+      if (prev.includes(id)) {
+        nextSelected = prev.filter((item) => item !== id);
+      } else {
+        nextSelected = [...prev, id].slice(-2);
+      }
+    } else {
+      nextSelected = [id];
+    }
 
-    const payload = this.selectedId ? location : null;
+    this.selectedIds = nextSelected;
+    this.points.classed('is-selected', (d) => this.selectedIds?.includes(d.Location_ID));
+
+    const payload = id ? { location, append, ids: nextSelected } : null;
     eventBus.emit(EVENTS.LOCATION_SELECT, payload);
     this.options.onClick?.(payload);
   }

@@ -28,7 +28,7 @@ export class DataTable {
     this.sortOrder = 'asc';
     this.searchTerm = '';
     this.currentPage = 1;
-    this.selectedId = null;
+    this.selectedIds = [];
 
     this._columns = [
       { key: 'Location_Name', label: '地名', type: 'name' },
@@ -229,11 +229,11 @@ export class DataTable {
       const row = document.createElement('tr');
       row.dataset.id = item.Location_ID;
 
-      if (item.Location_ID === this.selectedId) {
+      if (this.selectedIds.includes(item.Location_ID)) {
         row.classList.add('is-selected');
       }
 
-      row.addEventListener('click', () => this._handleRowClick(item));
+      row.addEventListener('click', (event) => this._handleRowClick(item, event));
 
       this._columns.forEach((col) => {
         const td = document.createElement('td');
@@ -334,22 +334,33 @@ export class DataTable {
     this._updatePagination();
   }
 
-  _handleRowClick(item) {
-    this.selectedId = item.Location_ID;
+  _handleRowClick(item, event) {
+    const append = Boolean(event?.metaKey || event?.ctrlKey);
+    const id = item.Location_ID;
+
+    if (append) {
+      if (this.selectedIds.includes(id)) {
+        this.selectedIds = this.selectedIds.filter((value) => value !== id);
+      } else {
+        this.selectedIds = [...this.selectedIds, id].slice(-2);
+      }
+    } else {
+      this.selectedIds = [id];
+    }
 
     // 更新选中状态
     this._tableBody?.querySelectorAll('tr').forEach((row) => {
-      row.classList.toggle('is-selected', row.dataset.id === item.Location_ID);
+      row.classList.toggle('is-selected', this.selectedIds.includes(row.dataset.id));
     });
 
     // 发送事件
-    eventBus.emit(EVENTS.LOCATION_SELECT, item);
+    eventBus.emit(EVENTS.LOCATION_SELECT, { location: item, append });
   }
 
   highlight(ids = []) {
-    this.selectedId = ids[0] || null;
+    this.selectedIds = ids || [];
     this._tableBody?.querySelectorAll('tr').forEach((row) => {
-      row.classList.toggle('is-selected', ids.includes(row.dataset.id));
+      row.classList.toggle('is-selected', this.selectedIds.includes(row.dataset.id));
     });
   }
 

@@ -5,6 +5,8 @@ import MapView from './charts/MapView.js';
 import Histogram from './charts/Histogram.js';
 import ScatterPlot from './charts/ScatterPlot.js';
 import NetworkGraph from './charts/NetworkGraph.js';
+import DaoProductStackedChart from './charts/DaoProductStackedChart.js';
+import ProductRanking from './charts/ProductRanking.js';
 import DataLoader from './data/dataLoader.js';
 import DataProcessor from './data/dataProcessor.js';
 import DataQuery from './data/dataQuery.js';
@@ -87,6 +89,7 @@ function initApp(processed, rawData) {
   context.panelManager = initPanelManager(context);
   initThemeBridge(context);
   bindEventBridges(context);
+  bindChartControls(context);
   applyFiltersAndRender(context, state.get('filters'));
 
   // 确保散点图在初次布局稳定后完成一次基于最终尺寸的渲染，
@@ -115,11 +118,14 @@ function initThemeBridge(context) {
     context.charts.map?.update(data);
     context.charts.histogram?.update(data);
     context.charts.scatter?.update(data);
+    context.charts.daoProduct?.update(data);
+    context.charts.productRanking?.update(data);
     context.charts.network?.update(data);
   });
 }
 
-function mountCharts({ data, geoData, indices }) {
+function mountCharts(context) {
+  const { data, geoData, indices, state } = context;
   const datatable = new DataTable('#datatable-container', {
     pageSize: 50,
   });
@@ -136,6 +142,31 @@ function mountCharts({ data, geoData, indices }) {
       autoRender: false,
     }),
     scatter: new ScatterPlot('#scatter-container', data, {
+      autoRender: false,
+    }),
+    daoProduct: new DaoProductStackedChart('#dao-product-container', data, {
+      autoRender: false,
+      onHover: (payload) => handleHoverHighlight(context, payload),
+      onClick: (payload) => {
+        if (!payload) return;
+        const append = Boolean(
+          payload.originalEvent?.metaKey || payload.originalEvent?.ctrlKey,
+        );
+        if (append) {
+          updateDaoComparison(context, payload.daoId, true);
+          context.state.update({ hoveredIds: payload.ids || [] });
+          return;
+        }
+        const nextFilters = {
+          ...state.get('filters'),
+          daoIds: payload.daoId ? [payload.daoId] : [],
+          productTypes: payload.productType ? [payload.productType] : [],
+        };
+        state.update({ filters: nextFilters, hoveredIds: payload.ids || [] });
+        context.charts.histogram?.clearBrush?.();
+      },
+    }),
+    productRanking: new ProductRanking('#product-ranking-container', data, {
       autoRender: false,
     }),
     network: new NetworkGraph('#network-container', data, {
@@ -164,6 +195,11 @@ function initPanelManager(context) {
     } else if (panelId === 'scatter') {
       context.charts.scatter?.resize?.();
       context.charts.scatter?.update?.(context.filteredData);
+    } else if (panelId === 'products') {
+      context.charts.daoProduct?.resize?.();
+      context.charts.daoProduct?.update?.(context.filteredData);
+      context.charts.productRanking?.resize?.();
+      context.charts.productRanking?.update?.(context.filteredData);
     } else if (panelId === 'network') {
       context.charts.network?.resize?.();
     }
@@ -207,6 +243,7 @@ function initSidebar(context) {
     legendSections,
     filters: context.state.get('filters'),
     stats: summarizeData(context.data),
+    comparisonItems: buildComparisonItems(context),
     tips: [
       '任务 1：在地图上观察不同颜色与圆点大小，识别人口高度集中的州府与稀疏地区。',
       '任务 2：在直方图中框选户均人口 > 8 人的区间，查看这些异常地区在地图上的空间分布。',
@@ -226,6 +263,8 @@ function bindEventBridges(context) {
   eventBus.on(EVENTS.LOCATION_SELECT, (location) => handleLocationSelect(context, location));
   eventBus.on(EVENTS.HOUSEHOLD_RANGE_CHANGE, (payload) => handleHouseholdRange(context, payload));
   eventBus.on(EVENTS.PRODUCT_SELECT, (product) => handleProductSelect(context, product));
+  eventBus.on(EVENTS.HISTOGRAM_BIN_HOVER, (payload) => handleHoverHighlight(context, payload));
+  eventBus.on(EVENTS.PRODUCT_HOVER, (payload) => handleHoverHighlight(context, payload));
 
   state.subscribe('filters', (filters) => {
     // eslint-disable-next-line no-console
@@ -235,21 +274,54 @@ function bindEventBridges(context) {
 
   state.subscribe('highlightedIds', () => syncHighlights(context));
   state.subscribe('selectedLocationIds', () => syncHighlights(context));
+  state.subscribe('hoveredIds', () => syncHighlights(context));
+  state.subscribe('comparison', () => {
+    context.sidebar?.updateComparison(buildComparisonItems(context));
+  });
   state.subscribe('selectedProduct', (product) => {
     context.charts.network?.highlight(product ? [product] : []);
+    context.charts.productRanking?.highlightProduct(product);
     syncHighlights(context);
   });
 }
 
-function handleLocationSelect(context, location) {
+function bindChartControls(context) {
+  initHistogramModeToggle(context);
+  initScatterModeToggle(context);
+  initStackedModeToggle(context);
+}
+
+function handleLocationSelect(context, payload) {
+  const location = payload?.location ?? payload;
+  const append = Boolean(payload?.append);
   const id = location?.Location_ID || null;
   const daoId = location ? getDaoId(location) : null;
-  const ids = id ? [id] : [];
+  const prevSelected = context.state.get('selectedLocationIds') || [];
+
+  let selectedIds = Array.isArray(payload?.ids) ? payload.ids.slice(0, 2) : [];
+
+  if (!selectedIds.length) {
+    if (!id) {
+      selectedIds = [];
+    } else if (append) {
+      if (prevSelected.includes(id)) {
+        selectedIds = prevSelected.filter((value) => value !== id);
+      } else {
+        selectedIds = [...prevSelected, id].slice(0, 2);
+      }
+    } else {
+      selectedIds = [id];
+    }
+  }
 
   context.state.update({
     selectedDaoId: daoId,
-    selectedLocationIds: ids,
-    highlightedIds: ids,
+    selectedLocationIds: selectedIds,
+    highlightedIds: selectedIds,
+    comparison: {
+      ...(context.state.get('comparison') || {}),
+      locations: selectedIds,
+    },
   });
 }
 
@@ -272,6 +344,109 @@ function handleProductSelect(context, productName) {
   });
 }
 
+function handleHoverHighlight(context, payload) {
+  const visibleIds = getVisibleIdSet(context);
+  const ids = (payload?.ids || []).filter((id) => visibleIds.has(id));
+  context.state.update({ hoveredIds: ids });
+}
+
+function updateDaoComparison(context, daoId, append = false) {
+  const prev = context.state.get('comparison') || {};
+  const currentDaos = Array.isArray(prev.daos) ? prev.daos : [];
+
+  let nextDaos = [];
+  if (!daoId) {
+    nextDaos = [];
+  } else if (append) {
+    if (currentDaos.includes(daoId)) {
+      nextDaos = currentDaos.filter((value) => value !== daoId);
+    } else {
+      nextDaos = [...currentDaos, daoId].slice(0, 2);
+    }
+  } else {
+    nextDaos = [daoId];
+  }
+
+  context.state.update({
+    comparison: {
+      ...prev,
+      daos: nextDaos,
+    },
+  });
+}
+
+function initHistogramModeToggle(context) {
+  const toolbar = document.querySelector('#histogram-toolbar');
+  if (!toolbar) return;
+
+  const buttons = Array.from(toolbar.querySelectorAll('[data-mode]'));
+  const setActive = (mode) => {
+    buttons.forEach((btn) => {
+      const isActive = btn.dataset.mode === mode;
+      btn.classList.toggle('is-active', isActive);
+      btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    });
+  };
+
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const mode = btn.dataset.mode || 'global';
+      setActive(mode);
+      context.charts.histogram?.update(context.filteredData, { facetMode: mode });
+    });
+  });
+
+  setActive(context.charts.histogram?.options?.facetMode || 'global');
+}
+
+function initScatterModeToggle(context) {
+  const toolbar = document.querySelector('#scatter-toolbar');
+  if (!toolbar) return;
+
+  const buttons = Array.from(toolbar.querySelectorAll('[data-mode]'));
+  const setActive = (mode) => {
+    buttons.forEach((btn) => {
+      const isActive = btn.dataset.mode === mode;
+      btn.classList.toggle('is-active', isActive);
+      btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    });
+  };
+
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const mode = btn.dataset.mode || 'population';
+      setActive(mode);
+      context.charts.scatter?.update(context.filteredData, { mode });
+    });
+  });
+
+  setActive(context.charts.scatter?.options?.mode || 'population');
+}
+
+function initStackedModeToggle(context) {
+  const toolbar = document.querySelector('#stacked-toolbar');
+  if (!toolbar) return;
+
+  const buttons = Array.from(toolbar.querySelectorAll('[data-mode]'));
+  const setActive = (mode) => {
+    buttons.forEach((btn) => {
+      const isActive = btn.dataset.mode === mode;
+      btn.classList.toggle('is-active', isActive);
+      btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    });
+  };
+
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const mode = btn.dataset.mode || 'count';
+      setActive(mode);
+      context.charts.daoProduct?.update(context.filteredData, { mode });
+    });
+  });
+
+  setActive(context.charts.daoProduct?.options?.mode || 'count');
+}
+
 function applyFiltersAndRender(context, filters = {}) {
   const filtered = filterData(context.data, filters);
   context.filteredData = filtered;
@@ -282,16 +457,34 @@ function applyFiltersAndRender(context, filters = {}) {
   const visibleIdSet = new Set(filtered.map((item) => item.Location_ID));
   const prevSelected = context.state.get('selectedLocationIds') || [];
   const prevHighlighted = context.state.get('highlightedIds') || [];
+  const prevHovered = context.state.get('hoveredIds') || [];
+  const comparisonState = context.state.get('comparison') || {};
+  const visibleDaos = new Set(
+    filtered
+      .map((item) => getDaoId(item))
+      .filter(Boolean),
+  );
   const selectedIds = prevSelected.filter((id) => visibleIdSet.has(id));
   const highlightedIds = prevHighlighted.filter((id) => visibleIdSet.has(id));
+  const hoveredIds = prevHovered.filter((id) => visibleIdSet.has(id));
+  const nextComparison = {
+    ...comparisonState,
+    locations: selectedIds,
+    daos: (comparisonState.daos || []).filter((daoId) => visibleDaos.has(daoId)).slice(0, 2),
+  };
 
   if (
     selectedIds.length !== prevSelected.length ||
-    highlightedIds.length !== prevHighlighted.length
+    highlightedIds.length !== prevHighlighted.length ||
+    hoveredIds.length !== prevHovered.length ||
+    nextComparison.locations !== comparisonState.locations ||
+    nextComparison.daos !== comparisonState.daos
   ) {
     context.state.update({
       selectedLocationIds: selectedIds,
       highlightedIds,
+      hoveredIds,
+      comparison: nextComparison,
     });
   }
 
@@ -301,6 +494,7 @@ function applyFiltersAndRender(context, filters = {}) {
     context.charts.histogram?.clearBrush?.();
   }
 
+  context.sidebar?.updateComparison(buildComparisonItems(context));
   syncHighlights(context);
 }
 
@@ -308,6 +502,8 @@ function updateChartsData(context, data) {
   context.charts.map?.update(data);
   context.charts.histogram?.update(data);
   context.charts.scatter?.update(data);
+  context.charts.daoProduct?.update(data);
+  context.charts.productRanking?.update(data);
   context.charts.network?.update(data, {
     productIndex: null,
     cooccurrence: null,
@@ -330,6 +526,8 @@ function syncHighlights(context) {
     charts.map?.clearHighlight();
     charts.histogram?.clearHighlight();
     charts.scatter?.clearHighlight();
+    charts.daoProduct?.clearHighlight?.();
+    charts.productRanking?.clearHighlight?.();
     charts.datatable?.highlight([]);
     return;
   }
@@ -337,6 +535,8 @@ function syncHighlights(context) {
   charts.map?.highlight(highlightIds);
   charts.histogram?.highlight(highlightIds);
   charts.scatter?.highlight(highlightIds);
+  charts.daoProduct?.highlight(highlightIds);
+  charts.productRanking?.highlightByIds?.(highlightIds);
   charts.datatable?.highlight(highlightIds);
 }
 
@@ -344,6 +544,7 @@ function computeActiveHighlightIds(context) {
   const filters = context.state.get('filters') || {};
   const visibleIds = getVisibleIdSet(context);
   const selectedIds = context.state.get('selectedLocationIds') || [];
+  const hoveredIds = context.state.get('hoveredIds') || [];
 
   let ids = context.state.get('highlightedIds') || [];
 
@@ -353,8 +554,113 @@ function computeActiveHighlightIds(context) {
     ids = idsWithinRange(context.filteredData, filters.householdRange);
   }
 
-  const combined = [...new Set([...ids, ...selectedIds])].filter((id) => visibleIds.has(id));
+  const combined = [...new Set([...hoveredIds, ...ids, ...selectedIds])].filter((id) =>
+    visibleIds.has(id),
+  );
   return combined;
+}
+
+function buildComparisonItems(context) {
+  const comparison = context.state.get('comparison') || {};
+  const visibleIds = getVisibleIdSet(context);
+  const selectedLocations = (comparison.locations || []).filter((id) => visibleIds.has(id));
+
+  if (selectedLocations.length > 0) {
+    return selectedLocations
+      .slice(0, 2)
+      .map((id) => context.filteredData.find((item) => item.Location_ID === id))
+      .filter(Boolean)
+      .map((item) => buildComparisonFromLocation(item));
+  }
+
+  const daoIds = (comparison.daos || []).slice(0, 2);
+  if (daoIds.length === 0) return [];
+
+  return daoIds
+    .map((daoId) => buildComparisonFromDao(context.filteredData, daoId))
+    .filter(Boolean);
+}
+
+function buildComparisonFromLocation(item) {
+  if (!item) return null;
+  return {
+    id: item.Location_ID,
+    label: item.Location_Name,
+    subtitle: `${item.daoName || '-'} · ${item.Administrative_Level || ''}`,
+    type: 'location',
+    population: item.Population,
+    households: item.Households,
+    householdSize: item.householdSize,
+    productRichness: item.productRichness,
+    breakdown: buildProductBreakdown(item.Products),
+  };
+}
+
+function buildComparisonFromDao(data, daoId) {
+  if (!daoId) return null;
+  const items = (data || []).filter((item) => getDaoId(item) === daoId);
+  if (items.length === 0) return null;
+
+  let population = 0;
+  let households = 0;
+  let householdSizeSum = 0;
+  let householdSizeCount = 0;
+  const productTotals = {};
+
+  items.forEach((item) => {
+    if (Number.isFinite(item.Population)) population += item.Population;
+    if (Number.isFinite(item.Households)) households += item.Households;
+    if (Number.isFinite(item.householdSize)) {
+      householdSizeSum += item.householdSize;
+      householdSizeCount += 1;
+    }
+
+    const breakdown = buildProductBreakdown(item.Products);
+    breakdown.forEach((entry) => {
+      productTotals[entry.type] = (productTotals[entry.type] || 0) + entry.count;
+    });
+  });
+
+  const totalProducts = Object.values(productTotals).reduce((sum, value) => sum + value, 0);
+
+  return {
+    id: daoId,
+    label: items[0]?.daoName || items[0]?.Location_Name || daoId,
+    subtitle: `${items.length} 地 · 道级汇总`,
+    type: 'dao',
+    population,
+    households,
+    householdSize: householdSizeCount > 0 ? householdSizeSum / householdSizeCount : null,
+    productRichness: totalProducts,
+    breakdown: buildProductBreakdown(productTotals, totalProducts),
+  };
+}
+
+function buildProductBreakdown(products, presetTotal = null) {
+  if (!products) return [];
+  const entries = Array.isArray(products)
+    ? []
+    : Object.entries(products).map(([type, list]) => ({
+        type,
+        count: Array.isArray(list) ? list.length : list || 0,
+      }));
+
+  if (Array.isArray(products)) {
+    return [];
+  }
+
+  const totals =
+    presetTotal !== null
+      ? presetTotal
+      : entries.reduce((sum, entry) => sum + (entry.count || 0), 0);
+
+  return entries
+    .map((entry) => ({
+      ...entry,
+      ratio: totals > 0 ? entry.count / totals : 0,
+      color: getProductTypeColor(entry.type),
+    }))
+    .filter((entry) => entry.count > 0);
 }
 
 function filterData(data, filters = {}) {

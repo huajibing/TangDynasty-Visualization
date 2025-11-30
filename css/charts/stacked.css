@@ -1,0 +1,24 @@
+/* 道 × 物产类别堆叠条形图 */
+
+.chart--stacked {
+  height: 280px;
+  min-height: 260px;
+}
+
+.stack-segment {
+  stroke: rgba(255, 255, 255, 0.6);
+  stroke-width: 0.6;
+  transition:
+    opacity var(--transition-fast),
+    stroke-width var(--transition-fast);
+}
+
+.stack-segment.is-hovered,
+.stack-segment.is-highlighted {
+  stroke-width: 1.2;
+  opacity: 1;
+}
+
+.stack-segment.is-dimmed {
+  opacity: 0.32;
+}

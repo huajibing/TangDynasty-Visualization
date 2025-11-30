@@ -19,3 +19,5 @@
 @import 'charts/histogram.css';
 @import 'charts/scatter.css';
 @import 'charts/network.css';
+@import 'charts/stacked.css';
+@import 'charts/ranking.css';

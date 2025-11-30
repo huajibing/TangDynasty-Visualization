@@ -1,8 +1,16 @@
 /* 户均人口直方图样式 */
 
 .chart--histogram {
-  height: 260px;
-  min-height: 260px;
+  height: 320px;
+  min-height: 300px;
+}
+
+.chart--histogram.is-facet-level {
+  height: 360px;
+}
+
+.chart--histogram.is-facet-dao {
+  height: 520px;
 }
 
 .axis path,
@@ -43,4 +51,9 @@
 .brush .selection {
   fill: rgba(192, 57, 43, 0.18);
   stroke: var(--color-primary);
+}
+
+.histogram-facet__title {
+  font-size: var(--font-size-xs);
+  fill: var(--color-text-muted);
 }

@@ -163,13 +163,14 @@
   opacity: 0;
   visibility: hidden;
   transform: scale(0.95);
+  transform-origin: top left;
   transition:
     opacity var(--transition-normal),
     visibility var(--transition-normal),
     transform var(--transition-normal);
   /* 允许调整大小 */
-  resize: both;
-  overflow: hidden;
+  resize: none;
+  overflow: visible;
   min-width: 280px;
   min-height: 200px;
 }
@@ -264,6 +265,14 @@
   height: clamp(280px, 40vh, 640px);
 }
 
+/* 物产结构面板：右上 */
+.floating-panel--products {
+  top: 120px;
+  right: var(--spacing-md);
+  width: clamp(360px, 36vw, 560px);
+  height: clamp(380px, 52vh, 640px);
+}
+
 /* ===== 悬浮底部栏 ===== */
 .floating-footer {
   position: fixed;
@@ -309,36 +318,158 @@
   overflow: auto;
 }
 
-/* ===== Resize Handle 指示器 ===== */
-.floating-panel::after {
-  content: '';
+/* ===== 自定义 Resize Handles（四周可拖拽） ===== */
+.floating-panel__resize-handle {
   position: absolute;
-  right: 4px;
-  bottom: 4px;
-  width: 12px;
-  height: 12px;
-  background:
-    linear-gradient(135deg, transparent 50%, var(--color-border) 50%, var(--color-border) 60%, transparent 60%),
-    linear-gradient(135deg, transparent 65%, var(--color-border) 65%, var(--color-border) 75%, transparent 75%),
-    linear-gradient(135deg, transparent 80%, var(--color-border) 80%);
-  cursor: se-resize;
-  opacity: 0.6;
-  transition: opacity var(--transition-fast);
-  pointer-events: none;
+  background: transparent;
+  z-index: 2;
+  pointer-events: auto;
 }
 
-.floating-panel:hover::after {
-  opacity: 1;
+.floating-panel__resize-handle--n,
+.floating-panel__resize-handle--s {
+  left: 10px;
+  right: 10px;
+  height: 10px;
+}
+
+.floating-panel__resize-handle--n {
+  top: -5px;
+  cursor: ns-resize;
+}
+
+.floating-panel__resize-handle--s {
+  bottom: -5px;
+  cursor: ns-resize;
+}
+
+.floating-panel__resize-handle--e,
+.floating-panel__resize-handle--w {
+  top: 10px;
+  bottom: 10px;
+  width: 10px;
+}
+
+.floating-panel__resize-handle--e {
+  right: -5px;
+  cursor: ew-resize;
+}
+
+.floating-panel__resize-handle--w {
+  left: -5px;
+  cursor: ew-resize;
+}
+
+.floating-panel__resize-handle--ne,
+.floating-panel__resize-handle--nw,
+.floating-panel__resize-handle--se,
+.floating-panel__resize-handle--sw {
+  width: 14px;
+  height: 14px;
+}
+
+.floating-panel__resize-handle--ne {
+  top: -6px;
+  right: -6px;
+  cursor: nesw-resize;
+}
+
+.floating-panel__resize-handle--nw {
+  top: -6px;
+  left: -6px;
+  cursor: nwse-resize;
+}
+
+.floating-panel__resize-handle--se {
+  right: -6px;
+  bottom: -6px;
+  cursor: nwse-resize;
+}
+
+.floating-panel__resize-handle--sw {
+  left: -6px;
+  bottom: -6px;
+  cursor: nesw-resize;
 }
 
 .floating-panel .chart--histogram,
 .floating-panel .chart--scatter,
-.floating-panel .chart--network {
+.floating-panel .chart--network,
+.floating-panel .chart--stacked,
+.floating-panel .chart--ranking {
   flex: 1;
   height: auto;
   min-height: 200px;
   border: none;
   background: transparent;
+}
+
+.chart-section {
+  margin-top: var(--spacing-md);
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid var(--color-border-light);
+}
+
+.chart-section__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-xs);
+}
+
+.chart-section__title {
+  margin: 0;
+  font-size: var(--font-size-md);
+  color: var(--color-text-primary);
+}
+
+.chart-section__hint {
+  margin: 0;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+.chart-toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.chart-toolbar__label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  letter-spacing: 0.02em;
+}
+
+.chart-toolbar__buttons {
+  display: inline-flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.chart-toolbar__btn {
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-base);
+  color: var(--color-text-secondary);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.chart-toolbar__btn:hover {
+  color: var(--color-text-primary);
+  border-color: var(--color-border);
+}
+
+.chart-toolbar__btn.is-active {
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+  background: rgba(192, 57, 43, 0.1);
 }
 
 /* ===== 响应式适配 ===== */
@@ -374,7 +505,8 @@
   .floating-panel--sidebar,
   .floating-panel--histogram,
   .floating-panel--scatter,
-  .floating-panel--network {
+  .floating-panel--network,
+  .floating-panel--products {
     left: var(--spacing-sm);
     right: var(--spacing-sm);
     width: auto;
@@ -388,7 +520,8 @@
 
   .floating-panel--histogram,
   .floating-panel--scatter,
-  .floating-panel--network {
+  .floating-panel--network,
+  .floating-panel--products {
     bottom: 120px;
     height: 280px;
   }
@@ -425,5 +558,11 @@
 
   .floating-panel--network {
     right: 70px;
+  }
+
+  .floating-panel--products {
+    right: 60px;
+    width: 360px;
+    height: 340px;
   }
 }

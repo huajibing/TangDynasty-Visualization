@@ -1,0 +1,61 @@
+/* 物产排行榜 */
+
+.chart--ranking {
+  height: 300px;
+  min-height: 260px;
+}
+
+.ranking-row {
+  cursor: pointer;
+}
+
+.ranking-label {
+  fill: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+}
+
+.ranking-bar {
+  stroke: rgba(255, 255, 255, 0.8);
+  stroke-width: 0.6;
+  opacity: 0.85;
+  transition:
+    opacity var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.ranking-bar.is-hovered {
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+.ranking-meta {
+  fill: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+}
+
+.ranking-row.is-selected .ranking-bar {
+  stroke: var(--color-primary);
+  stroke-width: 1.4;
+  opacity: 1;
+}
+
+.ranking-row.is-highlighted .ranking-bar {
+  opacity: 1;
+}
+
+.ranking-row.is-dimmed .ranking-bar {
+  opacity: 0.3;
+}
+
+.ranking-dot {
+  pointer-events: none;
+  transition: opacity var(--transition-fast);
+}
+
+.ranking-row.is-dimmed .ranking-dot {
+  opacity: 0.35;
+}
+
+.ranking-row.is-selected .ranking-dot {
+  stroke-width: 1.4;
+}

@@ -3,9 +3,15 @@
 const DEFAULT_STATE = {
   selectedDaoId: null,
   selectedLocationIds: [],
+  selectedDaoIds: [],
   highlightedIds: [],
+  hoveredIds: [],
   selectedProduct: null,
   hoverLocationId: null,
+  comparison: {
+    locations: [],
+    daos: [],
+  },
   filters: {
     daoIds: [],
     productTypes: [],
@@ -79,10 +85,22 @@ export class AppState {
     merged.selectedLocationIds = Array.isArray(merged.selectedLocationIds)
       ? merged.selectedLocationIds
       : [];
+    merged.selectedDaoIds = Array.isArray(merged.selectedDaoIds) ? merged.selectedDaoIds : [];
     merged.highlightedIds = Array.isArray(merged.highlightedIds) ? merged.highlightedIds : [];
+    merged.hoveredIds = Array.isArray(merged.hoveredIds) ? merged.hoveredIds : [];
     merged.filters.daoIds = Array.isArray(merged.filters.daoIds) ? merged.filters.daoIds : [];
     merged.filters.productTypes = Array.isArray(merged.filters.productTypes)
       ? merged.filters.productTypes
+      : [];
+    merged.comparison = {
+      ...(base?.comparison || DEFAULT_STATE.comparison),
+      ...(patch?.comparison || {}),
+    };
+    merged.comparison.locations = Array.isArray(merged.comparison.locations)
+      ? merged.comparison.locations.slice(0, 2)
+      : [];
+    merged.comparison.daos = Array.isArray(merged.comparison.daos)
+      ? merged.comparison.daos.slice(0, 2)
       : [];
 
     return merged;
