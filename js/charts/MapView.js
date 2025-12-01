@@ -46,6 +46,7 @@ class MapView extends BaseChart {
     this._renderLayers();
     this._renderBoundaries();
     this._renderPoints();
+    this._bindBackgroundClick();
 
     if (this.options.enableZoom) {
       this._setupZoom();
@@ -214,6 +215,24 @@ class MapView extends BaseChart {
     this.options.onClick?.(payload);
   }
 
+  _bindBackgroundClick() {
+    if (!this.svg) return;
+    this.svg.on('click.map-clear', (event) => {
+      const target = event.target;
+      if (target && typeof target.closest === 'function') {
+        if (target.closest('.location-point')) return;
+      }
+      this._clearSelection();
+      eventBus.emit(EVENTS.LOCATION_SELECT, null);
+      this.options.onClick?.(null);
+    });
+  }
+
+  _clearSelection() {
+    this.selectedIds = [];
+    this.points?.classed('is-selected', false);
+  }
+
   _projectPoint(datum) {
     const projected = this.projection([datum.Longitude, datum.Latitude]);
     return projected || [0, 0];
@@ -346,6 +365,9 @@ class MapView extends BaseChart {
   destroy() {
     if (this.zoomBehavior) {
       this.svg.on('.zoom', null);
+    }
+    if (this.svg) {
+      this.svg.on('click.map-clear', null);
     }
     super.destroy();
   }

@@ -13,7 +13,7 @@ class ProductRanking extends BaseChart {
       ...base,
       margin: {
         ...base.margin,
-        left: 120,
+        left: 104,
         right: 24,
         bottom: 44,
         top: 14,
