@@ -5,11 +5,15 @@ import { Tooltip } from '../components/tooltip.js';
 import { formatHouseholdSize, Format } from '../utils/format.js';
 import eventBus, { EVENTS } from '../utils/eventBus.js';
 
-const FACET_PADDING = { top: 14, right: 8, bottom: 24, left: 40 };
+const FACET_PADDING = { top: 14, right: 8, bottom: 32, left: 40 };
 
 class Histogram extends BaseChart {
   constructor(selector, data, options) {
     super(selector, data, options);
+    this.currentBrush = null;
+    this._isRestoringBrush = false;
+    this._isClearingBrush = false;
+    this.previousFacetMode = this.options.facetMode;
     this._applyFacetModeClass();
   }
 
@@ -35,7 +39,13 @@ class Histogram extends BaseChart {
     if (newData) {
       this.data = newData;
     }
-    this.options = this._mergeOptions({ ...this.options, ...newOptions });
+    const nextOptions = this._mergeOptions({ ...this.options, ...newOptions });
+    const facetModeChanged = nextOptions.facetMode !== this.options.facetMode;
+    this.options = nextOptions;
+    if (facetModeChanged) {
+      this.currentBrush = null;
+      this.previousFacetMode = nextOptions.facetMode;
+    }
     this._applyFacetModeClass();
     this._setupDimensions();
     this._updateSvgSize();
@@ -70,6 +80,9 @@ class Histogram extends BaseChart {
     } else {
       this._renderFacets();
     }
+
+    this._renderSelectionLabel(this.currentBrush?.range || null);
+    this._restoreBrushSelection();
   }
 
   _renderEmpty(message) {
@@ -119,7 +132,7 @@ class Histogram extends BaseChart {
 
   _renderFacet(group, facet) {
     const { padding } = this.facetLayout;
-    const labelOffset = this.facetLayout?.labelOffset ?? 24;
+    const labelOffset = this.facetLayout?.labelOffset ?? 30;
     const inner = group
       .selectAll('.histogram-facet__inner')
       .data([facet.key])
@@ -166,7 +179,7 @@ class Histogram extends BaseChart {
       .attr('class', 'axis-label y-label')
       .attr('transform', 'rotate(-90)')
       .attr('x', -facet.innerHeight / 2)
-      .attr('y', -36)
+      .attr('y', -40)
       .attr('text-anchor', 'middle')
       .text(this.options.yLabel);
 
@@ -216,7 +229,7 @@ class Histogram extends BaseChart {
       .attr('class', 'axis-label y-label')
       .attr('transform', 'rotate(-90)')
       .attr('x', -this.height / 2)
-      .attr('y', -36)
+      .attr('y', -40)
       .attr('text-anchor', 'middle')
       .text(this.options.yLabel);
   }
@@ -226,6 +239,7 @@ class Histogram extends BaseChart {
 
     const binWidth = xScale(bins[0].x1) - xScale(bins[0].x0);
     const barWidth = Math.max(2, binWidth - 2);
+    const duration = this.currentBrush ? 0 : this.options.animationDuration;
 
     const bars = container
       .selectAll('.bar')
@@ -242,7 +256,7 @@ class Histogram extends BaseChart {
             .call((enterSelection) =>
               enterSelection
                 .transition()
-                .duration(this.options.animationDuration)
+                .duration(duration)
                 .attr('y', (bin) => yScale(bin.length))
                 .attr('height', (bin) => yScale(0) - yScale(bin.length)),
             ),
@@ -250,7 +264,7 @@ class Histogram extends BaseChart {
           update.call((updateSelection) =>
             updateSelection
               .transition()
-              .duration(this.options.animationDuration)
+              .duration(duration)
               .attr('x', (bin) => xScale(bin.x0) + 1)
               .attr('y', (bin) => yScale(bin.length))
               .attr('width', barWidth)
@@ -284,7 +298,7 @@ class Histogram extends BaseChart {
         [xScale.range()[1], yScale.range()[0]],
       ])
       .on('brush', (event) => this._handleBrush(event, xScale, facetKey))
-      .on('end', (event) => this._handleBrushEnd(event, xScale));
+      .on('end', (event) => this._handleBrushEnd(event, xScale, facetKey));
 
     const brushGroup = container
       .selectAll('.brush')
@@ -297,28 +311,38 @@ class Histogram extends BaseChart {
   }
 
   _handleBrush(event, xScale, facetKey) {
+    if (this._isRestoringBrush || this._isClearingBrush) return;
     if (!event.selection) {
       this._clearSelectionState();
+      this.currentBrush = null;
+      this._renderSelectionLabel(null);
       return;
     }
     this._clearOtherBrushes(facetKey);
     const [x0, x1] = event.selection.map(xScale.invert);
+    this.currentBrush = { key: facetKey || 'global', range: [x0, x1] };
     this._applyRangeSelection(x0, x1);
+    this._renderSelectionLabel(this.currentBrush.range);
   }
 
-  _handleBrushEnd(event, xScale) {
+  _handleBrushEnd(event, xScale, facetKey) {
+    if (this._isRestoringBrush || this._isClearingBrush) return;
     if (!event.selection) {
       this._clearSelectionState();
       this._emitSelection([], null);
+      this.currentBrush = null;
+      this._renderSelectionLabel(null);
       return;
     }
 
     const [x0, x1] = event.selection.map(xScale.invert);
+    this.currentBrush = { key: facetKey || 'global', range: [x0, x1] };
     const selectedIds = this.valueData
       .filter((item) => item.value >= x0 && item.value <= x1)
       .map((item) => item.id);
 
     this._emitSelection(selectedIds, [x0, x1]);
+    this._renderSelectionLabel(this.currentBrush.range);
   }
 
   _emitSelection(ids, range) {
@@ -380,6 +404,8 @@ class Histogram extends BaseChart {
       this.brushInstances.forEach(({ brush, group }) => group.call(brush.move, null));
     }
     this.clearHighlight();
+    this.currentBrush = null;
+    this._renderSelectionLabel(null);
   }
 
   _setupGlobalScales() {
@@ -507,17 +533,17 @@ class Histogram extends BaseChart {
 
   _computeFacetLayout(count, padding) {
     const isDaoMode = this.options.facetMode === 'dao';
-    const cols = isDaoMode ? (count > 8 ? 3 : 2) : 1;
+    const cols = isDaoMode ? 2 : 1;
     const gapX = 18;
     const gapY = 18;
     const rows = Math.max(1, Math.ceil(count / cols));
-    const availableWidth = Math.max(160, this.width - gapX * (cols - 1));
-    const availableHeight = Math.max(220, this.height - gapY * (rows - 1));
-    const facetWidth = Math.max(120, availableWidth / cols);
-    const labelOffset = 24;
+    const availableWidth = Math.max(180, this.width - gapX * (cols - 1));
+    const availableHeight = Math.max(260, this.height - gapY * (rows - 1));
+    const facetWidth = Math.max(160, availableWidth / cols);
+    const labelOffset = 36;
     const rawFacetHeight = availableHeight / rows;
     const maxInnerHeight = Math.max(
-      12,
+      100,
       rawFacetHeight - padding.top - padding.bottom - labelOffset,
     );
     const innerHeight = Math.min(
@@ -525,7 +551,7 @@ class Histogram extends BaseChart {
       rawFacetHeight - padding.top - labelOffset,
     );
     const facetHeight = padding.top + padding.bottom + labelOffset + innerHeight;
-    const innerWidth = Math.max(64, facetWidth - padding.left - padding.right);
+    const innerWidth = Math.max(72, facetWidth - padding.left - padding.right);
 
     return {
       cols,
@@ -558,11 +584,50 @@ class Histogram extends BaseChart {
 
   _clearOtherBrushes(activeKey) {
     if (!this.brushInstances) return;
+    this._isClearingBrush = true;
     this.brushInstances.forEach(({ brush, group }, key) => {
       if (key !== activeKey) {
         group.call(brush.move, null);
       }
     });
+    this._isClearingBrush = false;
+  }
+
+  _restoreBrushSelection() {
+    if (!this.currentBrush || !this.brushInstances?.size) return;
+    const { key = 'global', range } = this.currentBrush;
+    if (!range || range.length < 2) return;
+    const instance = this.brushInstances.get(key);
+    if (!instance) return;
+
+    const scale =
+      key === 'global'
+        ? this.xScale
+        : this.facets?.find((facet) => facet.key === key)?.xScale || this.xScale;
+    if (!scale) return;
+
+    const [x0, x1] = range.map((value) => scale(value));
+    this._isRestoringBrush = true;
+    instance.group.call(instance.brush.move, [x0, x1]);
+    window.requestAnimationFrame(() => {
+      this._isRestoringBrush = false;
+    });
+  }
+
+  _renderSelectionLabel(range) {
+    const data = range && range.length === 2 ? [range] : [];
+    const formatRange = (values) =>
+      `${formatHouseholdSize(values[0], { decimals: 1 })} - ${formatHouseholdSize(values[1], { decimals: 1 })}`;
+
+    this.chartGroup
+      .selectAll('.selection-label')
+      .data(data)
+      .join('text')
+      .attr('class', 'selection-label')
+      .attr('x', this.width)
+      .attr('y', -8)
+      .attr('text-anchor', 'end')
+      .text((values) => `选择区间：${formatRange(values)}`);
   }
 
   _applyRangeSelection(x0, x1) {

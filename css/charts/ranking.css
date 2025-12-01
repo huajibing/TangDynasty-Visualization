@@ -1,10 +1,5 @@
 /* 物产排行榜 */
 
-.chart--ranking {
-  height: 300px;
-  min-height: 260px;
-}
-
 .ranking-row {
   cursor: pointer;
 }
@@ -58,4 +53,14 @@
 
 .ranking-row.is-selected .ranking-dot {
   stroke-width: 1.4;
+}
+
+.chart--ranking .axis path,
+.chart--ranking .axis line {
+  stroke: var(--color-border);
+}
+
+.chart--ranking .axis text {
+  fill: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
 }

@@ -12,8 +12,8 @@ class DaoProductStackedChart extends BaseChart {
       ...base,
       margin: {
         ...base.margin,
-        left: 70,
-        right: 12,
+        left: 96,
+        right: 16,
         bottom: 44,
         top: 16,
       },

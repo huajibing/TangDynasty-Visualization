@@ -318,6 +318,24 @@
   overflow: auto;
 }
 
+.floating-panel--products .floating-panel__body {
+  gap: var(--spacing-sm);
+}
+
+.floating-panel--products .chart--stacked {
+  flex: 1 1 0;
+  min-height: 220px;
+}
+
+.floating-panel--products .chart-section {
+  flex: 1 1 0;
+}
+
+.floating-panel--products .chart--ranking {
+  flex: 1 1 0;
+  min-height: 220px;
+}
+
 /* ===== 自定义 Resize Handles（四周可拖拽） ===== */
 .floating-panel__resize-handle {
   position: absolute;
@@ -397,7 +415,7 @@
 .floating-panel .chart--network,
 .floating-panel .chart--stacked,
 .floating-panel .chart--ranking {
-  flex: 1;
+  flex: 1 1 0;
   height: auto;
   min-height: 200px;
   border: none;
@@ -408,6 +426,10 @@
   margin-top: var(--spacing-md);
   padding-top: var(--spacing-sm);
   border-top: 1px solid var(--color-border-light);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  flex: 1 1 0;
 }
 
 .chart-section__header {
