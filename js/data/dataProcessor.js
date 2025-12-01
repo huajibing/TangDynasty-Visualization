@@ -29,7 +29,7 @@ const DataProcessor = {
     const productList = rawData?.products?.population_products || [];
     const productMap = new Map(productList.map((item) => [item.Location_ID, item]));
 
-    return locationList.map((loc) => {
+    const merged = locationList.map((loc) => {
       const productEntry = productMap.get(loc.Location_ID);
       const merged = {
         ...loc,
@@ -44,6 +44,20 @@ const DataProcessor = {
         Products: this.normalizeProducts(productEntry?.Products),
       };
     });
+
+    const removedDaoIds = new Set(
+      merged
+        .filter(
+          (item) => item.Administrative_Level === '道' && item.Location_Name?.trim() === '山南道',
+        )
+        .map((item) => item.Location_ID),
+    );
+
+    return merged
+      .filter((item) => !removedDaoIds.has(item.Location_ID))
+      .map((item) =>
+        removedDaoIds.has(item.Parent_ID) ? { ...item, Parent_ID: null } : item,
+      );
   },
 
   computeDerivedFields(data) {

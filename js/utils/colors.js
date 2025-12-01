@@ -39,11 +39,14 @@ function buildThemeFromCss() {
     dao_003: readCssVar('--color-dao-hedong', '#8e44ad'),
     dao_004: readCssVar('--color-dao-hebei', '#16a085'),
     dao_005: readCssVar('--color-dao-shannan', '#d35400'),
-    dao_006: readCssVar('--color-dao-longyou', '#f39c12'),
-    dao_007: readCssVar('--color-dao-huainan', '#27ae60'),
-    dao_008: readCssVar('--color-dao-jiangnan', '#1abc9c'),
-    dao_009: readCssVar('--color-dao-jiannan', '#9b59b6'),
-    dao_010: readCssVar('--color-dao-lingnan', '#e74c3c'),
+    dao_006: readCssVar('--color-dao-shannan-east', readCssVar('--color-dao-shannan', '#d35400')),
+    dao_007: readCssVar('--color-dao-shannan-west', '#b86b2e'),
+    dao_008: readCssVar('--color-dao-longyou', '#f39c12'),
+    dao_009: readCssVar('--color-dao-huainan', '#27ae60'),
+    dao_010: readCssVar('--color-dao-jiangnan-east', readCssVar('--color-dao-jiangnan', '#1abc9c')),
+    dao_011: readCssVar('--color-dao-jiangnan-west', '#0f9b82'),
+    dao_012: readCssVar('--color-dao-jiannan', '#9b59b6'),
+    dao_013: readCssVar('--color-dao-lingnan', '#e74c3c'),
   };
 
   const administrativeLevels = {
