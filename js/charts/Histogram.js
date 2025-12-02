@@ -32,6 +32,7 @@ class Histogram extends BaseChart {
       xLabel: '户均人口',
       yLabel: '地点数量',
       facetMode: 'global', // global | level | dao
+      valueCap: 12,
     };
   }
 
@@ -360,10 +361,12 @@ class Histogram extends BaseChart {
   }
 
   _buildTooltip(bin, facetLabel = null) {
-    const rangeText = `${formatHouseholdSize(bin.x0, { decimals: 1 })} - ${formatHouseholdSize(
-      bin.x1,
-      { decimals: 1 },
-    )}`;
+    const cappedMax =
+      this.options.valueCap && bin.x1 >= this.options.valueCap ? `${this.options.valueCap}+` : null;
+    const maxText = cappedMax
+      ? cappedMax
+      : formatHouseholdSize(bin.x1, { decimals: 1 });
+    const rangeText = `${formatHouseholdSize(bin.x0, { decimals: 1 })} - ${maxText}`;
 
     const rows = [
       facetLabel ? { label: '分面', value: facetLabel } : null,
@@ -410,7 +413,10 @@ class Histogram extends BaseChart {
 
   _setupGlobalScales() {
     this.valueData = this.data
-      .map((item) => ({ id: item.Location_ID, value: item[this.options.field] }))
+      .map((item) => ({
+        id: item.Location_ID,
+        value: this._clampValue(item[this.options.field]),
+      }))
       .filter((item) => Number.isFinite(item.value));
 
     if (this.valueData.length === 0) {
@@ -446,7 +452,7 @@ class Histogram extends BaseChart {
     this.valueData = this.data
       .map((item) => ({
         id: item.Location_ID,
-        value: item[this.options.field],
+        value: this._clampValue(item[this.options.field]),
         level: item.Administrative_Level,
         dao: item.daoName || item.Parent_ID || '未知',
       }))
@@ -616,8 +622,13 @@ class Histogram extends BaseChart {
 
   _renderSelectionLabel(range) {
     const data = range && range.length === 2 ? [range] : [];
-    const formatRange = (values) =>
-      `${formatHouseholdSize(values[0], { decimals: 1 })} - ${formatHouseholdSize(values[1], { decimals: 1 })}`;
+    const formatRange = (values) => {
+      const maxLabel =
+        this.options.valueCap && values[1] >= this.options.valueCap
+          ? `${formatHouseholdSize(this.options.valueCap, { decimals: 1 })}+`
+          : formatHouseholdSize(values[1], { decimals: 1 });
+      return `${formatHouseholdSize(values[0], { decimals: 1 })} - ${maxLabel}`;
+    };
 
     this.chartGroup
       .selectAll('.selection-label')
@@ -646,6 +657,12 @@ class Histogram extends BaseChart {
       return;
     }
     this.facetBars?.forEach((bars) => bars.classed('is-selected', false));
+  }
+
+  _clampValue(value) {
+    if (!Number.isFinite(value)) return null;
+    if (!Number.isFinite(this.options.valueCap)) return value;
+    return Math.min(value, this.options.valueCap);
   }
 }
 
