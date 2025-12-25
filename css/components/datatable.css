@@ -63,6 +63,35 @@
   color: var(--color-text-secondary);
 }
 
+/* ===== 选择控制 ===== */
+.datatable__selection {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.datatable__selection-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 10px;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  background: var(--color-surface-elevated);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.datatable__selection-btn:hover {
+  color: var(--color-text-primary);
+  border-color: var(--color-border);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+
 /* ===== 表格包装器 ===== */
 .datatable__wrapper {
   flex: 1;
@@ -132,6 +161,49 @@
   color: var(--color-primary);
 }
 
+.datatable__select-col,
+.datatable__select-cell {
+  width: 44px;
+  padding: 8px 10px;
+}
+
+.datatable__checkbox {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  border-radius: 4px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-elevated);
+  cursor: pointer;
+  appearance: none;
+  display: inline-block;
+  position: relative;
+  transition: all var(--transition-fast);
+}
+
+.datatable__checkbox:hover {
+  border-color: var(--color-primary);
+}
+
+.datatable__checkbox:checked {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(192, 57, 43, 0.15);
+}
+
+.datatable__checkbox:checked::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 1px;
+  width: 5px;
+  height: 9px;
+  border: 2px solid #fff;
+  border-top: 0;
+  border-left: 0;
+  transform: rotate(45deg);
+}
+
 /* 表体 */
 .datatable__table tbody tr {
   transition: background var(--transition-fast);
@@ -146,6 +218,14 @@
 }
 
 .datatable__table tbody tr.is-selected {
+  background: rgba(192, 57, 43, 0.15);
+}
+
+.datatable__table tbody tr.is-highlighted {
+  background: rgba(192, 57, 43, 0.08);
+}
+
+.datatable__table tbody tr.is-selected.is-highlighted {
   background: rgba(192, 57, 43, 0.15);
 }
 

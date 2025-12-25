@@ -1,23 +1,27 @@
 /* 主样式表：按规范顺序汇总各层样式文件 */
 
-@import 'variables.css';
-@import 'reset.css';
-@import 'base.css';
-@import 'layout.css';
+@import "variables.css";
+@import "reset.css";
+@import "base.css";
+@import "layout.css";
 
 /* 组件样式 */
-@import 'components/tooltip.css';
-@import 'components/legend.css';
-@import 'components/filter.css';
-@import 'components/sidebar.css';
-@import 'components/card.css';
-@import 'components/floating-panel.css';
-@import 'components/datatable.css';
+@import "components/tooltip.css";
+@import "components/legend.css";
+@import "components/filter.css";
+@import "components/sidebar.css";
+@import "components/card.css";
+@import "components/floating-panel.css";
+@import "components/workspace-layout.css";
+@import "components/datatable.css";
+@import "components/settings.css";
+@import "components/tour.css";
 
 /* 图表样式 */
-@import 'charts/map.css';
-@import 'charts/histogram.css';
-@import 'charts/scatter.css';
-@import 'charts/network.css';
-@import 'charts/stacked.css';
-@import 'charts/ranking.css';
+@import "charts/map.css";
+@import "charts/histogram.css";
+@import "charts/scatter.css";
+@import "charts/network.css";
+@import "charts/stacked.css";
+@import "charts/ranking.css";
+@import "charts/dao-profile.css";

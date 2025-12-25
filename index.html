@@ -12,155 +12,474 @@
     <a href="#main" class="skip-link">跳到主要内容</a>
 
     <div class="app-container" id="app">
-      <!-- 全屏地图底图层 -->
-      <div class="map-backdrop" id="main">
-        <div id="map-container" class="chart chart--map" aria-label="唐代地理分布地图"></div>
-      </div>
+      <!-- 地图窗口：floating 模式下作为底图，workspace 模式下参与布局 -->
+      <section
+        class="window window--map"
+        id="main"
+        data-window-id="map"
+        data-tour-anchor="map"
+        aria-label="唐代地理分布地图"
+      >
+        <div
+          id="map-container"
+          class="chart chart--map"
+          aria-label="唐代地理分布地图"
+        ></div>
+      </section>
+
+      <!-- Workspace 布局根节点（由 WindowLayoutManager 渲染） -->
+      <div
+        class="workspace-layout"
+        data-workspace-layout
+        aria-hidden="true"
+      ></div>
 
       <!-- 顶部标题栏（悬浮） -->
       <header class="floating-header">
         <h1 class="app-title">盛世霓裳——唐代人口与物产地理分布可视分析</h1>
-        <div class="theme-toggle" aria-label="主题切换">
-          <button class="theme-toggle__button" type="button">
-            <span class="theme-toggle__icon" data-theme-icon>☀</span>
-            <span class="theme-toggle__label" data-theme-label>日间</span>
-          </button>
+        <div class="floating-header__controls">
+          <div class="theme-toggle" aria-label="主题切换">
+            <button class="theme-toggle__button" type="button">
+              <span class="theme-toggle__icon" data-theme-icon>☀</span>
+              <span class="theme-toggle__label" data-theme-label>日间</span>
+            </button>
+          </div>
+          <div class="layout-toggle" aria-label="布局模式">
+            <button
+              class="theme-toggle__button layout-toggle__button"
+              type="button"
+              data-layout-toggle
+              aria-pressed="false"
+            >
+              <span class="layout-toggle__icon" data-layout-icon>▣</span>
+              <span class="layout-toggle__label" data-layout-label>浮动</span>
+            </button>
+          </div>
         </div>
       </header>
 
       <!-- 悬浮面板切换按钮组 -->
-      <nav class="panel-toggles" aria-label="面板切换">
-        <button class="panel-toggle" data-panel="sidebar" aria-expanded="true" title="探索指引">
+      <nav
+        class="panel-toggles"
+        aria-label="面板切换"
+        data-tour-anchor="panel-toggles"
+      >
+        <button
+          class="panel-toggle"
+          data-panel="sidebar"
+          aria-expanded="true"
+          title="探索指引"
+        >
           <span class="panel-toggle__icon">☰</span>
           <span class="panel-toggle__label">指引</span>
         </button>
-        <button class="panel-toggle" data-panel="datatable" aria-expanded="false" title="数据表">
+        <button
+          class="panel-toggle"
+          data-panel="datatable"
+          aria-expanded="false"
+          title="数据表"
+        >
           <span class="panel-toggle__icon">▤</span>
           <span class="panel-toggle__label">数据表</span>
         </button>
-        <button class="panel-toggle" data-panel="histogram" aria-expanded="false" title="户均人口分布">
+        <button
+          class="panel-toggle"
+          data-panel="histogram"
+          aria-expanded="false"
+          title="户均人口分布"
+        >
           <span class="panel-toggle__icon">📊</span>
           <span class="panel-toggle__label">直方图</span>
         </button>
-        <button class="panel-toggle" data-panel="scatter" aria-expanded="false" title="人口与物产丰富度">
+        <button
+          class="panel-toggle"
+          data-panel="scatter"
+          aria-expanded="false"
+          title="人口与物产丰富度"
+        >
           <span class="panel-toggle__icon">⊙</span>
           <span class="panel-toggle__label">散点图</span>
         </button>
-        <button class="panel-toggle" data-panel="products" aria-expanded="false" title="物产结构与排行榜">
+        <button
+          class="panel-toggle"
+          data-panel="insights"
+          aria-expanded="false"
+          title="十道画像"
+        >
+          <span class="panel-toggle__icon">✧</span>
+          <span class="panel-toggle__label">洞察</span>
+        </button>
+        <button
+          class="panel-toggle"
+          data-panel="products"
+          aria-expanded="false"
+          title="物产结构与排行榜"
+        >
           <span class="panel-toggle__icon">✦</span>
           <span class="panel-toggle__label">物产</span>
         </button>
-        <button class="panel-toggle" data-panel="network" aria-expanded="false" title="物产共现网络">
+        <button
+          class="panel-toggle"
+          data-panel="network"
+          aria-expanded="false"
+          title="物产共现网络"
+        >
           <span class="panel-toggle__icon">◎</span>
           <span class="panel-toggle__label">网络图</span>
         </button>
+        <button
+          class="panel-toggle"
+          data-panel="settings"
+          data-tour-anchor="settings-entry"
+          aria-expanded="false"
+          title="设置"
+        >
+          <span class="panel-toggle__icon">⚙</span>
+          <span class="panel-toggle__label">设置</span>
+        </button>
       </nav>
 
-      <!-- 左侧侧边栏面板 -->
-      <aside class="floating-panel floating-panel--sidebar is-open" data-panel-id="sidebar" aria-label="筛选与说明">
-        <div class="floating-panel__header">
-          <h2 class="floating-panel__title">探索指引</h2>
-          <button class="floating-panel__close" aria-label="收起面板">×</button>
+      <div class="workspace-dock" data-workspace-dock>
+        <!-- 左侧侧边栏面板 -->
+        <aside
+          class="window floating-panel floating-panel--sidebar is-open"
+          data-panel-id="sidebar"
+          data-window-id="sidebar"
+          aria-label="筛选与说明"
+        >
+          <div class="floating-panel__header">
+            <h2 class="floating-panel__title">探索指引</h2>
+            <button class="floating-panel__close" aria-label="收起面板">
+              ×
+            </button>
+          </div>
+          <div class="floating-panel__body">
+            <section class="sidebar sidebar--intro">
+              <p class="sidebar__text">
+                如果页面未能正常加载交互组件，请确认浏览器已开启
+                JavaScript。正常情况下，这里将展示数据总览、筛选器、图例与探索提示。
+              </p>
+            </section>
+          </div>
+        </aside>
+
+        <!-- 直方图面板 -->
+        <div
+          class="window floating-panel floating-panel--histogram"
+          data-panel-id="histogram"
+          data-window-id="histogram"
+          aria-labelledby="histogram-title"
+        >
+          <div class="floating-panel__header">
+            <h2 class="floating-panel__title" id="histogram-title">
+              户均人口分布
+            </h2>
+            <button class="floating-panel__close" aria-label="收起面板">
+              ×
+            </button>
+          </div>
+          <div class="floating-panel__body">
+            <div
+              class="chart-toolbar"
+              id="histogram-toolbar"
+              aria-label="直方图区分模式"
+            >
+              <span class="chart-toolbar__label">视图</span>
+              <div class="chart-toolbar__buttons">
+                <button
+                  class="chart-toolbar__btn is-active"
+                  type="button"
+                  data-mode="global"
+                >
+                  全局
+                </button>
+                <button
+                  class="chart-toolbar__btn"
+                  type="button"
+                  data-mode="level"
+                >
+                  按级别
+                </button>
+                <button
+                  class="chart-toolbar__btn"
+                  type="button"
+                  data-mode="dao"
+                >
+                  按道
+                </button>
+              </div>
+            </div>
+            <div
+              id="histogram-container"
+              class="chart chart--histogram"
+              aria-label="户均人口直方图"
+            ></div>
+          </div>
         </div>
-        <div class="floating-panel__body">
-          <section class="sidebar sidebar--intro">
-            <p class="sidebar__text">
-              如果页面未能正常加载交互组件，请确认浏览器已开启
-              JavaScript。正常情况下，这里将展示数据总览、筛选器、图例与探索提示。
+
+        <!-- 散点图面板 -->
+        <div
+          class="window floating-panel floating-panel--scatter"
+          data-panel-id="scatter"
+          data-window-id="scatter"
+          aria-labelledby="scatter-title"
+        >
+          <div class="floating-panel__header">
+            <h2 class="floating-panel__title" id="scatter-title">
+              人口与物产丰富度
+            </h2>
+            <button class="floating-panel__close" aria-label="收起面板">
+              ×
+            </button>
+          </div>
+          <div class="floating-panel__body">
+            <div
+              class="chart-toolbar"
+              id="scatter-toolbar"
+              aria-label="散点图轴切换"
+            >
+              <span class="chart-toolbar__label">横轴</span>
+              <div class="chart-toolbar__buttons">
+                <button
+                  class="chart-toolbar__btn is-active"
+                  type="button"
+                  data-mode="population"
+                >
+                  人口总数
+                </button>
+                <button
+                  class="chart-toolbar__btn"
+                  type="button"
+                  data-mode="household"
+                >
+                  户均人口
+                </button>
+              </div>
+            </div>
+            <div
+              id="scatter-container"
+              class="chart chart--scatter"
+              aria-label="人口与物产散点图"
+            ></div>
+          </div>
+        </div>
+
+        <!-- 洞察面板（十道画像） -->
+        <div
+          class="window floating-panel floating-panel--insights"
+          data-panel-id="insights"
+          data-window-id="insights"
+          aria-labelledby="insights-title"
+        >
+          <div class="floating-panel__header">
+            <h2 class="floating-panel__title" id="insights-title">十道画像</h2>
+            <button class="floating-panel__close" aria-label="收起面板">
+              ×
+            </button>
+          </div>
+          <div class="floating-panel__body">
+            <div
+              class="chart-toolbar"
+              id="dao-profile-toolbar"
+              aria-label="十道画像指标切换"
+            >
+              <span class="chart-toolbar__label">指标</span>
+              <div class="chart-toolbar__buttons">
+                <button
+                  class="chart-toolbar__btn is-active"
+                  type="button"
+                  data-mode="population"
+                >
+                  人口
+                </button>
+                <button
+                  class="chart-toolbar__btn"
+                  type="button"
+                  data-mode="households"
+                >
+                  户数
+                </button>
+                <button
+                  class="chart-toolbar__btn"
+                  type="button"
+                  data-mode="householdSize"
+                >
+                  户均人口
+                </button>
+                <button
+                  class="chart-toolbar__btn"
+                  type="button"
+                  data-mode="productRichness"
+                >
+                  物产种类
+                </button>
+                <button
+                  class="chart-toolbar__btn"
+                  type="button"
+                  data-mode="locationCount"
+                >
+                  州府数量
+                </button>
+              </div>
+            </div>
+            <div
+              id="dao-profile-container"
+              class="chart chart--dao-profile"
+              aria-label="十道整体画像"
+            ></div>
+            <p class="chart-section__hint">
+              点击条形筛选道；Ctrl/⌘ 点击加入对比
             </p>
-          </section>
-        </div>
-      </aside>
-
-      <!-- 直方图面板 -->
-      <div class="floating-panel floating-panel--histogram" data-panel-id="histogram" aria-labelledby="histogram-title">
-        <div class="floating-panel__header">
-          <h2 class="floating-panel__title" id="histogram-title">户均人口分布</h2>
-          <button class="floating-panel__close" aria-label="收起面板">×</button>
-        </div>
-        <div class="floating-panel__body">
-          <div class="chart-toolbar" id="histogram-toolbar" aria-label="直方图区分模式">
-            <span class="chart-toolbar__label">视图</span>
-            <div class="chart-toolbar__buttons">
-              <button class="chart-toolbar__btn is-active" type="button" data-mode="global">全局</button>
-              <button class="chart-toolbar__btn" type="button" data-mode="level">按级别</button>
-              <button class="chart-toolbar__btn" type="button" data-mode="dao">按道</button>
-            </div>
-          </div>
-          <div id="histogram-container" class="chart chart--histogram" aria-label="户均人口直方图"></div>
-        </div>
-      </div>
-
-      <!-- 散点图面板 -->
-      <div class="floating-panel floating-panel--scatter" data-panel-id="scatter" aria-labelledby="scatter-title">
-        <div class="floating-panel__header">
-          <h2 class="floating-panel__title" id="scatter-title">人口与物产丰富度</h2>
-          <button class="floating-panel__close" aria-label="收起面板">×</button>
-        </div>
-        <div class="floating-panel__body">
-          <div class="chart-toolbar" id="scatter-toolbar" aria-label="散点图轴切换">
-            <span class="chart-toolbar__label">横轴</span>
-            <div class="chart-toolbar__buttons">
-              <button class="chart-toolbar__btn is-active" type="button" data-mode="population">人口总数</button>
-              <button class="chart-toolbar__btn" type="button" data-mode="household">户均人口</button>
-            </div>
-          </div>
-          <div id="scatter-container" class="chart chart--scatter" aria-label="人口与物产散点图"></div>
-        </div>
-      </div>
-
-      <!-- 物产结构面板 -->
-      <div class="floating-panel floating-panel--products" data-panel-id="products" aria-labelledby="products-title">
-        <div class="floating-panel__header">
-          <h2 class="floating-panel__title" id="products-title">物产结构</h2>
-          <button class="floating-panel__close" aria-label="收起面板">×</button>
-        </div>
-        <div class="floating-panel__body">
-          <div class="chart-toolbar" id="stacked-toolbar" aria-label="物产结构模式切换">
-            <span class="chart-toolbar__label">模式</span>
-            <div class="chart-toolbar__buttons">
-              <button class="chart-toolbar__btn is-active" type="button" data-mode="count">数量</button>
-              <button class="chart-toolbar__btn" type="button" data-mode="share">占比 (100%)</button>
-            </div>
-          </div>
-          <div id="dao-product-container" class="chart chart--stacked" aria-label="道与物产类别堆叠图"></div>
-          <div class="chart-section">
-            <div class="chart-section__header">
-              <h3 class="chart-section__title">Top 物产排行榜</h3>
-              <p class="chart-section__hint">按出现地点数排序，点击锁定物产</p>
-            </div>
-            <div id="product-ranking-container" class="chart chart--ranking" aria-label="物产排行榜"></div>
           </div>
         </div>
-      </div>
 
-      <!-- 网络图面板 -->
-      <div class="floating-panel floating-panel--network" data-panel-id="network" aria-labelledby="network-title">
-        <div class="floating-panel__header">
-          <h2 class="floating-panel__title" id="network-title">物产共现网络</h2>
-          <button class="floating-panel__close" aria-label="收起面板">×</button>
+        <!-- 物产结构面板 -->
+        <div
+          class="window floating-panel floating-panel--products"
+          data-panel-id="products"
+          data-window-id="products"
+          aria-labelledby="products-title"
+        >
+          <div class="floating-panel__header">
+            <h2 class="floating-panel__title" id="products-title">物产结构</h2>
+            <button class="floating-panel__close" aria-label="收起面板">
+              ×
+            </button>
+          </div>
+          <div class="floating-panel__body">
+            <div
+              class="chart-toolbar"
+              id="stacked-toolbar"
+              aria-label="物产结构模式切换"
+            >
+              <span class="chart-toolbar__label">模式</span>
+              <div class="chart-toolbar__buttons">
+                <button
+                  class="chart-toolbar__btn is-active"
+                  type="button"
+                  data-mode="count"
+                >
+                  数量
+                </button>
+                <button
+                  class="chart-toolbar__btn"
+                  type="button"
+                  data-mode="share"
+                >
+                  占比 (100%)
+                </button>
+              </div>
+            </div>
+            <div
+              id="dao-product-container"
+              class="chart chart--stacked"
+              aria-label="道与物产类别堆叠图"
+            ></div>
+            <div class="chart-section">
+              <div class="chart-section__header">
+                <h3 class="chart-section__title">Top 物产排行榜</h3>
+                <p class="chart-section__hint">
+                  按出现地点数排序，点击锁定物产
+                </p>
+              </div>
+              <div
+                id="product-ranking-container"
+                class="chart chart--ranking"
+                aria-label="物产排行榜"
+              ></div>
+            </div>
+          </div>
         </div>
-        <div class="floating-panel__body">
-          <div id="network-container" class="chart chart--network" aria-label="物产共现网络图"></div>
-        </div>
-      </div>
 
-      <!-- 数据表面板 -->
-      <div class="floating-panel floating-panel--datatable" data-panel-id="datatable" aria-labelledby="datatable-title">
-        <div class="floating-panel__header">
-          <h2 class="floating-panel__title" id="datatable-title">州府数据表</h2>
-          <button class="floating-panel__close" aria-label="收起面板">×</button>
+        <!-- 网络图面板 -->
+        <div
+          class="window floating-panel floating-panel--network"
+          data-panel-id="network"
+          data-window-id="network"
+          aria-labelledby="network-title"
+        >
+          <div class="floating-panel__header">
+            <h2 class="floating-panel__title" id="network-title">
+              物产共现网络
+            </h2>
+            <button class="floating-panel__close" aria-label="收起面板">
+              ×
+            </button>
+          </div>
+          <div class="floating-panel__body">
+            <div
+              id="network-container"
+              class="chart chart--network"
+              aria-label="物产共现网络图"
+            ></div>
+          </div>
         </div>
-        <div class="floating-panel__body">
-          <div id="datatable-container" class="datatable-container" aria-label="州府数据表"></div>
+
+        <!-- 数据表面板 -->
+        <div
+          class="window floating-panel floating-panel--datatable"
+          data-panel-id="datatable"
+          data-window-id="datatable"
+          aria-labelledby="datatable-title"
+        >
+          <div class="floating-panel__header">
+            <h2 class="floating-panel__title" id="datatable-title">
+              州府数据表
+            </h2>
+            <button class="floating-panel__close" aria-label="收起面板">
+              ×
+            </button>
+          </div>
+          <div class="floating-panel__body">
+            <div
+              id="datatable-container"
+              class="datatable-container"
+              aria-label="州府数据表"
+            ></div>
+          </div>
+        </div>
+
+        <!-- 设置面板 -->
+        <div
+          class="window floating-panel floating-panel--settings"
+          data-panel-id="settings"
+          data-window-id="settings"
+          aria-labelledby="settings-title"
+        >
+          <div class="floating-panel__header">
+            <h2 class="floating-panel__title" id="settings-title">设置</h2>
+            <button class="floating-panel__close" aria-label="收起面板">
+              ×
+            </button>
+          </div>
+          <div class="floating-panel__body">
+            <div id="settings-container" aria-label="设置面板"></div>
+          </div>
         </div>
       </div>
 
       <!-- 底部信息（悬浮） -->
-      <footer class="floating-footer">
-        <p class="footer__text">
-          数据来源：整理自《新唐书·地理志》等史料 · 本站仅用于教学与可视化实验。
-        </p>
+      <footer class="floating-footer" data-collapsible-footer>
+        <details class="floating-footer__details">
+          <summary
+            class="floating-footer__summary"
+            aria-label="展开/收起项目说明"
+          >
+            <span class="footer__text">
+              关于这个项目
+            </span>
+            <span class="floating-footer__icon" aria-hidden="true">▴</span>
+          </summary>
+
+          <div class="floating-footer__content" aria-label="项目说明">
+            <h3 class="floating-footer__title">项目说明</h3>
+            <p class="floating-footer__paragraph">
+              本项目是北京大学2025年秋季学期 <a href="https://vis.pku.edu.cn/course/visclass_f25/index.html">可视化与可视分析</a> 课程第1小组的课程设计。<br>
+              数据说明：唐代人口和物产数据提取自《新唐书·地理志》。<br>
+              地图说明：中华人民共和国地图来自官方数据，南海诸岛及九段线以缩略图的形式展示。唐代地图参考谭其骧《中国历史地图集》唐时期全图（二）手动绘制，年代为741年。
+            </p>
+          </div>
+        </details>
       </footer>
     </div>
 

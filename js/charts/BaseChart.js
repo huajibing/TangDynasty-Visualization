@@ -4,13 +4,17 @@ const MIN_INNER_SIZE = 120;
 
 class BaseChart {
   constructor(selector, data = [], options = {}) {
-    if (typeof d3 === 'undefined') {
-      throw new Error('[BaseChart] D3.js is required. Please ensure the CDN script is loaded.');
+    if (typeof d3 === "undefined") {
+      throw new Error(
+        "[BaseChart] D3.js is required. Please ensure the CDN script is loaded.",
+      );
     }
 
     this.selector = selector;
     this.container =
-      selector && typeof selector === 'object' && typeof selector.node === 'function'
+      selector &&
+      typeof selector === "object" &&
+      typeof selector.node === "function"
         ? selector
         : d3.select(selector);
     this.data = data || [];
@@ -25,7 +29,7 @@ class BaseChart {
       margin: { top: 20, right: 20, bottom: 30, left: 40 },
       responsive: true,
       animationDuration: 300,
-      colorScheme: 'default',
+      colorScheme: "default",
       autoRender: true,
     };
   }
@@ -38,7 +42,8 @@ class BaseChart {
 
   _validateContainer() {
     if (!this.container || this.container.empty()) {
-      const target = typeof this.selector === 'string' ? this.selector : '[D3 selection]';
+      const target =
+        typeof this.selector === "string" ? this.selector : "[D3 selection]";
       throw new Error(`[BaseChart] Container not found: ${target}`);
     }
   }
@@ -58,32 +63,44 @@ class BaseChart {
     const rect = this.container.node().getBoundingClientRect();
     const { margin } = this.options;
 
-    const outerWidth = Math.max(rect.width || 0, margin.left + margin.right + MIN_INNER_SIZE);
-    const outerHeight = Math.max(rect.height || 0, margin.top + margin.bottom + MIN_INNER_SIZE);
+    const outerWidth = Math.max(
+      rect.width || 0,
+      margin.left + margin.right + MIN_INNER_SIZE,
+    );
+    const outerHeight = Math.max(
+      rect.height || 0,
+      margin.top + margin.bottom + MIN_INNER_SIZE,
+    );
 
     this.outerWidth = outerWidth;
     this.outerHeight = outerHeight;
-    this.width = Math.max(outerWidth - margin.left - margin.right, MIN_INNER_SIZE * 0.5);
-    this.height = Math.max(outerHeight - margin.top - margin.bottom, MIN_INNER_SIZE * 0.5);
+    this.width = Math.max(
+      outerWidth - margin.left - margin.right,
+      MIN_INNER_SIZE * 0.5,
+    );
+    this.height = Math.max(
+      outerHeight - margin.top - margin.bottom,
+      MIN_INNER_SIZE * 0.5,
+    );
   }
 
   _createSvg() {
     const { margin } = this.options;
 
     this.svg = this.container
-      .selectAll('svg.chart-svg')
+      .selectAll("svg.chart-svg")
       .data([null])
-      .join('svg')
-      .attr('class', 'chart-svg')
-      .attr('width', this.outerWidth)
-      .attr('height', this.outerHeight);
+      .join("svg")
+      .attr("class", "chart-svg")
+      .attr("width", this.outerWidth)
+      .attr("height", this.outerHeight);
 
     this.chartGroup = this.svg
-      .selectAll('g.chart-group')
+      .selectAll("g.chart-group")
       .data([null])
-      .join('g')
-      .attr('class', 'chart-group')
-      .attr('transform', `translate(${margin.left},${margin.top})`);
+      .join("g")
+      .attr("class", "chart-group")
+      .attr("transform", `translate(${margin.left},${margin.top})`);
   }
 
   // 子类重写，根据数据和尺寸创建比例尺
@@ -99,13 +116,16 @@ class BaseChart {
       this.render();
     }, 200);
 
-    window.addEventListener('resize', this._resizeHandler);
+    window.addEventListener("resize", this._resizeHandler);
   }
 
   _updateSvgSize() {
     const { margin } = this.options;
-    this.svg.attr('width', this.outerWidth).attr('height', this.outerHeight);
-    this.chartGroup.attr('transform', `translate(${margin.left},${margin.top})`);
+    this.svg.attr("width", this.outerWidth).attr("height", this.outerHeight);
+    this.chartGroup.attr(
+      "transform",
+      `translate(${margin.left},${margin.top})`,
+    );
   }
 
   // 子类重写：核心渲染逻辑
@@ -131,10 +151,10 @@ class BaseChart {
 
   destroy() {
     if (this._resizeHandler) {
-      window.removeEventListener('resize', this._resizeHandler);
+      window.removeEventListener("resize", this._resizeHandler);
     }
     if (this.container) {
-      this.container.selectAll('*').remove();
+      this.container.selectAll("*").remove();
     }
 
     this.data = null;

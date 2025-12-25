@@ -1,9 +1,9 @@
 // 物产共现网络图：基于物产共现关系构建力导向布局。
 
-import BaseChart from './BaseChart.js';
-import { Tooltip } from '../components/tooltip.js';
-import { COLORS } from '../utils/colors.js';
-import eventBus, { EVENTS } from '../utils/eventBus.js';
+import BaseChart from "./BaseChart.js";
+import { Tooltip } from "../components/tooltip.js";
+import { COLORS } from "../utils/colors.js";
+import eventBus, { EVENTS } from "../utils/eventBus.js";
 
 class NetworkGraph extends BaseChart {
   get defaultOptions() {
@@ -40,22 +40,30 @@ class NetworkGraph extends BaseChart {
       linkExtent[1] = linkExtent[0] + 1;
     }
 
-    this.sizeScale = d3.scaleSqrt().domain(nodeExtent).range([6, 18]).clamp(true);
-    this.linkWidthScale = d3.scaleLinear().domain(linkExtent).range([1, 6]).clamp(true);
+    this.sizeScale = d3
+      .scaleSqrt()
+      .domain(nodeExtent)
+      .range([6, 18])
+      .clamp(true);
+    this.linkWidthScale = d3
+      .scaleLinear()
+      .domain(linkExtent)
+      .range([1, 6])
+      .clamp(true);
   }
 
   render() {
-    this.chartGroup.selectAll('.chart__empty').remove();
+    this.chartGroup.selectAll(".chart__empty").remove();
     if (!this.nodes || this.nodes.length === 0) {
       this.chartGroup
-        .selectAll('.chart__empty')
+        .selectAll(".chart__empty")
         .data([null])
-        .join('text')
-        .attr('class', 'chart__empty')
-        .attr('x', this.width / 2)
-        .attr('y', this.height / 2)
-        .attr('text-anchor', 'middle')
-        .text('暂无共现数据');
+        .join("text")
+        .attr("class", "chart__empty")
+        .attr("x", this.width / 2)
+        .attr("y", this.height / 2)
+        .attr("text-anchor", "middle")
+        .text("暂无共现数据");
       return;
     }
 
@@ -82,22 +90,22 @@ class NetworkGraph extends BaseChart {
   _ensureLayers() {
     // graphLayer 作为缩放/平移的根节点，内部再分别挂载连线与节点层
     this.graphLayer = this.chartGroup
-      .selectAll('.network-graph-layer')
+      .selectAll(".network-graph-layer")
       .data([null])
-      .join('g')
-      .attr('class', 'network-graph-layer');
+      .join("g")
+      .attr("class", "network-graph-layer");
 
     this.linkLayer = this.graphLayer
-      .selectAll('.network-links-layer')
+      .selectAll(".network-links-layer")
       .data([null])
-      .join('g')
-      .attr('class', 'network-links-layer');
+      .join("g")
+      .attr("class", "network-links-layer");
 
     this.nodeLayer = this.graphLayer
-      .selectAll('.network-nodes-layer')
+      .selectAll(".network-nodes-layer")
       .data([null])
-      .join('g')
-      .attr('class', 'network-nodes-layer');
+      .join("g")
+      .attr("class", "network-nodes-layer");
   }
 
   _prepareData() {
@@ -122,13 +130,15 @@ class NetworkGraph extends BaseChart {
     this.links = Array.from(cooccurrence.entries())
       .filter(([, count]) => count >= minCount)
       .map(([key, count]) => {
-        const [source, target] = key.split('|');
+        const [source, target] = key.split("|");
         return { source, target, count };
       })
       .filter((link) => nodeSet.has(link.source) && nodeSet.has(link.target));
 
     if (this.options.maxNodes && this.nodes.length > this.options.maxNodes) {
-      this.nodes = this.nodes.sort((a, b) => b.count - a.count).slice(0, this.options.maxNodes);
+      this.nodes = this.nodes
+        .sort((a, b) => b.count - a.count)
+        .slice(0, this.options.maxNodes);
       const allowed = new Set(this.nodes.map((node) => node.id));
       this.links = this.links.filter(
         (link) => allowed.has(link.source) && allowed.has(link.target),
@@ -166,7 +176,7 @@ class NetworkGraph extends BaseChart {
 
       for (let i = 0; i < products.length; i += 1) {
         for (let j = i + 1; j < products.length; j += 1) {
-          const key = [products[i], products[j]].sort().join('|');
+          const key = [products[i], products[j]].sort().join("|");
           coMap.set(key, (coMap.get(key) || 0) + 1);
         }
       }
@@ -177,25 +187,25 @@ class NetworkGraph extends BaseChart {
 
   _renderLinks() {
     this.linkElements = this.linkLayer
-      .selectAll('.network-link')
+      .selectAll(".network-link")
       .data(this.links, (d) => `${d.source}-${d.target}`)
-      .join('line')
-      .attr('class', 'network-link')
-      .attr('stroke-width', (d) => this.linkWidthScale(d.count))
-      .attr('stroke', 'rgba(52, 73, 94, 0.35)')
+      .join("line")
+      .attr("class", "network-link")
+      .attr("stroke-width", (d) => this.linkWidthScale(d.count))
+      .attr("stroke", "rgba(52, 73, 94, 0.35)")
       // 连线仅作为视觉背景，不参与交互命中，避免影响节点拖拽
-      .attr('pointer-events', 'none');
+      .attr("pointer-events", "none");
   }
 
   _renderNodes() {
     this.nodeElements = this.nodeLayer
-      .selectAll('.network-node')
+      .selectAll(".network-node")
       .data(this.nodes, (d) => d.id)
       .join(
         (enter) => {
-          const group = enter.append('g').attr('class', 'network-node');
-          group.append('circle');
-          group.append('text');
+          const group = enter.append("g").attr("class", "network-node");
+          group.append("circle");
+          group.append("text");
           return group;
         },
         (update) => update,
@@ -203,24 +213,24 @@ class NetworkGraph extends BaseChart {
       );
 
     const circles = this.nodeElements
-      .select('circle')
-      .attr('r', (d) => this.sizeScale(d.count))
-      .attr('fill', COLORS.theme.primary)
-      .attr('stroke', '#fff')
-      .attr('stroke-width', 1.2);
+      .select("circle")
+      .attr("r", (d) => this.sizeScale(d.count))
+      .attr("fill", COLORS.theme.primary)
+      .attr("stroke", "#fff")
+      .attr("stroke-width", 1.2);
 
     // 提升圆形的命中区域，便于拖拽与点击
-    circles.attr('vector-effect', 'non-scaling-stroke');
+    circles.attr("vector-effect", "non-scaling-stroke");
 
     this.nodeElements
-      .select('text')
-      .attr('class', 'network-label')
-      .attr('text-anchor', 'middle')
-      .attr('dy', (d) => this.sizeScale(d.count) + 12)
+      .select("text")
+      .attr("class", "network-label")
+      .attr("text-anchor", "middle")
+      .attr("dy", (d) => this.sizeScale(d.count) + 12)
       .text((d) => d.name);
 
     this.nodeElements
-      .on('mouseenter', (event, node) => {
+      .on("mouseenter", (event, node) => {
         // 如果没有选中节点，才显示悬浮高亮效果
         if (!this.currentSelectedProduct) {
           this._highlightConnected(node);
@@ -228,7 +238,7 @@ class NetworkGraph extends BaseChart {
         Tooltip.show(event, this._formatTooltip(node));
         this.options.onHover?.(node);
       })
-      .on('mouseleave', () => {
+      .on("mouseleave", () => {
         // 如果有选中节点，恢复选中状态；否则清除高亮
         if (this.currentSelectedProduct) {
           this.highlight([this.currentSelectedProduct]);
@@ -237,10 +247,11 @@ class NetworkGraph extends BaseChart {
         }
         Tooltip.hide();
       })
-      .on('click', (event, node) => {
+      .on("click", (event, node) => {
         // 阻止冒泡到背景点击，避免立刻触发"失焦"
         event.stopPropagation();
-        const nextName = this.currentSelectedProduct === node.name ? null : node.name;
+        const nextName =
+          this.currentSelectedProduct === node.name ? null : node.name;
         eventBus.emit(EVENTS.PRODUCT_SELECT, nextName);
         this.options.onClick?.(node);
       });
@@ -248,9 +259,9 @@ class NetworkGraph extends BaseChart {
     this.nodeElements.call(
       d3
         .drag()
-        .on('start', (event, node) => this._dragStarted(event, node))
-        .on('drag', (event, node) => this._dragged(event, node))
-        .on('end', (event, node) => this._dragEnded(event, node)),
+        .on("start", (event, node) => this._dragStarted(event, node))
+        .on("drag", (event, node) => this._dragged(event, node))
+        .on("end", (event, node) => this._dragEnded(event, node)),
     );
   }
 
@@ -259,38 +270,39 @@ class NetworkGraph extends BaseChart {
       this.simulation.stop();
     }
 
-    const { linkDistance, linkStrength, chargeStrength, centerStrength } = this.options;
+    const { linkDistance, linkStrength, chargeStrength, centerStrength } =
+      this.options;
 
     this.simulation = d3
       .forceSimulation(this.nodes)
       .force(
-        'link',
+        "link",
         d3
           .forceLink(this.links)
           .id((d) => d.id)
           .distance(linkDistance)
           .strength(linkStrength),
       )
-      .force('charge', d3.forceManyBody().strength(chargeStrength))
-      .force('center', d3.forceCenter(this.width / 2, this.height / 2))
+      .force("charge", d3.forceManyBody().strength(chargeStrength))
+      .force("center", d3.forceCenter(this.width / 2, this.height / 2))
       // X/Y 吸引力：让不同连通分量向中心聚拢，避免过于分散
-      .force('x', d3.forceX(this.width / 2).strength(centerStrength))
-      .force('y', d3.forceY(this.height / 2).strength(centerStrength))
+      .force("x", d3.forceX(this.width / 2).strength(centerStrength))
+      .force("y", d3.forceY(this.height / 2).strength(centerStrength))
       .force(
-        'collision',
+        "collision",
         d3.forceCollide().radius((node) => this.sizeScale(node.count) + 4),
       )
-      .on('tick', () => this._tick());
+      .on("tick", () => this._tick());
   }
 
   _tick() {
     this.linkElements
-      ?.attr('x1', (d) => (typeof d.source === 'object' ? d.source.x : 0))
-      .attr('y1', (d) => (typeof d.source === 'object' ? d.source.y : 0))
-      .attr('x2', (d) => (typeof d.target === 'object' ? d.target.x : 0))
-      .attr('y2', (d) => (typeof d.target === 'object' ? d.target.y : 0));
+      ?.attr("x1", (d) => (typeof d.source === "object" ? d.source.x : 0))
+      .attr("y1", (d) => (typeof d.source === "object" ? d.source.y : 0))
+      .attr("x2", (d) => (typeof d.target === "object" ? d.target.x : 0))
+      .attr("y2", (d) => (typeof d.target === "object" ? d.target.y : 0));
 
-    this.nodeElements?.attr('transform', (d) => `translate(${d.x},${d.y})`);
+    this.nodeElements?.attr("transform", (d) => `translate(${d.x},${d.y})`);
   }
 
   _dragStarted(event, node) {
@@ -320,15 +332,19 @@ class NetworkGraph extends BaseChart {
     });
 
     this.nodeElements
-      .classed('is-highlighted', (datum) => datum.id === node.id)
-      .classed('is-connected', (datum) => connected.has(datum.id) && datum.id !== node.id)
-      .classed('is-dimmed', (datum) => !connected.has(datum.id));
+      .classed("is-highlighted", (datum) => datum.id === node.id)
+      .classed(
+        "is-connected",
+        (datum) => connected.has(datum.id) && datum.id !== node.id,
+      )
+      .classed("is-dimmed", (datum) => !connected.has(datum.id));
 
     // 动态调整节点圆的半径
-    this.nodeElements.select('circle')
+    this.nodeElements
+      .select("circle")
       .transition()
       .duration(180)
-      .attr('r', (datum) => {
+      .attr("r", (datum) => {
         const baseR = this.sizeScale(datum.count);
         if (datum.id === node.id) return baseR * 1.5;
         if (connected.has(datum.id)) return baseR * 1.15;
@@ -336,39 +352,49 @@ class NetworkGraph extends BaseChart {
       });
 
     this.linkElements
-      .classed('is-highlighted', (link) => link.source.id === node.id || link.target.id === node.id)
-      .classed('is-dimmed', (link) => link.source.id !== node.id && link.target.id !== node.id);
+      .classed(
+        "is-highlighted",
+        (link) => link.source.id === node.id || link.target.id === node.id,
+      )
+      .classed(
+        "is-dimmed",
+        (link) => link.source.id !== node.id && link.target.id !== node.id,
+      );
 
     // 动态调整边的宽度
     this.linkElements
       .transition()
       .duration(180)
-      .attr('stroke-width', (link) => {
+      .attr("stroke-width", (link) => {
         const baseWidth = this.linkWidthScale(link.count);
-        if (link.source.id === node.id || link.target.id === node.id) return baseWidth * 2;
+        if (link.source.id === node.id || link.target.id === node.id)
+          return baseWidth * 2;
         return baseWidth;
       });
   }
 
   _clearHighlight() {
     this.nodeElements
-      ?.classed('is-dimmed', false)
-      .classed('is-highlighted', false)
-      .classed('is-connected', false);
+      ?.classed("is-dimmed", false)
+      .classed("is-highlighted", false)
+      .classed("is-connected", false);
 
     // 恢复节点原始半径
-    this.nodeElements?.select('circle')
+    this.nodeElements
+      ?.select("circle")
       .transition()
       .duration(180)
-      .attr('r', (node) => this.sizeScale(node.count));
+      .attr("r", (node) => this.sizeScale(node.count));
 
-    this.linkElements?.classed('is-dimmed', false).classed('is-highlighted', false);
+    this.linkElements
+      ?.classed("is-dimmed", false)
+      .classed("is-highlighted", false);
 
     // 恢复边的原始宽度
     this.linkElements
       ?.transition()
       .duration(180)
-      .attr('stroke-width', (link) => this.linkWidthScale(link.count));
+      .attr("stroke-width", (link) => this.linkWidthScale(link.count));
   }
 
   _formatTooltip(node) {
@@ -384,9 +410,10 @@ class NetworkGraph extends BaseChart {
   }
 
   highlight(productNames = []) {
-    this.currentSelectedProduct = Array.isArray(productNames) && productNames.length > 0
-      ? productNames[0]
-      : null;
+    this.currentSelectedProduct =
+      Array.isArray(productNames) && productNames.length > 0
+        ? productNames[0]
+        : null;
 
     const nameSet = new Set(productNames || []);
     const hasSelection = nameSet.size > 0;
@@ -404,15 +431,25 @@ class NetworkGraph extends BaseChart {
 
     // 设置节点状态
     this.nodeElements
-      ?.classed('is-highlighted', (node) => nameSet.has(node.name))
-      .classed('is-connected', (node) => hasSelection && connectedNodes.has(node.id) && !nameSet.has(node.name))
-      .classed('is-dimmed', (node) => hasSelection && !connectedNodes.has(node.id));
+      ?.classed("is-highlighted", (node) => nameSet.has(node.name))
+      .classed(
+        "is-connected",
+        (node) =>
+          hasSelection &&
+          connectedNodes.has(node.id) &&
+          !nameSet.has(node.name),
+      )
+      .classed(
+        "is-dimmed",
+        (node) => hasSelection && !connectedNodes.has(node.id),
+      );
 
     // 动态调整节点圆的半径以实现放大效果
-    this.nodeElements?.select('circle')
+    this.nodeElements
+      ?.select("circle")
       .transition()
       .duration(180)
-      .attr('r', (node) => {
+      .attr("r", (node) => {
         const baseR = this.sizeScale(node.count);
         if (nameSet.has(node.name)) return baseR * 1.5; // 选中节点放大 1.5 倍
         if (hasSelection && connectedNodes.has(node.id)) return baseR * 1.15; // 相连节点略微放大
@@ -421,12 +458,12 @@ class NetworkGraph extends BaseChart {
 
     // 设置边状态
     this.linkElements
-      ?.classed('is-highlighted', (link) => {
+      ?.classed("is-highlighted", (link) => {
         const sourceId = link.source.id || link.source;
         const targetId = link.target.id || link.target;
         return nameSet.has(sourceId) || nameSet.has(targetId);
       })
-      .classed('is-dimmed', (link) => {
+      .classed("is-dimmed", (link) => {
         if (!hasSelection) return false;
         const sourceId = link.source.id || link.source;
         const targetId = link.target.id || link.target;
@@ -437,11 +474,12 @@ class NetworkGraph extends BaseChart {
     this.linkElements
       ?.transition()
       .duration(180)
-      .attr('stroke-width', (link) => {
+      .attr("stroke-width", (link) => {
         const baseWidth = this.linkWidthScale(link.count);
         const sourceId = link.source.id || link.source;
         const targetId = link.target.id || link.target;
-        if (nameSet.has(sourceId) || nameSet.has(targetId)) return baseWidth * 2;
+        if (nameSet.has(sourceId) || nameSet.has(targetId))
+          return baseWidth * 2;
         return baseWidth;
       });
   }
@@ -461,8 +499,8 @@ class NetworkGraph extends BaseChart {
       this.zoomBehavior = d3
         .zoom()
         .scaleExtent([minScale, maxScale])
-        .on('zoom', (event) => {
-          this.graphLayer.attr('transform', event.transform);
+        .on("zoom", (event) => {
+          this.graphLayer.attr("transform", event.transform);
           this.currentTransform = event.transform;
           // 有源事件说明是用户交互，后续不要自动居中了
           if (event.sourceEvent) {
@@ -496,7 +534,8 @@ class NetworkGraph extends BaseChart {
       maxY = Math.max(maxY, node.y);
     });
 
-    if (!Number.isFinite(minX) || !Number.isFinite(maxX) || minX === maxX) return;
+    if (!Number.isFinite(minX) || !Number.isFinite(maxX) || minX === maxX)
+      return;
 
     const width = maxX - minX || 1;
     const height = maxY - minY || 1;
@@ -527,10 +566,10 @@ class NetworkGraph extends BaseChart {
   _bindBackgroundClick() {
     if (!this.svg) return;
     // 点击网络图背景区域时清除当前物产聚焦
-    this.svg.on('click.network-clear', (event) => {
+    this.svg.on("click.network-clear", (event) => {
       const target = event.target;
-      if (target && typeof target.closest === 'function') {
-        if (target.closest('.network-node')) return;
+      if (target && typeof target.closest === "function") {
+        if (target.closest(".network-node")) return;
       }
       eventBus.emit(EVENTS.PRODUCT_SELECT, null);
     });
@@ -541,8 +580,8 @@ class NetworkGraph extends BaseChart {
       this.simulation.stop();
     }
     if (this.svg && this.zoomBehavior) {
-      this.svg.on('.zoom', null);
-      this.svg.on('click.network-clear', null);
+      this.svg.on(".zoom", null);
+      this.svg.on("click.network-clear", null);
     }
     super.destroy();
   }

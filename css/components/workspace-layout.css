@@ -1,0 +1,309 @@
+/* Workspace 布局：split tree + tab stack（由 WindowLayoutManager 驱动） */
+
+.workspace-layout {
+  position: absolute;
+  inset: 96px calc(var(--spacing-md) + 56px + var(--spacing-sm)) 72px
+    var(--spacing-md);
+  display: none;
+  min-width: 0;
+  min-height: 0;
+}
+
+.app-container.is-workspace .workspace-layout {
+  display: block;
+}
+
+/* Workspace 模式下，只有被 layout manager 接管的 window 才显示 */
+.app-container.is-workspace .window--map,
+.app-container.is-workspace .floating-panel {
+  display: none;
+}
+
+.app-container.is-workspace .window--map[data-workspace-mounted="true"] {
+  display: block;
+  position: relative;
+  top: auto;
+  left: auto;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  z-index: auto;
+}
+
+.app-container.is-workspace
+  .window--map[data-workspace-mounted="true"]
+  .chart--map {
+  height: 100%;
+  min-height: 0;
+}
+
+.app-container.is-workspace .floating-panel[data-workspace-mounted="true"] {
+  display: flex;
+  position: relative;
+  z-index: auto;
+  top: auto;
+  right: auto;
+  bottom: auto;
+  left: auto;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  transform: none;
+  opacity: 1;
+  visibility: visible;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+  backdrop-filter: none;
+}
+
+.app-container.is-workspace .floating-panel__resize-handle {
+  display: none;
+}
+
+.app-container.is-workspace
+  .floating-panel[data-workspace-mounted="true"]
+  .floating-panel__header {
+  display: none;
+}
+
+.app-container.is-workspace
+  .floating-panel[data-workspace-mounted="true"]
+  .floating-panel__body {
+  padding: var(--spacing-md);
+}
+
+/* ===== split tree ===== */
+.workspace-split {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  gap: 0;
+  min-width: 0;
+  min-height: 0;
+}
+
+.workspace-split--row {
+  flex-direction: row;
+}
+
+.workspace-split--column {
+  flex-direction: column;
+}
+
+.workspace-pane {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+}
+
+.workspace-divider {
+  flex: 0 0 10px;
+  position: relative;
+  background: transparent;
+  cursor: col-resize;
+}
+
+.workspace-split--column > .workspace-divider {
+  cursor: row-resize;
+}
+
+.workspace-divider::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  transform: translateX(-50%);
+  border-radius: 2px;
+  background: var(--color-border-light);
+  opacity: 0.7;
+  transition:
+    opacity var(--transition-fast),
+    background var(--transition-fast);
+}
+
+.workspace-split--column > .workspace-divider::before {
+  left: 0;
+  right: 0;
+  top: 50%;
+  bottom: auto;
+  width: auto;
+  height: 2px;
+  transform: translateY(-50%);
+}
+
+.workspace-divider:hover::before {
+  opacity: 1;
+  background: var(--color-primary);
+}
+
+/* ===== leaf + tabs ===== */
+.workspace-leaf {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 0;
+  background: var(--color-surface-strong);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.workspace-tabs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  background: var(--color-surface-base);
+  border-bottom: 1px solid var(--color-border-light);
+  user-select: none;
+}
+
+.workspace-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: var(--radius-full);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.workspace-tab:hover {
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-primary);
+  border-color: var(--color-border);
+}
+
+.workspace-tab.is-active {
+  background: var(--color-surface-muted);
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.workspace-content {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+
+/* ===== 拖拽 dock/stack 提示 ===== */
+.workspace-drop-overlay {
+  position: absolute;
+  inset: 8px;
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-rows: 1fr 2fr 1fr;
+  gap: 6px;
+  pointer-events: none;
+  z-index: var(--z-tooltip);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.workspace-leaf.is-drop-target .workspace-drop-overlay {
+  opacity: 1;
+}
+
+.workspace-leaf.is-drop-target .workspace-content > [data-workspace-mounted] {
+  opacity: 0.08;
+  filter: blur(1px) saturate(0.9);
+  pointer-events: none;
+  transition:
+    opacity var(--transition-fast),
+    filter var(--transition-fast);
+}
+
+.workspace-drop-zone {
+  border: 1px dashed rgba(0, 0, 0, 0.15);
+  border-radius: var(--radius-lg);
+  background: rgba(0, 0, 0, 0.03);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.workspace-drop-zone[data-zone="left"] {
+  grid-column: 1;
+  grid-row: 1 / 4;
+}
+
+.workspace-drop-zone[data-zone="right"] {
+  grid-column: 3;
+  grid-row: 1 / 4;
+}
+
+.workspace-drop-zone[data-zone="top"] {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.workspace-drop-zone[data-zone="center"] {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.workspace-drop-zone[data-zone="bottom"] {
+  grid-column: 2;
+  grid-row: 3;
+}
+
+.workspace-drop-zone::before {
+  font-size: 18px;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.35);
+  opacity: 0.85;
+}
+
+.workspace-drop-zone[data-zone="left"]::before {
+  content: "←";
+}
+
+.workspace-drop-zone[data-zone="right"]::before {
+  content: "→";
+}
+
+.workspace-drop-zone[data-zone="top"]::before {
+  content: "↑";
+}
+
+.workspace-drop-zone[data-zone="bottom"]::before {
+  content: "↓";
+}
+
+.workspace-drop-zone[data-zone="center"]::before {
+  content: "+";
+}
+
+:root[data-theme="dark"] .workspace-drop-zone {
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+:root[data-theme="dark"] .workspace-drop-zone::before {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.workspace-drop-zone.is-active {
+  border-style: solid;
+  border-color: var(--color-primary);
+  background: rgba(192, 57, 43, 0.12);
+}
+
+.workspace-drop-zone.is-active::before {
+  color: var(--color-primary);
+  opacity: 1;
+}

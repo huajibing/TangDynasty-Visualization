@@ -4,13 +4,75 @@
   position: relative;
   height: 520px;
   min-height: 520px;
-  background: radial-gradient(circle at 30% 20%, #f9f3e6 0%, #f5f0e1 55%, #f1ecde 100%);
+  background: radial-gradient(
+    circle at 30% 20%,
+    #f9f3e6 0%,
+    #f5f0e1 55%,
+    #f1ecde 100%
+  );
   border: 1px solid var(--color-border);
   border-radius: 8px;
 }
 
-/* 全屏底图模式（在 .map-backdrop 容器内） */
-.map-backdrop .chart--map {
+/* ===== 地图交互控件（漫游/框选/套索） ===== */
+.map-controls {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  display: inline-flex;
+  gap: 8px;
+  z-index: 3;
+}
+
+.map-controls__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  background: rgba(253, 246, 227, 0.7);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  backdrop-filter: blur(12px) saturate(1.05);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-fast);
+}
+
+:root[data-theme="dark"] .map-controls__btn {
+  background: rgba(10, 8, 20, 0.68);
+}
+
+.map-controls__btn:hover {
+  color: var(--color-text-primary);
+  border-color: var(--color-border);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.map-controls__btn[aria-pressed="true"] {
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+  background: rgba(253, 246, 227, 0.85);
+}
+
+:root[data-theme="dark"] .map-controls__btn[aria-pressed="true"] {
+  background: rgba(10, 8, 20, 0.9);
+}
+
+.map-controls__icon {
+  font-size: 12px;
+  line-height: 1;
+}
+
+.map-controls__label {
+  letter-spacing: 0.08em;
+}
+
+/* 全屏底图模式（在 .window--map 容器内） */
+.window--map .chart--map {
   height: 100vh;
   min-height: 100vh;
   border: none;
@@ -26,7 +88,7 @@
 
 /* 深色模式下的地图底图与边界样式 */
 
-:root[data-theme='dark'] .chart--map {
+:root[data-theme="dark"] .chart--map {
   background: radial-gradient(
     ellipse 130% 120% at 50% 20%,
     #1a1326 0%,
@@ -35,7 +97,7 @@
   );
 }
 
-:root[data-theme='dark'] .map-backdrop .chart--map {
+:root[data-theme="dark"] .window--map .chart--map {
   background: radial-gradient(
     ellipse 130% 120% at 50% 20%,
     #241632 0%,
@@ -50,7 +112,7 @@
     min-height: 420px;
   }
 
-  .map-backdrop .chart--map {
+  .window--map .chart--map {
     height: 100vh;
     min-height: 100vh;
   }
@@ -62,7 +124,7 @@
   stroke-width: 1.5;
 }
 
-:root[data-theme='dark'] .map__boundary {
+:root[data-theme="dark"] .map__boundary {
   stroke: rgba(252, 245, 230, 0.25);
 }
 
@@ -70,7 +132,7 @@
   fill: rgba(230, 217, 194, 0.4);
 }
 
-:root[data-theme='dark'] .map__boundary:hover {
+:root[data-theme="dark"] .map__boundary:hover {
   fill: rgba(249, 241, 214, 0.08);
 }
 
@@ -95,12 +157,29 @@
   stroke-width: 1.6;
 }
 
-:root[data-theme='dark'] .location-point {
+:root[data-theme="dark"] .location-point {
   stroke: rgba(5, 4, 11, 0.92);
 }
 
 .location-point.is-dimmed {
   opacity: 0.2;
+}
+
+/* ===== 框选/套索选择 ===== */
+.map-brush .selection {
+  fill: rgba(192, 57, 43, 0.12);
+  stroke: var(--color-primary);
+  stroke-width: 1.2;
+}
+
+.map-lasso__path {
+  fill: rgba(192, 57, 43, 0.1);
+  stroke: var(--color-primary);
+  stroke-width: 1.2;
+}
+
+.map-lasso__overlay {
+  cursor: crosshair;
 }
 
 .chart__empty {

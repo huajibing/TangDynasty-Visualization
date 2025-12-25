@@ -85,10 +85,10 @@
 
   /* 字体系统（Apple 优先） */
   --font-family-base:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', 'PingFang SC',
-    'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-  --font-family-serif: 'Songti SC', 'STSong', 'SimSun', serif;
-  --font-family-mono: 'SF Mono', 'Fira Code', Consolas, monospace;
+    -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-family-serif: "Songti SC", "STSong", "SimSun", serif;
+  --font-family-mono: "SF Mono", "Fira Code", Consolas, monospace;
 
   --font-size-xs: 12px;
   --font-size-sm: 14px;
@@ -132,7 +132,7 @@
 
 /* ===== 深色主题 —— 唐夜绢本风格，保持同一视觉语义但反转明暗 ===== */
 
-:root[data-theme='dark'] {
+:root[data-theme="dark"] {
   /* 主题色保留唐风，但增强在暗底下的发光感 */
   --color-primary: #f15b46;
   --color-primary-light: #ff8c6b;

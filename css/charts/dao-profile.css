@@ -1,0 +1,37 @@
+/* 十道画像（洞察）面板图表样式 */
+
+.floating-panel--insights .floating-panel__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.chart--dao-profile {
+  flex: 1 1 auto;
+  min-height: 240px;
+}
+
+.dao-profile__bar {
+  cursor: pointer;
+  opacity: 0.82;
+  transition: opacity var(--transition-fast);
+}
+
+.dao-profile__bar:hover {
+  opacity: 1;
+}
+
+.dao-profile__bar.is-dimmed {
+  opacity: 0.25;
+}
+
+.dao-profile__value {
+  fill: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+  pointer-events: none;
+}
+
+.dao-profile__empty {
+  fill: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}

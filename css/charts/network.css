@@ -44,7 +44,8 @@
   fill: var(--color-accent);
   stroke: var(--color-primary);
   stroke-width: 3px;
-  filter: drop-shadow(0 0 8px var(--color-accent)) drop-shadow(0 0 3px var(--color-primary));
+  filter: drop-shadow(0 0 8px var(--color-accent))
+    drop-shadow(0 0 3px var(--color-primary));
 }
 
 .network-node.is-highlighted .network-label {

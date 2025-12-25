@@ -6,7 +6,7 @@ class EventBus {
   }
 
   on(event, callback) {
-    if (!event || typeof callback !== 'function') return () => {};
+    if (!event || typeof callback !== "function") return () => {};
 
     if (!this.events.has(event)) {
       this.events.set(event, new Set());
@@ -18,7 +18,7 @@ class EventBus {
   }
 
   once(event, callback) {
-    if (!event || typeof callback !== 'function') return () => {};
+    if (!event || typeof callback !== "function") return () => {};
     const wrapper = (payload) => {
       callback(payload);
       this.off(event, wrapper);
@@ -65,15 +65,15 @@ class EventBus {
 }
 
 export const EVENTS = {
-  LOCATION_SELECT: 'location:select',
-  LOCATION_HOVER: 'location:hover',
-  BRUSH_UPDATE: 'brush:update',
-  FILTER_CHANGE: 'filter:change',
-  PRODUCT_SELECT: 'productSelected',
-  DAO_SELECT: 'daoSelected',
-  HOUSEHOLD_RANGE_CHANGE: 'householdRangeChanged',
-  HISTOGRAM_BIN_HOVER: 'histogram:binHover',
-  PRODUCT_HOVER: 'product:hover',
+  LOCATION_SELECT: "location:select",
+  LOCATION_HOVER: "location:hover",
+  BRUSH_UPDATE: "brush:update",
+  FILTER_CHANGE: "filter:change",
+  PRODUCT_SELECT: "productSelected",
+  DAO_SELECT: "daoSelected",
+  HOUSEHOLD_RANGE_CHANGE: "householdRangeChanged",
+  HISTOGRAM_BIN_HOVER: "histogram:binHover",
+  PRODUCT_HOVER: "product:hover",
 };
 
 export const eventBus = new EventBus();

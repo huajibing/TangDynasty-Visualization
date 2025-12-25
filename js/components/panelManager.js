@@ -12,13 +12,18 @@ export class PanelManager {
     this.zIndexBase = 100;
     this.zIndexCounter = this.zIndexBase;
     this._resizeObserver = null;
+    this.interactionEnabled = true;
 
     this._init();
   }
 
+  setInteractionEnabled(enabled) {
+    this.interactionEnabled = Boolean(enabled);
+  }
+
   _init() {
     // 查找所有面板和切换按钮
-    document.querySelectorAll('.floating-panel').forEach((panel) => {
+    document.querySelectorAll(".floating-panel").forEach((panel) => {
       const panelId = panel.dataset.panelId;
       if (panelId) {
         this.panels.set(panelId, panel);
@@ -26,7 +31,7 @@ export class PanelManager {
       }
     });
 
-    document.querySelectorAll('.panel-toggle').forEach((button) => {
+    document.querySelectorAll(".panel-toggle").forEach((button) => {
       const panelId = button.dataset.panel;
       if (panelId) {
         this.toggleButtons.set(panelId, button);
@@ -44,7 +49,7 @@ export class PanelManager {
   }
 
   _setupResizeObserver() {
-    if (typeof ResizeObserver === 'undefined') return;
+    if (typeof ResizeObserver === "undefined") return;
 
     this._resizeObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {
@@ -70,7 +75,10 @@ export class PanelManager {
 
   _initZIndexBase() {
     const rootStyles = window.getComputedStyle(document.documentElement);
-    const base = Number.parseInt(rootStyles.getPropertyValue('--z-dropdown'), 10);
+    const base = Number.parseInt(
+      rootStyles.getPropertyValue("--z-dropdown"),
+      10,
+    );
     this.zIndexBase = Number.isFinite(base) ? base : 100;
     this.zIndexCounter = this.zIndexBase;
 
@@ -84,13 +92,13 @@ export class PanelManager {
     this._bindFocus(panel, panelId);
 
     // 关闭按钮
-    const closeBtn = panel.querySelector('.floating-panel__close');
+    const closeBtn = panel.querySelector(".floating-panel__close");
     if (closeBtn) {
-      closeBtn.addEventListener('click', () => this.close(panelId));
+      closeBtn.addEventListener("click", () => this.close(panelId));
     }
 
     // 拖拽功能（可选）
-    const header = panel.querySelector('.floating-panel__header');
+    const header = panel.querySelector(".floating-panel__header");
     if (header) {
       this._enableDrag(panel, header, panelId);
     }
@@ -99,12 +107,12 @@ export class PanelManager {
   }
 
   _bindToggleEvents(button, panelId) {
-    button.addEventListener('click', () => this.toggle(panelId));
+    button.addEventListener("click", () => this.toggle(panelId));
   }
 
   _bindFocus(panel, panelId) {
     if (!panel) return;
-    panel.addEventListener('pointerdown', () => this._focusPanel(panelId));
+    panel.addEventListener("pointerdown", () => this._focusPanel(panelId));
   }
 
   _focusPanel(panelId) {
@@ -126,46 +134,47 @@ export class PanelManager {
 
     panel.style.left = `${left}px`;
     panel.style.top = `${top}px`;
-    panel.style.right = 'auto';
-    panel.style.bottom = 'auto';
-    panel.style.transform = 'none';
-    panel.dataset.positionNormalized = 'true';
+    panel.style.right = "auto";
+    panel.style.bottom = "auto";
+    panel.style.transform = "none";
+    panel.dataset.positionNormalized = "true";
   }
 
   _enableResize(panel, panelId) {
-    if (!panel || panel.dataset.resizable === 'true') return;
+    if (!panel || panel.dataset.resizable === "true") return;
     const handles = [
-      { direction: 'n', cursor: 'ns-resize' },
-      { direction: 's', cursor: 'ns-resize' },
-      { direction: 'e', cursor: 'ew-resize' },
-      { direction: 'w', cursor: 'ew-resize' },
-      { direction: 'ne', cursor: 'nesw-resize' },
-      { direction: 'nw', cursor: 'nwse-resize' },
-      { direction: 'se', cursor: 'nwse-resize' },
-      { direction: 'sw', cursor: 'nesw-resize' },
+      { direction: "n", cursor: "ns-resize" },
+      { direction: "s", cursor: "ns-resize" },
+      { direction: "e", cursor: "ew-resize" },
+      { direction: "w", cursor: "ew-resize" },
+      { direction: "ne", cursor: "nesw-resize" },
+      { direction: "nw", cursor: "nwse-resize" },
+      { direction: "se", cursor: "nwse-resize" },
+      { direction: "sw", cursor: "nesw-resize" },
     ];
 
     handles.forEach(({ direction, cursor }) => {
-      const handle = document.createElement('div');
+      const handle = document.createElement("div");
       handle.className = `floating-panel__resize-handle floating-panel__resize-handle--${direction}`;
       handle.style.cursor = cursor;
-      handle.addEventListener('pointerdown', (event) =>
+      handle.addEventListener("pointerdown", (event) =>
         this._startResize(event, panel, direction, panelId),
       );
       panel.appendChild(handle);
     });
 
-    panel.dataset.resizable = 'true';
+    panel.dataset.resizable = "true";
   }
 
   _startResize(event, panel, direction, panelId) {
     if (!panel) return;
+    if (!this.interactionEnabled) return;
     event.preventDefault();
     event.stopPropagation();
 
     this._focusPanel(panelId);
     this._normalizePanelPosition(panel);
-    panel.style.transition = 'none';
+    panel.style.transition = "none";
 
     const rect = panel.getBoundingClientRect();
     const start = {
@@ -192,13 +201,13 @@ export class PanelManager {
       let nextLeft = start.left;
       let nextTop = start.top;
 
-      if (direction.includes('e')) nextWidth = start.width + deltaX;
-      if (direction.includes('s')) nextHeight = start.height + deltaY;
-      if (direction.includes('w')) {
+      if (direction.includes("e")) nextWidth = start.width + deltaX;
+      if (direction.includes("s")) nextHeight = start.height + deltaY;
+      if (direction.includes("w")) {
         nextWidth = start.width - deltaX;
         nextLeft = start.left + deltaX;
       }
-      if (direction.includes('n')) {
+      if (direction.includes("n")) {
         nextHeight = start.height - deltaY;
         nextTop = start.top + deltaY;
       }
@@ -215,20 +224,20 @@ export class PanelManager {
       panel.style.height = `${nextHeight}px`;
       panel.style.left = `${nextLeft}px`;
       panel.style.top = `${nextTop}px`;
-      panel.style.right = 'auto';
-      panel.style.bottom = 'auto';
+      panel.style.right = "auto";
+      panel.style.bottom = "auto";
     };
 
     const onPointerUp = () => {
-      panel.style.transition = '';
+      panel.style.transition = "";
       panel.releasePointerCapture?.(event.pointerId);
-      window.removeEventListener('pointermove', onPointerMove);
-      window.removeEventListener('pointerup', onPointerUp);
+      window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("pointerup", onPointerUp);
     };
 
     panel.setPointerCapture?.(event.pointerId);
-    window.addEventListener('pointermove', onPointerMove);
-    window.addEventListener('pointerup', onPointerUp);
+    window.addEventListener("pointermove", onPointerMove);
+    window.addEventListener("pointerup", onPointerUp);
   }
 
   _enableDrag(panel, handle, panelId) {
@@ -239,8 +248,9 @@ export class PanelManager {
     let startTop = 0;
 
     const onMouseDown = (e) => {
+      if (!this.interactionEnabled) return;
       // 排除点击关闭按钮
-      if (e.target.closest('.floating-panel__close')) return;
+      if (e.target.closest(".floating-panel__close")) return;
 
       this._focusPanel(panelId);
       this._normalizePanelPosition(panel);
@@ -252,9 +262,9 @@ export class PanelManager {
       startLeft = rect.left;
       startTop = rect.top;
 
-      panel.style.transition = 'none';
-      document.addEventListener('mousemove', onMouseMove);
-      document.addEventListener('mouseup', onMouseUp);
+      panel.style.transition = "none";
+      document.addEventListener("mousemove", onMouseMove);
+      document.addEventListener("mouseup", onMouseUp);
     };
 
     const onMouseMove = (e) => {
@@ -274,29 +284,29 @@ export class PanelManager {
       newTop = Math.max(0, Math.min(newTop, maxTop));
 
       // 重置 transform 并使用 left/top 定位
-      panel.style.transform = 'none';
+      panel.style.transform = "none";
       panel.style.left = `${newLeft}px`;
       panel.style.top = `${newTop}px`;
-      panel.style.right = 'auto';
-      panel.style.bottom = 'auto';
+      panel.style.right = "auto";
+      panel.style.bottom = "auto";
     };
 
     const onMouseUp = () => {
       isDragging = false;
-      panel.style.transition = '';
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
+      panel.style.transition = "";
+      document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseup", onMouseUp);
     };
 
-    handle.addEventListener('mousedown', onMouseDown);
+    handle.addEventListener("mousedown", onMouseDown);
   }
 
   _syncButtonStates() {
     this.panels.forEach((panel, panelId) => {
       const button = this.toggleButtons.get(panelId);
       if (button) {
-        const isOpen = panel.classList.contains('is-open');
-        button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        const isOpen = panel.classList.contains("is-open");
+        button.setAttribute("aria-expanded", isOpen ? "true" : "false");
       }
     });
   }
@@ -306,12 +316,14 @@ export class PanelManager {
     const button = this.toggleButtons.get(panelId);
 
     if (panel) {
-      panel.classList.add('is-open');
-      this._normalizePanelPosition(panel);
-      this._focusPanel(panelId);
+      panel.classList.add("is-open");
+      if (this.interactionEnabled) {
+        this._normalizePanelPosition(panel);
+        this._focusPanel(panelId);
+      }
 
       if (button) {
-        button.setAttribute('aria-expanded', 'true');
+        button.setAttribute("aria-expanded", "true");
       }
 
       if (this.onPanelChange) {
@@ -325,10 +337,10 @@ export class PanelManager {
     const button = this.toggleButtons.get(panelId);
 
     if (panel) {
-      panel.classList.remove('is-open');
+      panel.classList.remove("is-open");
 
       if (button) {
-        button.setAttribute('aria-expanded', 'false');
+        button.setAttribute("aria-expanded", "false");
       }
 
       if (this.onPanelChange) {
@@ -340,7 +352,7 @@ export class PanelManager {
   toggle(panelId) {
     const panel = this.panels.get(panelId);
     if (panel) {
-      if (panel.classList.contains('is-open')) {
+      if (panel.classList.contains("is-open")) {
         this.close(panelId);
       } else {
         this.open(panelId);
@@ -350,7 +362,7 @@ export class PanelManager {
 
   isOpen(panelId) {
     const panel = this.panels.get(panelId);
-    return panel ? panel.classList.contains('is-open') : false;
+    return panel ? panel.classList.contains("is-open") : false;
   }
 
   closeAll() {

@@ -34,7 +34,9 @@ const DataQuery = {
     if (this.indices?.locationsByDao?.size) {
       return this.indices.locationsByDao.get(daoId) || [];
     }
-    return this.data.filter((item) => item.Parent_ID === daoId || item.Location_ID === daoId);
+    return this.data.filter(
+      (item) => item.Parent_ID === daoId || item.Location_ID === daoId,
+    );
   },
 
   getByAdministrativeLevel(level) {
@@ -55,14 +57,17 @@ const DataQuery = {
   getByProductType(type) {
     if (!type) return [];
     return this.data.filter(
-      (item) => Array.isArray(item?.Products?.[type]) && item.Products[type].length > 0,
+      (item) =>
+        Array.isArray(item?.Products?.[type]) && item.Products[type].length > 0,
     );
   },
 
   filterByPopulation(min = -Infinity, max = Infinity) {
     return this.data.filter(
       (item) =>
-        Number.isFinite(item.Population) && item.Population >= min && item.Population <= max,
+        Number.isFinite(item.Population) &&
+        item.Population >= min &&
+        item.Population <= max,
     );
   },
 
@@ -80,7 +85,7 @@ const DataQuery = {
     const cooccur = this.indices?.productCooccurrence || new Map();
     cooccur.forEach((count, key) => {
       if (count >= minCount) {
-        const [source, target] = key.split('|');
+        const [source, target] = key.split("|");
         links.push({ source, target, count });
       }
     });

@@ -1,18 +1,18 @@
 // 侧边栏组件：汇总统计、筛选器、图例和探索提示。
 
-import { FilterPanel } from './filter.js';
-import { Legend } from './legend.js';
+import { FilterPanel } from "./filter.js";
+import { Legend } from "./legend.js";
 import {
   formatHouseholdSize,
   formatHouseholds,
   formatPopulation,
   Format,
-} from '../utils/format.js';
-import { getProductTypeColor } from '../utils/colors.js';
+} from "../utils/format.js";
+import { getProductTypeColor } from "../utils/colors.js";
 
 function resolveContainer(target) {
   if (!target) return null;
-  if (typeof target === 'string') {
+  if (typeof target === "string") {
     return document.querySelector(target);
   }
   return target;
@@ -27,16 +27,18 @@ export class Sidebar {
     this.metricRefs = {};
     this.statusEl = null;
     this.comparisonContainer = null;
+    this.selectionModeButtons = null;
+    this.mapEncodingButtons = null;
   }
 
   render(payload = {}) {
     if (!this.container) return;
 
     this.destroy();
-    this.container.innerHTML = '';
+    this.container.innerHTML = "";
 
-    const wrapper = document.createElement('div');
-    wrapper.className = 'sidebar';
+    const wrapper = document.createElement("div");
+    wrapper.className = "sidebar";
 
     const statsSection = this._renderStats(payload.stats);
     if (statsSection) wrapper.appendChild(statsSection);
@@ -44,34 +46,47 @@ export class Sidebar {
     const comparisonSection = this._renderComparison(payload.comparisonItems);
     if (comparisonSection) wrapper.appendChild(comparisonSection);
 
-    const filterSection = document.createElement('section');
-    filterSection.className = 'sidebar__block';
-    const filterTitle = document.createElement('h2');
-    filterTitle.className = 'sidebar__title';
-    filterTitle.textContent = '筛选器';
+    const filterSection = document.createElement("section");
+    filterSection.className = "sidebar__block";
+    filterSection.dataset.tourAnchor = "filters";
+    const filterTitle = document.createElement("h2");
+    filterTitle.className = "sidebar__title";
+    filterTitle.textContent = "筛选器";
 
-    const filterContainer = document.createElement('div');
-    filterContainer.className = 'sidebar__filters';
+    const filterContainer = document.createElement("div");
+    filterContainer.className = "sidebar__filters";
     filterSection.appendChild(filterTitle);
+    const selectionMode = this._renderSelectionModeToggle(
+      payload.selectionAsFilter,
+    );
+    if (selectionMode) filterSection.appendChild(selectionMode);
     filterSection.appendChild(filterContainer);
     wrapper.appendChild(filterSection);
 
     this.filterPanel = new FilterPanel(filterContainer, {
       daoOptions: payload.daoOptions || [],
       productTypeOptions: payload.productTypes || [],
+      levelOptions: payload.levelOptions || [],
+      valueRanges: payload.valueRanges || {},
       onChange: (filters) => this.options.onFilterChange?.(filters),
       onReset: () => this.options.onResetFilters?.(),
     });
     this.filterPanel.render(payload.filters);
 
-    const legendSection = document.createElement('section');
-    legendSection.className = 'sidebar__block';
-    const legendTitle = document.createElement('h2');
-    legendTitle.className = 'sidebar__title';
-    legendTitle.textContent = '图例';
-    const legendContainer = document.createElement('div');
-    legendContainer.className = 'sidebar__legend';
+    const legendSection = document.createElement("section");
+    legendSection.className = "sidebar__block";
+    const legendTitle = document.createElement("h2");
+    legendTitle.className = "sidebar__title";
+    legendTitle.textContent = "图例";
+    const legendContainer = document.createElement("div");
+    legendContainer.className = "sidebar__legend";
     legendSection.appendChild(legendTitle);
+    const mapEncodingControls = this._renderMapEncodingControls(
+      payload.mapEncoding,
+    );
+    if (mapEncodingControls) {
+      legendSection.appendChild(mapEncodingControls);
+    }
     legendSection.appendChild(legendContainer);
     wrapper.appendChild(legendSection);
 
@@ -95,15 +110,22 @@ export class Sidebar {
     const merged = { ...defaults, ...(stats || {}) };
 
     if (this.metricRefs.totalLocations) {
-      this.metricRefs.totalLocations.textContent = Format.number(merged.totalLocations, {
-        fallback: '0',
-      });
+      this.metricRefs.totalLocations.textContent = Format.number(
+        merged.totalLocations,
+        {
+          fallback: "0",
+        },
+      );
     }
     if (this.metricRefs.totalPopulation) {
-      this.metricRefs.totalPopulation.textContent = formatPopulation(merged.totalPopulation);
+      this.metricRefs.totalPopulation.textContent = formatPopulation(
+        merged.totalPopulation,
+      );
     }
     if (this.metricRefs.totalHouseholds) {
-      this.metricRefs.totalHouseholds.textContent = formatHouseholds(merged.totalHouseholds);
+      this.metricRefs.totalHouseholds.textContent = formatHouseholds(
+        merged.totalHouseholds,
+      );
     }
     if (this.metricRefs.averageHouseholdSize) {
       this.metricRefs.averageHouseholdSize.textContent = formatHouseholdSize(
@@ -115,7 +137,7 @@ export class Sidebar {
         merged.averageProductRichness,
         {
           maximumFractionDigits: 1,
-          fallback: '-',
+          fallback: "-",
         },
       );
     }
@@ -131,13 +153,14 @@ export class Sidebar {
 
   updateComparison(items = []) {
     if (!this.comparisonContainer) return;
-    this.comparisonContainer.innerHTML = '';
+    this.comparisonContainer.innerHTML = "";
     const list = Array.isArray(items) ? items.slice(0, 2) : [];
 
     if (list.length === 0) {
-      const empty = document.createElement('div');
-      empty.className = 'comparison__placeholder';
-      empty.textContent = '在地图/数据表 Ctrl/⌘ 多选地点，或在堆叠图 Ctrl/⌘ 点击两道进行对比';
+      const empty = document.createElement("div");
+      empty.className = "comparison__placeholder";
+      empty.textContent =
+        "在地图/数据表 Ctrl/⌘ 多选地点，或在堆叠图 Ctrl/⌘ 点击两道进行对比";
       this.comparisonContainer.appendChild(empty);
       return;
     }
@@ -148,10 +171,10 @@ export class Sidebar {
     });
   }
 
-  setStatus(message = '') {
+  setStatus(message = "") {
     if (!this.statusEl) return;
     this.statusEl.textContent = message;
-    this.statusEl.classList.toggle('is-visible', Boolean(message));
+    this.statusEl.classList.toggle("is-visible", Boolean(message));
   }
 
   destroy() {
@@ -162,38 +185,77 @@ export class Sidebar {
     this.metricRefs = {};
     this.statusEl = null;
     this.comparisonContainer = null;
+    this.selectionModeButtons = null;
+    this.mapEncodingButtons = null;
+  }
+
+  updateSelectionAsFilter(asFilter) {
+    if (!this.selectionModeButtons) return;
+    const active = Boolean(asFilter);
+    this.selectionModeButtons.highlight?.classList.toggle("is-active", !active);
+    this.selectionModeButtons.highlight?.setAttribute(
+      "aria-pressed",
+      !active ? "true" : "false",
+    );
+    this.selectionModeButtons.filter?.classList.toggle("is-active", active);
+    this.selectionModeButtons.filter?.setAttribute(
+      "aria-pressed",
+      active ? "true" : "false",
+    );
+  }
+
+  updateMapEncoding(mapEncoding) {
+    if (!this.mapEncodingButtons) return;
+    const colorEncoding = mapEncoding?.colorEncoding || "dao";
+    const markerEncoding = mapEncoding?.markerEncoding || "population";
+
+    Object.entries(this.mapEncodingButtons.color || {}).forEach(
+      ([key, btn]) => {
+        const active = key === colorEncoding;
+        btn.classList.toggle("is-active", active);
+        btn.setAttribute("aria-pressed", active ? "true" : "false");
+      },
+    );
+
+    Object.entries(this.mapEncodingButtons.marker || {}).forEach(
+      ([key, btn]) => {
+        const active = key === markerEncoding;
+        btn.classList.toggle("is-active", active);
+        btn.setAttribute("aria-pressed", active ? "true" : "false");
+      },
+    );
   }
 
   _renderStats(stats = {}) {
-    const section = document.createElement('section');
-    section.className = 'sidebar__block';
+    const section = document.createElement("section");
+    section.className = "sidebar__block";
 
-    const title = document.createElement('h2');
-    title.className = 'sidebar__title';
-    title.textContent = '数据总览';
+    const title = document.createElement("h2");
+    title.className = "sidebar__title";
+    title.textContent = "数据总览";
     section.appendChild(title);
 
-    const list = document.createElement('div');
-    list.className = 'sidebar__metrics';
+    const list = document.createElement("div");
+    list.className = "sidebar__metrics";
     const metrics = [
-      { key: 'totalLocations', label: '地点数量' },
-      { key: 'totalPopulation', label: '总人口' },
-      { key: 'totalHouseholds', label: '总户数' },
-      { key: 'averageHouseholdSize', label: '户均人口' },
-      { key: 'averageProductRichness', label: '平均物产种类' },
+      { key: "totalLocations", label: "地点数量" },
+      { key: "totalPopulation", label: "总人口" },
+      { key: "totalHouseholds", label: "总户数" },
+      { key: "averageHouseholdSize", label: "户均人口" },
+      { key: "averageProductRichness", label: "平均物产种类" },
     ];
 
     metrics.forEach((metric) => {
-      const item = document.createElement('div');
-      item.className = 'sidebar__metric';
+      const item = document.createElement("div");
+      item.className = "sidebar__metric";
 
-      const label = document.createElement('span');
-      label.className = 'sidebar__metric-label';
+      const label = document.createElement("span");
+      label.className = "sidebar__metric-label";
       label.textContent = metric.label;
 
-      const value = document.createElement('span');
-      value.className = 'sidebar__metric-value';
-      value.textContent = '-';
+      const value = document.createElement("span");
+      value.className = "sidebar__metric-value";
+      value.textContent = "-";
 
       item.appendChild(label);
       item.appendChild(value);
@@ -202,9 +264,9 @@ export class Sidebar {
       this.metricRefs[metric.key] = value;
     });
 
-    this.statusEl = document.createElement('div');
-    this.statusEl.className = 'sidebar__status';
-    this.statusEl.setAttribute('aria-live', 'polite');
+    this.statusEl = document.createElement("div");
+    this.statusEl.className = "sidebar__status";
+    this.statusEl.setAttribute("aria-live", "polite");
 
     section.appendChild(list);
     section.appendChild(this.statusEl);
@@ -213,16 +275,17 @@ export class Sidebar {
   }
 
   _renderComparison(items = []) {
-    const section = document.createElement('section');
-    section.className = 'sidebar__block sidebar__comparison';
+    const section = document.createElement("section");
+    section.className = "sidebar__block sidebar__comparison";
+    section.dataset.tourAnchor = "comparison";
 
-    const title = document.createElement('h2');
-    title.className = 'sidebar__title';
-    title.textContent = '对比卡片';
+    const title = document.createElement("h2");
+    title.className = "sidebar__title";
+    title.textContent = "对比卡片";
     section.appendChild(title);
 
-    const container = document.createElement('div');
-    container.className = 'comparison-grid';
+    const container = document.createElement("div");
+    container.className = "comparison-grid";
     section.appendChild(container);
     this.comparisonContainer = container;
 
@@ -234,18 +297,18 @@ export class Sidebar {
     const validTips = (tips || []).filter(Boolean);
     if (validTips.length === 0) return null;
 
-    const section = document.createElement('section');
-    section.className = 'sidebar__block sidebar__tips';
+    const section = document.createElement("section");
+    section.className = "sidebar__block sidebar__tips";
 
-    const title = document.createElement('h2');
-    title.className = 'sidebar__title';
-    title.textContent = '探索提示';
+    const title = document.createElement("h2");
+    title.className = "sidebar__title";
+    title.textContent = "探索提示";
 
-    const list = document.createElement('ul');
-    list.className = 'sidebar__tip-list';
+    const list = document.createElement("ul");
+    list.className = "sidebar__tip-list";
 
     validTips.forEach((tip) => {
-      const item = document.createElement('li');
+      const item = document.createElement("li");
       item.textContent = tip;
       list.appendChild(item);
     });
@@ -256,78 +319,81 @@ export class Sidebar {
   }
 
   _buildComparisonCard(item) {
-    const card = document.createElement('div');
-    card.className = 'comparison-card';
+    const card = document.createElement("div");
+    card.className = "comparison-card";
 
-    const header = document.createElement('div');
-    header.className = 'comparison-card__header';
+    const header = document.createElement("div");
+    header.className = "comparison-card__header";
 
-    const titleBox = document.createElement('div');
-    const name = document.createElement('div');
-    name.className = 'comparison-card__name';
+    const titleBox = document.createElement("div");
+    const name = document.createElement("div");
+    name.className = "comparison-card__name";
     name.textContent = item.label;
-    const subtitle = document.createElement('div');
-    subtitle.className = 'comparison-card__subtitle';
-    subtitle.textContent = item.subtitle || '';
+    const subtitle = document.createElement("div");
+    subtitle.className = "comparison-card__subtitle";
+    subtitle.textContent = item.subtitle || "";
     titleBox.appendChild(name);
     titleBox.appendChild(subtitle);
 
-    const tag = document.createElement('span');
-    tag.className = 'comparison-card__tag';
-    tag.textContent = item.type === 'dao' ? '道级' : '地点';
+    const tag = document.createElement("span");
+    tag.className = "comparison-card__tag";
+    tag.textContent = item.type === "dao" ? "道级" : "地点";
 
     header.appendChild(titleBox);
     header.appendChild(tag);
 
-    const metrics = document.createElement('div');
-    metrics.className = 'comparison-card__metrics';
+    const metrics = document.createElement("div");
+    metrics.className = "comparison-card__metrics";
     const metricDefs = [
-      { label: '人口', value: formatPopulation(item.population) },
-      { label: '户数', value: formatHouseholds(item.households) },
-      { label: '户均人口', value: formatHouseholdSize(item.householdSize) },
+      { label: "人口", value: formatPopulation(item.population) },
+      { label: "户数", value: formatHouseholds(item.households) },
+      { label: "户均人口", value: formatHouseholdSize(item.householdSize) },
       {
-        label: '物产条目',
-        value: Format.number(item.productRichness, { fallback: '-' }),
+        label: "物产条目",
+        value: Format.number(item.productRichness, { fallback: "-" }),
       },
     ];
     metricDefs.forEach((metric) => {
-      const row = document.createElement('div');
-      row.className = 'comparison-card__metric';
-      const label = document.createElement('span');
+      const row = document.createElement("div");
+      row.className = "comparison-card__metric";
+      const label = document.createElement("span");
       label.textContent = metric.label;
-      const value = document.createElement('span');
-      value.className = 'comparison-card__metric-value';
+      const value = document.createElement("span");
+      value.className = "comparison-card__metric-value";
       value.textContent = metric.value;
       row.appendChild(label);
       row.appendChild(value);
       metrics.appendChild(row);
     });
 
-    const breakdown = document.createElement('div');
-    breakdown.className = 'comparison-card__breakdown';
-    const total = item.breakdown?.reduce((sum, entry) => sum + (entry.count || 0), 0) || 0;
+    const breakdown = document.createElement("div");
+    breakdown.className = "comparison-card__breakdown";
+    const total =
+      item.breakdown?.reduce((sum, entry) => sum + (entry.count || 0), 0) || 0;
     if (total === 0) {
-      const empty = document.createElement('div');
-      empty.className = 'comparison-card__empty';
-      empty.textContent = '暂无物产数据';
+      const empty = document.createElement("div");
+      empty.className = "comparison-card__empty";
+      empty.textContent = "暂无物产数据";
       breakdown.appendChild(empty);
     } else {
-      const bar = document.createElement('div');
-      bar.className = 'comparison-card__bar';
+      const bar = document.createElement("div");
+      bar.className = "comparison-card__bar";
       item.breakdown.forEach((entry) => {
-        const segment = document.createElement('span');
-        segment.className = 'comparison-card__bar-segment';
+        const segment = document.createElement("span");
+        segment.className = "comparison-card__bar-segment";
         segment.style.width = `${Math.max((entry.ratio || 0) * 100, 2)}%`;
-        segment.style.backgroundColor = entry.color || getProductTypeColor(entry.type);
+        segment.style.backgroundColor =
+          entry.color || getProductTypeColor(entry.type);
         segment.title = `${entry.type} ${entry.count}`;
         bar.appendChild(segment);
       });
-      const legend = document.createElement('div');
-      legend.className = 'comparison-card__legend';
+      const legend = document.createElement("div");
+      legend.className = "comparison-card__legend";
       item.breakdown.forEach((entry) => {
-        const pill = document.createElement('span');
-        pill.className = 'comparison-card__pill';
-        pill.style.backgroundColor = entry.color || getProductTypeColor(entry.type);
+        const pill = document.createElement("span");
+        pill.className = "comparison-card__pill";
+        pill.style.backgroundColor =
+          entry.color || getProductTypeColor(entry.type);
         pill.textContent = `${entry.type} ${entry.count}`;
         legend.appendChild(pill);
       });
@@ -339,5 +405,143 @@ export class Sidebar {
     card.appendChild(metrics);
     card.appendChild(breakdown);
     return card;
+  }
+
+  _renderSelectionModeToggle(asFilter) {
+    if (typeof this.options.onSelectionAsFilterChange !== "function")
+      return null;
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "sidebar__selection-mode";
+    wrapper.setAttribute("aria-label", "选择语义");
+
+    const highlightBtn = document.createElement("button");
+    highlightBtn.type = "button";
+    highlightBtn.className = "sidebar__selection-mode-btn";
+    highlightBtn.textContent = "选择=高亮";
+
+    const filterBtn = document.createElement("button");
+    filterBtn.type = "button";
+    filterBtn.className = "sidebar__selection-mode-btn";
+    filterBtn.textContent = "选择=过滤";
+
+    this.selectionModeButtons = { highlight: highlightBtn, filter: filterBtn };
+
+    highlightBtn.addEventListener("click", () => {
+      this.options.onSelectionAsFilterChange(false);
+      this.updateSelectionAsFilter(false);
+    });
+    filterBtn.addEventListener("click", () => {
+      this.options.onSelectionAsFilterChange(true);
+      this.updateSelectionAsFilter(true);
+    });
+
+    wrapper.appendChild(highlightBtn);
+    wrapper.appendChild(filterBtn);
+    this.updateSelectionAsFilter(Boolean(asFilter));
+    return wrapper;
+  }
+
+  _renderMapEncodingControls(mapEncoding) {
+    if (!this.options?.onMapEncodingChange) return null;
+
+    const colorEncoding = mapEncoding?.colorEncoding || "dao";
+    const markerEncoding = mapEncoding?.markerEncoding || "population";
+
+    const container = document.createElement("div");
+    container.className = "sidebar__map-encoding";
+
+    const buildToolbar = (
+      labelText,
+      ariaLabel,
+      options,
+      activeKey,
+      onSelect,
+    ) => {
+      const toolbar = document.createElement("div");
+      toolbar.className = "chart-toolbar";
+      toolbar.setAttribute("aria-label", ariaLabel);
+
+      const label = document.createElement("span");
+      label.className = "chart-toolbar__label";
+      label.textContent = labelText;
+      toolbar.appendChild(label);
+
+      const buttons = document.createElement("div");
+      buttons.className = "chart-toolbar__buttons";
+      toolbar.appendChild(buttons);
+
+      options.forEach((option) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "chart-toolbar__btn";
+        btn.dataset.key = option.key;
+        btn.textContent = option.label;
+        const active = option.key === activeKey;
+        btn.classList.toggle("is-active", active);
+        btn.setAttribute("aria-pressed", active ? "true" : "false");
+        btn.addEventListener("click", () => onSelect(option.key));
+        buttons.appendChild(btn);
+        option.onRef?.(btn);
+      });
+
+      return toolbar;
+    };
+
+    const refs = {
+      color: {},
+      marker: {},
+    };
+
+    container.appendChild(
+      buildToolbar(
+        "颜色",
+        "地图颜色编码",
+        [
+          { key: "dao", label: "十道", onRef: (btn) => (refs.color.dao = btn) },
+          {
+            key: "product",
+            label: "物产",
+            onRef: (btn) => (refs.color.product = btn),
+          },
+          {
+            key: "level",
+            label: "级别",
+            onRef: (btn) => (refs.color.level = btn),
+          },
+        ],
+        colorEncoding,
+        (key) => this.options.onMapEncodingChange?.({ colorEncoding: key }),
+      ),
+    );
+
+    container.appendChild(
+      buildToolbar(
+        "大小",
+        "地图点大小编码",
+        [
+          {
+            key: "population",
+            label: "人口",
+            onRef: (btn) => (refs.marker.population = btn),
+          },
+          {
+            key: "productRichness",
+            label: "物产",
+            onRef: (btn) => (refs.marker.productRichness = btn),
+          },
+          {
+            key: "householdSize",
+            label: "户均",
+            onRef: (btn) => (refs.marker.householdSize = btn),
+          },
+        ],
+        markerEncoding,
+        (key) => this.options.onMapEncodingChange?.({ markerEncoding: key }),
+      ),
+    );
+
+    this.mapEncodingButtons = refs;
+    return container;
   }
 }

@@ -27,7 +27,9 @@ const DataProcessor = {
   mergeData(rawData) {
     const locationList = rawData?.locations?.locations || [];
     const productList = rawData?.products?.population_products || [];
-    const productMap = new Map(productList.map((item) => [item.Location_ID, item]));
+    const productMap = new Map(
+      productList.map((item) => [item.Location_ID, item]),
+    );
 
     const merged = locationList.map((loc) => {
       const productEntry = productMap.get(loc.Location_ID);
@@ -48,7 +50,9 @@ const DataProcessor = {
     const removedDaoIds = new Set(
       merged
         .filter(
-          (item) => item.Administrative_Level === '道' && item.Location_Name?.trim() === '山南道',
+          (item) =>
+            item.Administrative_Level === "道" &&
+            item.Location_Name?.trim() === "山南道",
         )
         .map((item) => item.Location_ID),
     );
@@ -64,7 +68,7 @@ const DataProcessor = {
     const locationMap = new Map(data.map((item) => [item.Location_ID, item]));
     const daoNameById = new Map(
       data
-        .filter((item) => item.Administrative_Level === '道')
+        .filter((item) => item.Administrative_Level === "道")
         .map((item) => [item.Location_ID, item.Location_Name]),
     );
 
@@ -118,10 +122,11 @@ const DataProcessor = {
         this.updateExtent(stats.productRichnessExtent, item.productRichness);
       }
 
-      const levelCount = stats.levelDistribution.get(item.Administrative_Level) || 0;
+      const levelCount =
+        stats.levelDistribution.get(item.Administrative_Level) || 0;
       stats.levelDistribution.set(item.Administrative_Level, levelCount + 1);
 
-      const daoKey = item.daoName || '未知';
+      const daoKey = item.daoName || "未知";
       const daoCount = stats.daoDistribution.get(daoKey) || 0;
       stats.daoDistribution.set(daoKey, daoCount + 1);
 
@@ -142,7 +147,9 @@ const DataProcessor = {
     stats.populationExtent = this.normalizeExtent(stats.populationExtent);
     stats.householdsExtent = this.normalizeExtent(stats.householdsExtent);
     stats.householdSizeExtent = this.normalizeExtent(stats.householdSizeExtent);
-    stats.productRichnessExtent = this.normalizeExtent(stats.productRichnessExtent);
+    stats.productRichnessExtent = this.normalizeExtent(
+      stats.productRichnessExtent,
+    );
 
     return stats;
   },
@@ -159,11 +166,13 @@ const DataProcessor = {
     data.forEach((item) => {
       indices.locationById.set(item.Location_ID, item);
 
-      const levelList = indices.locationsByLevel.get(item.Administrative_Level) || [];
+      const levelList =
+        indices.locationsByLevel.get(item.Administrative_Level) || [];
       levelList.push(item);
       indices.locationsByLevel.set(item.Administrative_Level, levelList);
 
-      const daoId = item.Administrative_Level === '道' ? item.Location_ID : item.Parent_ID;
+      const daoId =
+        item.Administrative_Level === "道" ? item.Location_ID : item.Parent_ID;
       if (daoId) {
         const daoList = indices.locationsByDao.get(daoId) || [];
         daoList.push(item);
@@ -171,7 +180,9 @@ const DataProcessor = {
       }
 
       if (!item.Products) return;
-      const allProducts = Object.values(item.Products).filter(Array.isArray).flat();
+      const allProducts = Object.values(item.Products)
+        .filter(Array.isArray)
+        .flat();
 
       allProducts.forEach((product) => {
         const locations = indices.productIndex.get(product) || [];
@@ -181,7 +192,7 @@ const DataProcessor = {
 
       for (let i = 0; i < allProducts.length; i += 1) {
         for (let j = i + 1; j < allProducts.length; j += 1) {
-          const key = [allProducts[i], allProducts[j]].sort().join('|');
+          const key = [allProducts[i], allProducts[j]].sort().join("|");
           const count = indices.productCooccurrence.get(key) || 0;
           indices.productCooccurrence.set(key, count + 1);
         }
@@ -196,9 +207,9 @@ const DataProcessor = {
       农产品: [],
       纺织品: [],
       药材: [],
-      '矿产/金属': [],
-      '畜产品/土特产': [],
-      '其他/待分类': [],
+      "矿产/金属": [],
+      "畜产品/土特产": [],
+      "其他/待分类": [],
     };
 
     if (!products) {
@@ -227,7 +238,10 @@ const DataProcessor = {
 
   countProducts(products) {
     if (!products) return 0;
-    return Object.values(products).reduce((sum, arr) => sum + (arr?.length || 0), 0);
+    return Object.values(products).reduce(
+      (sum, arr) => sum + (arr?.length || 0),
+      0,
+    );
   },
 
   getDominantType(products) {
@@ -248,7 +262,7 @@ const DataProcessor = {
   },
 
   getDaoName(item, locationMap, daoNameById) {
-    if (item.Administrative_Level === '道') {
+    if (item.Administrative_Level === "道") {
       return item.Location_Name;
     }
 
